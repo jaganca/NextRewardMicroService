@@ -1,0 +1,74 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface CategoryService.
+ */
+public interface CategoryService {
+
+	/**
+	 * Fetch categories.
+	 *
+	 * @param categoryFetchParams the category fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the category response
+	 */
+	CategoryResponse fetchCategories(CategoryFetchParams categoryFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Update categories.
+	 *
+	 * @param categoryUpdateParams the category update params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param categoryUpdateRequest the category update request
+	 * @return the jersey response
+	 */
+	JerseyResponse updateCategories(CategoryUpdateParams categoryUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, CategoryUpdateRequest categoryUpdateRequest);
+
+	/**
+	 * Delete categories.
+	 *
+	 * @param categoryDeleteParams the category delete params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the jersey response
+	 */
+	JerseyResponse deleteCategories(CategoryDeleteParams categoryDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Fetch all categories.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<CategoryResponse> fetchAllCategories(SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Adds the categories.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param categoryAddRequest the category add request
+	 * @return the jersey response
+	 */
+	JerseyResponse addCategories(SessionParams sessionParams, QueryableParams queryable,
+			CategoryAddRequest categoryAddRequest);
+
+}

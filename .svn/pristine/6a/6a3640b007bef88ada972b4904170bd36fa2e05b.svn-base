@@ -1,0 +1,89 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldList;
+import com.nexteducation.NextConfig.module.model.request.CustomFieldList.CustomFieldListAddRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomFieldList.CustomFieldListResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CustomFieldListMapperImpl implements CustomFieldListMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public CustomFieldList CustomFieldListAddRequestToCustomFieldList(CustomFieldListAddRequest customFieldListAddRequest) {
+        if ( customFieldListAddRequest == null ) {
+            return null;
+        }
+
+        CustomFieldList customFieldList = new CustomFieldList();
+
+        customFieldList.setValue( customFieldListAddRequest.getValue() );
+        customFieldList.setStatus( customFieldListAddRequest.getStatus() );
+        customFieldList.setCreatedBy( uuidMapper.asString( customFieldListAddRequest.getCreatedBy() ) );
+        customFieldList.setModifiedBy( uuidMapper.asString( customFieldListAddRequest.getModifiedBy() ) );
+
+        customFieldList.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        customFieldList.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return customFieldList;
+    }
+
+    @Override
+    public List<CustomFieldList> CustomFieldListaddRequestListToCustomFieldListList(List<CustomFieldListAddRequest> customFieldAddRequest) {
+        if ( customFieldAddRequest == null ) {
+            return null;
+        }
+
+        List<CustomFieldList> list = new ArrayList<CustomFieldList>();
+        for ( CustomFieldListAddRequest customFieldListAddRequest : customFieldAddRequest ) {
+            list.add( CustomFieldListAddRequestToCustomFieldList( customFieldListAddRequest ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<CustomFieldListResponse> CustomFieldListListToCustomFieldListResponseList(List<CustomFieldList> customField) {
+        if ( customField == null ) {
+            return null;
+        }
+
+        List<CustomFieldListResponse> list = new ArrayList<CustomFieldListResponse>();
+        for ( CustomFieldList customFieldList : customField ) {
+            list.add( CustomFieldListToCustomFieldListResponse( customFieldList ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public CustomFieldListResponse CustomFieldListToCustomFieldListResponse(CustomFieldList customField) {
+        if ( customField == null ) {
+            return null;
+        }
+
+        CustomFieldListResponse customFieldListResponse_ = new CustomFieldListResponse();
+
+        customFieldListResponse_.setCustomField( customField.getCustomField() );
+        customFieldListResponse_.setId( customField.getId() );
+        customFieldListResponse_.setValue( customField.getValue() );
+        customFieldListResponse_.setStatus( customField.getStatus() );
+        customFieldListResponse_.setCreatedBy( uuidMapper.asString( customField.getCreatedBy() ) );
+        customFieldListResponse_.setCreatedOn( customField.getCreatedOn() );
+        customFieldListResponse_.setModifiedBy( uuidMapper.asString( customField.getModifiedBy() ) );
+        customFieldListResponse_.setModifiedOn( customField.getModifiedOn() );
+
+        return customFieldListResponse_;
+    }
+}

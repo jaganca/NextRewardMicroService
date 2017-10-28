@@ -1,0 +1,47 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum Gender {
+	Female(1, "Female"), Male(2, "Male"), Others(3, "Others");
+
+	private int val;
+	private String gender;
+
+	public int getVal() {
+		return val;
+	}
+
+	public void setVal(final int val) {
+		this.val = val;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	Gender(final int val, final String gender) {
+		this.val = val;
+		this.gender = gender;
+	}
+
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+
+	public String getName() {
+		return this.name();
+	}
+
+	public static Gender valueOf(final byte val) {
+		for (final Gender value : values()) {
+			if (value.val == val) {
+				return value;
+			}
+		}
+		throw new IllegalArgumentException(String.valueOf(val));
+	}
+
+}

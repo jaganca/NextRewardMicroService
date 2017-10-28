@@ -1,0 +1,34 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.response.CustomField.StandardFieldResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface StandardFieldMapper {
+
+	StandardFieldMapper INSTANCE = Mappers.getMapper(StandardFieldMapper.class);
+
+	StandardField standardFieldDTOToStandardField(StandardFieldDTO standardFieldDTO);
+
+	StandardFieldDTO standardFieldToStandardFieldDTO(StandardField standardField);
+
+	List<StandardFieldDTO> standardFieldToStandardFieldDTO(List<StandardField> standardField);
+
+	@Mappings({
+		@Mapping(target="label", source="defaultLabel")
+		}
+	)
+	StandardFieldResponse standardFieldToStandardFieldResponse(StandardField standardField);
+
+	List<StandardFieldResponse> standardFieldToStandardFieldResponse(List<StandardField> standardField);
+
+}

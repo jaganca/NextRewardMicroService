@@ -1,0 +1,19 @@
+package com.nexteducation.NextConfig.module.model.params.AutoNumbering;
+
+import javax.ws.rs.PathParam;
+
+public class AutoNumberingFetchParams {
+
+	@PathParam("autoNumberingId")
+	Long autoNumberingId;
+	
+
+	public Long getAutoNumberingId() {
+		return autoNumberingId;
+	}
+
+	public void setAutoNumberingId(Long autoNumberingId) {
+		this.autoNumberingId = autoNumberingId;
+	}
+
+}

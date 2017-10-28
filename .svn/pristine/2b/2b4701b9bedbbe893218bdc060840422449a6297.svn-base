@@ -1,0 +1,46 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Entities;
+import com.nexteducation.NextConfig.module.model.response.Entities.EntityResponse;
+
+
+/**
+ * The Interface EntityMapper.
+ */
+@Mapper(componentModel = "spring" )
+public interface EntityMapper {
+
+	/** The instance. */
+	EntityMapper INSTANCE = Mappers.getMapper(EntityMapper.class);
+
+	/**
+	 * Entity to entity response.
+	 *
+	 * @param Entity the entity
+	 * @return the entity response
+	 */
+	@Mappings({
+		@Mapping(target="createdOn", expression="java(com.nexteducation.NextConfig.util.DU.now())"),
+		@Mapping(target="modifiedOn", expression="java(com.nexteducation.NextConfig.util.DU.now())")
+		}
+	)
+	
+	EntityResponse EntityToEntityResponse(Entities Entity);
+	
+	/**
+	 * Entity list to entity response list.
+	 *
+	 * @param EntityList the entity list
+	 * @return the list
+	 */
+	List<EntityResponse> EntityListToEntityResponseList(List<Entities> EntityList);
+
+
+}

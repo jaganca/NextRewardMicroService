@@ -1,0 +1,66 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.mapper.StandardFieldMapper;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.repository.StandardFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.StandardFieldService;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Class StandardFieldServiceImpl.
+ */
+public class StandardFieldServiceImpl implements StandardFieldService {
+
+	/** The standard field repository. */
+	@Autowired
+	StandardFieldRepository standardFieldRepository;
+
+	/** The standard field mapper. */
+	@Autowired
+	StandardFieldMapper standardFieldMapper;
+
+	/**
+	 * Fetch standard fields.
+	 *
+	 * @param StandardFieldFetchParams the standard field fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<StandardFieldDTO> fetchStandardFields(StandardFieldFetchParams StandardFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		List<StandardField> standardFieldList = standardFieldRepository
+				.findByEntityName(StandardFieldFetchParams.getEntityName());
+		return standardFieldMapper.standardFieldToStandardFieldDTO(standardFieldList);
+	}
+
+	/**
+	 * Update standard fields.
+	 *
+	 * @param standardFieldsId the standard fields id
+	 * @param sessionParams the session params
+	 * @param standardFieldDTO the standard field DTO
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateStandardFields(Long standardFieldsId, SessionParams sessionParams,
+			StandardFieldDTO standardFieldDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

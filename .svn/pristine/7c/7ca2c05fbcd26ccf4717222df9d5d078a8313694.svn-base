@@ -1,0 +1,37 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+
+public interface ReligionService {	
+
+    ReligionResponse fetchReligions(ReligionFetchParams religionFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+    
+//
+	JerseyResponse updateReligions(ReligionUpdateParams religionUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, ReligionUpdateRequest religionUpdateRequest);
+//
+	JerseyResponse deleteReligions(ReligionDeleteParams religionDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	List<ReligionResponse> fetchAllReligions(SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	AddResponse addReligions(SessionParams sessionParams,
+			QueryableParams queryable, ReligionAddRequest religionAddRequest);
+
+
+
+}

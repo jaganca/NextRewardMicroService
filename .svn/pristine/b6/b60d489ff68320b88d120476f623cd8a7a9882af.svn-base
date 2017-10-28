@@ -1,0 +1,24 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.response.Entities.EntityResponse;
+
+
+/**
+ * The Interface EntitiesService.
+ */
+public interface EntitiesService {
+	
+	/**
+	 * Fetch all entities.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	public List<EntityResponse> fetchAllEntities(SessionParams sessionParams, QueryableParams queryable);
+
+}

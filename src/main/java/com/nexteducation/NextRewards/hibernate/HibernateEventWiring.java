@@ -1,0 +1,64 @@
+package com.nexteducation.NextRewards.hibernate;
+
+import javax.annotation.PostConstruct;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.event.service.spi.EventListenerRegistry;
+import org.hibernate.event.spi.EventType;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+import com.nexteducation.NextRewards.hibernate.listener.TraditionalDBListener;
+import com.nexteducation.NextService.hibernate.listener.DataAccessListener;
+
+/**
+ * The Class HibernateEventWiring.
+ */
+@Component
+public class HibernateEventWiring {
+
+	/** The session factory. */
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	/** The trail event listener. */
+	@Autowired
+	private TraditionalDBListener trailEventListener;
+	
+	@Autowired
+	private DataAccessListener dataAccessListener;
+	
+	@Autowired
+	private Environment env;
+
+	/** The eventable entity listener. */
+	/*@Autowired
+	private EventableEntityListener eventableEntityListener;*/
+
+	/**
+	 * Register listeners.
+	 */
+	@PostConstruct
+	public void registerListeners() {
+		final EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry()
+				.getService(EventListenerRegistry.class);
+		registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(trailEventListener);
+		registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(trailEventListener);
+		registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(trailEventListener);
+
+		/*registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_LOAD).appendListener(eventableEntityListener);*/
+		
+		if("true".equalsIgnoreCase(env.getProperty("hibernate.event.listener.data-access.enable","false"))){
+			registry.getEventListenerGroup(EventType.PRE_INSERT).appendListener(dataAccessListener);
+			registry.getEventListenerGroup(EventType.PRE_UPDATE).appendListener(dataAccessListener);
+			registry.getEventListenerGroup(EventType.POST_LOAD).appendListener(dataAccessListener);
+			registry.getEventListenerGroup(EventType.PRE_DELETE).appendListener(dataAccessListener);
+		}
+	}
+
+}

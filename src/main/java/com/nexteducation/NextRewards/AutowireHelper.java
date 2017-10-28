@@ -1,0 +1,60 @@
+package com.nexteducation.NextRewards;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+
+/**
+ * The Class AutowireHelper.
+ */
+@Component
+public final class AutowireHelper implements ApplicationContextAware {
+	
+	/** The Constant INSTANCE. */
+	private static final AutowireHelper INSTANCE = new AutowireHelper();
+	
+	/** The application context. */
+	private static ApplicationContext applicationContext;
+
+	/**
+	 * Instantiates a new autowire helper.
+	 */
+	private AutowireHelper() {
+	}
+
+	/**
+	 * Tries to autowire the specified instance of the class if one of the
+	 * specified beans which need to be autowired are null.
+	 *
+	 * @param classToAutowire
+	 *            the instance of the class which holds @Autowire annotations
+	 * @param beansToAutowireInClass
+	 *            the beans which have the @Autowire annotation in the specified
+	 *            {#classToAutowire}
+	 */
+	public static void autowire(Object classToAutowire, Object... beansToAutowireInClass) {
+		for (Object bean : beansToAutowireInClass) {
+			if (bean == null) {
+				applicationContext.getAutowireCapableBeanFactory().autowireBean(classToAutowire);
+				return;
+			}
+		}
+	}
+
+	/** 
+	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+	 */
+	@Override
+	public void setApplicationContext(final ApplicationContext applicationContext) {
+		AutowireHelper.applicationContext = applicationContext;
+	}
+
+	/**
+	 * Gets the single instance of AutowireHelper.
+	 *
+	 * @return the singleton instance.
+	 */
+	public static AutowireHelper getInstance() {
+		return INSTANCE;
+	}
+}

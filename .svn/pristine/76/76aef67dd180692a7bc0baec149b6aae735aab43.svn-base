@@ -1,0 +1,31 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFormElementDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { FormMapper.class,
+		CustomFieldMapper.class, StandardFieldMapper.class, FormMapper.class })
+public interface CustomFormElementMapper {
+
+	CustomFormElementMapper INSTANCE = Mappers.getMapper(CustomFormElementMapper.class);
+
+	CustomFormElement customFormElementDTOToCustomFormElement(CustomFormElementDTO customFormElementDTO);
+
+	CustomFormElementDTO customFormElementToCustomFormElementDTO(CustomFormElement customFormElement);
+
+	List<CustomFormElementDTO> customFormElementListToCustomFormElementDTOList(
+			List<CustomFormElement> customFormElementList);
+
+	CustomFormElementResponse customFormElementToCustomFormElementResponse(CustomFormElement customFormElement);
+
+	List<CustomFormElementResponse> customFormElementToCustomFormElementResponse(
+			List<CustomFormElement> customFormElementList);
+
+}

@@ -1,0 +1,122 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Language.LanguageResponse;
+import com.nexteducation.NextConfig.module.service.core.LanguageService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class LanguageServiceClient implements LanguageService {
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+
+	public LanguageServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+
+	@Override
+	public AddResponse addLanguages(SessionParams sessionParams, QueryableParams queryable,
+			LanguageAddRequest languageAddRequest) throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.LANGUAGES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(languageAddRequest, headers);
+		ResponseEntity<AddResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<AddResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse updateLanguages(LanguageUpdateParams languageUpdateContextParams, SessionParams sessionParams,
+			QueryableParams queryable, LanguageUpdateRequest languageUpdateRequest) throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.LANGUAGES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(languageUpdateRequest, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteLanguages(LanguageDeleteParams languageDeleteContextParams, SessionParams sessionParams,
+			QueryableParams queryable) throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.LANGUAGES + "/"
+				+ languageDeleteContextParams.getLanguageId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE, null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<LanguageResponse> fetchAllLanguages(SessionParams sessionParams, QueryableParams queryable)
+			throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.LANGUAGES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<LanguageResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<LanguageResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public LanguageResponse fetchLanguages(LanguageFetchParams languageFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.LANGUAGES + "/"
+				+ languageFetchParams.getLanguageId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<LanguageResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<LanguageResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+}

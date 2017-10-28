@@ -1,0 +1,20 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.Language;
+
+
+public interface LanguageRepository extends JpaRepository<Language, Serializable>{
+
+	Language findByIdAndBranchId(Long id, Long branchId);
+
+	Language findById(Long id);
+
+	List<Language> findByBranchId(Long BranchId);
+	
+}

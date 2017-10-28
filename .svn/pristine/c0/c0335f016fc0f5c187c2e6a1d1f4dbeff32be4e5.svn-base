@@ -1,0 +1,31 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CustomFormElementFetchParams {
+
+	@QueryParam(NextConfigUrls.BRANCH_ID)
+	private Long branchId;
+
+	@QueryParam(NextConfigUrls.FORM_ID)
+	private Long formId;
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+
+}

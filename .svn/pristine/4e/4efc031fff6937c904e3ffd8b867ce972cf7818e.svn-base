@@ -1,0 +1,27 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Language;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Language.LanguageResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface LanguageMapper {
+
+	LanguageMapper INSTANCE = Mappers.getMapper(LanguageMapper.class);
+
+	Language languageAddRequestToLanguage(LanguageAddRequest languageAddRequest);
+
+	Language languageUpdateRequestToLanguage(LanguageUpdateRequest languageUpdateRequest);
+
+	LanguageResponse languageToLanguageResponse(Language language);
+
+	List<LanguageResponse> languageListToLanguageResponseList(List<Language> languageList);
+
+}

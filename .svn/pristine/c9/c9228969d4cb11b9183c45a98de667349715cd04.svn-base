@@ -1,0 +1,58 @@
+package com.nexteducation.NextConfig.hibernate.datasourceRouting;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+/**
+ * 
+ * @author krishnakanthv
+ *
+ */
+@Aspect
+@Component
+@Order(2)
+public class ReadOnlyConnectionInterceptor implements Ordered {
+
+	private int order;
+
+	@Value("20")
+	public void setOrder(final int order) {
+		this.order = order;
+	}
+
+	@Override
+	public int getOrder() {
+		return order;
+	}
+
+//	@Around("execution(* *fetch*(..))")
+//	public Object proceed(final ProceedingJoinPoint pjp) throws Throwable {
+//		try {
+//			DbContextHolder.setDbType(DbType.REPLICA);
+//			final Object result = pjp.proceed();
+//			DbContextHolder.clearDbType();
+//			return result;
+//		} finally {
+//			// restore state
+//			DbContextHolder.clearDbType();
+//		}
+//	}
+//	
+	@Around("@annotation(readOnlyConnection)")
+    public Object proceed(final ProceedingJoinPoint pjp, final ReadOnlyConnection readOnlyConnection) throws Throwable {
+        try {
+            DbContextHolder.setDbType(DbType.REPLICA);
+            final Object result = pjp.proceed();
+            DbContextHolder.clearDbType();
+            return result;
+        } finally {
+            // restore state
+            DbContextHolder.clearDbType();
+        }
+    }
+
+}

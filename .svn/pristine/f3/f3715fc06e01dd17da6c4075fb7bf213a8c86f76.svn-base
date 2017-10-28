@@ -1,0 +1,53 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.RollNumberSettingResponse;
+import com.nexteducation.NextConfig.module.model.response.StatusResponse;
+import com.nexteducation.NextConfig.module.service.core.RollNumberSettingService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+import io.swagger.annotations.ApiOperation;
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.VERSION + NextConfigUrls.ROLL_NUMBER_SETTING)
+public class RollNumberSettingController {
+	
+	@Autowired
+	RollNumberSettingService rollNumberSettingService;
+	@POST
+	@ApiOperation(value = "add roll number setting for a Branch", notes = "add roll number setting for a branch")
+	public StatusResponse addRollNumberSetting(@Valid @NotNull @QueryParam("lbid") Long branchId,
+			final RollNumberSettingAddRequest rollNumberSettingAddRequest)  {
+		
+		return rollNumberSettingService.addRollNumberSetting(branchId, rollNumberSettingAddRequest);
+
+	}
+	@PUT
+	@ApiOperation(value = "update roll number setting for a Branch", notes = "update roll number setting for a branch")
+	public StatusResponse updateRollNumberSettings(@Valid @BeanParam SessionParams sessionParams,
+			@Valid RollNumberSettingUpdateRequest rollNumberSettingUpdateRequest) {
+		return rollNumberSettingService.updateRollNumberSetting(sessionParams, rollNumberSettingUpdateRequest);
+	}
+	@GET
+	@ApiOperation(value = "Fetch roll number setting for a Branch", notes = "Fetches roll number setting for a branch")
+	public RollNumberSettingResponse fetchRollNumberSettings(@Valid @BeanParam SessionParams sessionParams) {
+		return rollNumberSettingService.fetchRollNumberSetting(sessionParams);
+	}
+}

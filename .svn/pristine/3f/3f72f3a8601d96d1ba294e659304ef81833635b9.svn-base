@@ -1,0 +1,159 @@
+
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+
+@Entity
+@Table(name="CASTE",uniqueConstraints=@UniqueConstraint(columnNames = { "BRANCH_ID", "NAME"}, name = "IDX_CASTE_BRANCH_ID_NAME"))
+public class Caste {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CASTE_ID")
+	private Long id;
+
+
+	@Column(name="BRANCH_ID")
+	private Long branchId;
+
+
+	@Column(name="NAME")
+	private String name;
+
+
+    @NotNull
+	@Column(name="CREATED_BY")
+	private Long createdBy;
+
+	
+    @NotNull
+	@Column(name="CREATED_ON")
+	private Date createdOn = null;
+
+	
+	@Column(name="STATUS",columnDefinition = "TINYINT(4)")
+	private Status status;
+	
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="PARENT_CASTE_ID")
+	private Caste parentCaste=null;
+	
+	@OneToMany(fetch = FetchType.EAGER,mappedBy="parentCaste")
+	private List<Caste> subCastes=new ArrayList<Caste>();
+
+
+    @NotNull
+	@Column(name="MODIFIED_BY")
+	private Long modifiedBy;
+
+    @NotNull
+	@Column(name="MODIFIED_ON")
+	private Date modifiedOn = null;
+
+
+	public List<Caste> getSubCastes() {
+		return subCastes;
+	}
+
+	public void setSubCastes(List<Caste> subCastes) {
+		this.subCastes = subCastes;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Caste getParentCaste() {
+		return parentCaste;
+	}
+
+	public void setParentCaste(Caste parentCaste) {
+		this.parentCaste = parentCaste;
+	}
+
+
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+
+
+}

@@ -1,0 +1,108 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.validators.CustomFields.CustomFieldName;
+
+public class CustomFieldAddRequest {
+
+	private Long branchId;
+
+	@NotEmpty(message="Field Name is invalid")
+	@CustomFieldName(message = "Field Name is already in use")
+	private String fieldName;
+
+	 
+	@NotEmpty(message = "Entity ID should not be empty")
+	private String entityId;
+
+	private long fieldTypeId;
+
+	private Byte dataTypeId;
+
+	private boolean ifMandatory;
+
+	private Status status;
+
+	 
+	private String createdBy;
+
+	 
+	private String modifiedBy;
+
+	public  Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public long getFieldTypeId() {
+		return fieldTypeId;
+	}
+
+	public void setFieldTypeId(long fieldTypeId) {
+		this.fieldTypeId = fieldTypeId;
+	}
+
+	public Byte getDataTypeId() {
+		return dataTypeId;
+	}
+
+	public void setDataTypeId(Byte dataTypeId) {
+		this.dataTypeId = dataTypeId;
+	}
+
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public String getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(String entityId) {
+		this.entityId = entityId;
+	}
+
+
+}

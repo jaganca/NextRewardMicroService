@@ -1,0 +1,1 @@
+spring.cloud.config.uri=http://config.nexterp.in:8888

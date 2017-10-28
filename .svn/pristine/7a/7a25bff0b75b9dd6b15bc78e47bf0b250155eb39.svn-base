@@ -1,0 +1,164 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.InputType;
+
+@Entity
+@Table(name = "STANDARD_FIELD")
+public class StandardField {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "STANDARD_FIELD_ID")
+	private Long id;
+
+	@Column(name = "BRANCH_ID", columnDefinition = "BIGINT(20)")
+	private Long branchId;
+
+	@Column(name = "DEFAULT_LABEL", columnDefinition = "VARCHAR(30)", nullable = false)
+	private String defaultLabel;
+
+	@Column(name = "ENTITY_NAME", columnDefinition = "VARCHAR(15)", nullable = false)
+	private String entityName;
+
+	@Column(name = "FIELD_TYPE_ID", columnDefinition = "BIGINT(20)")
+	private FieldType fieldType;
+
+	@Column(name = "INPUT_TYPE_ID", columnDefinition = "BIGINT(20)")
+	private InputType inputType;
+
+	@Column(name = "INPUT_KEY", columnDefinition = "VARCHAR(20)")
+	private String key;
+
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)")
+	private Long createdBy;
+
+	@Column(name = "CREATED_ON")
+	private Date createdOn;
+
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)")
+	private Long modifiedBy;
+
+	@Column(name = "MODIFIED_ON")
+	private Date modifiedOn;
+	
+	@Column(name = "IS_SYSTEM_MANDATORY", columnDefinition = "BIT", length = 1)
+	private boolean isSystemMandatory;
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	
+
+	public boolean isSystemMandatory() {
+		return isSystemMandatory;
+	}
+
+	public void setSystemMandatory(boolean isSystemMandatory) {
+		this.isSystemMandatory = isSystemMandatory;
+	}
+
+	public void setAll(StandardField standardField) {
+		this.setId(standardField.getId());
+		this.setBranchId(standardField.getBranchId());
+		this.setDefaultLabel(standardField.getDefaultLabel());
+		this.setEntityName(standardField.getEntityName());
+		this.setFieldType(standardField.getFieldType());
+		this.setInputType(standardField.getInputType());
+		this.setSystemMandatory(standardField.isSystemMandatory());
+	}
+
+}

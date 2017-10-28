@@ -1,0 +1,33 @@
+package com.nexteducation.NextConfig.module.model.request.Category;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class CategoryAddRequest {
+
+	 
+	private Long branchId;
+	
+	
+	@NotEmpty(message="Category Name should not be empty!")
+	private String name;
+
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public  Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+
+}

@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE )
+public interface CasteMapper {
+
+	CasteMapper INSTANCE = Mappers.getMapper(CasteMapper.class);
+
+	@Mappings({ @Mapping(target = "createdOn", expression = "java(com.nexteducation.NextConfig.util.DU.now())"),
+			@Mapping(target = "modifiedOn", expression = "java(com.nexteducation.NextConfig.util.DU.now())") })
+	Caste CasteAddRequestToCaste(CasteAddRequest casteAddRequest);
+
+	Caste CasteUpdateRequestToCaste(CasteUpdateRequest casteUpdateRequest);
+
+	CasteResponse CasteToCasteResponse(Caste caste);
+
+	CasteCustomResponse CasteToCasteCustomResponse(Caste caste);
+
+	List<CasteCustomResponse> CasteListToCasteCustomResponseList(List<Caste> casteList);
+
+	List<CasteResponse> CasteListToCasteResponseList(List<Caste> casteList);
+
+}

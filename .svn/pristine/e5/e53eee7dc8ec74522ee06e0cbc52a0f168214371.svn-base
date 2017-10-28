@@ -1,0 +1,95 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import com.nexteducation.NextConfig.module.service.core.CasteService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1)
+public class CasteController {
+
+	@Autowired
+	CasteService casteService;
+	
+	@POST
+	@Path(NextConfigUrls.CASTES)
+	public JerseyResponse addCastes(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable, @Valid CasteAddRequest casteAddRequest) throws NextServiceException  {
+
+		return casteService.addCastes(sessionParams,queryable,casteAddRequest);
+		
+	}
+	
+	@PUT
+	@Path(NextConfigUrls.CASTE_Long)
+	public JerseyResponse updateCastes(@BeanParam CasteUpdateParams casteUpdateParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable,
+			@Valid CasteUpdateRequest casteUpdateRequest) {		
+		return casteService.updateCastes(casteUpdateParams, sessionParams, queryable, casteUpdateRequest);
+	
+	}
+	
+	@DELETE
+	@Path(NextConfigUrls.CASTE_Long)
+	public JerseyResponse deleteCastes(@BeanParam CasteDeleteParams casteDeleteParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+	
+		return casteService.deleteCastes(casteDeleteParams, sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.CASTES_PARENT)
+	public List<CasteCustomResponse> fetchAllParentCastes(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return casteService.fetchAllParentCastes(sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.CASTES)
+	public List<CasteResponse> fetchAllCastes(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return casteService.fetchAllCastes(sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.CASTE_Long)
+	public CasteResponse fetchCastes(@BeanParam CasteFetchParams casteFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) throws NextServiceException{
+
+		return casteService.fetchCastes(casteFetchParams, sessionParams, queryable);
+		
+	}
+	
+	@GET
+	@Path(NextConfigUrls.CASTE_SUB)
+	public List<CasteResponse> fetchSubCastes(@BeanParam CasteFetchParams casteFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) throws NextServiceException{
+
+		return casteService.fetchSubCastes(casteFetchParams, sessionParams, queryable);
+		
+	}
+	
+}

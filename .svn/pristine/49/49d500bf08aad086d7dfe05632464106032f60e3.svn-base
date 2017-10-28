@@ -1,0 +1,78 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.InputType;
+
+public class CustomFieldRequest {
+
+	private Long id;
+
+	private Long branchId;
+
+	private String defaultLabel;
+
+	private String entityName;
+
+	private FieldType fieldType;
+
+	private InputType inputType;
+
+	private String key;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+}

@@ -1,0 +1,84 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldDataService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA)
+public class CustomFieldsDataController {
+
+	@Autowired
+	CustomFieldDataService customFieldDataService;
+
+	@GET
+	@Path(NextConfigUrls.CUSTOM_FIELD_DATA_PATH_ID)
+	public CustomFieldDataDTO getCustomFieldData(@PathParam(NextConfigUrls.CUSTOM_FIELD_DATA_ID) Long customFieldDataId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFieldDataService.fetchCustomFieldData(customFieldDataId, sessionParams);
+	}
+
+	@PUT
+	@Path(NextConfigUrls.CUSTOM_FIELD_DATA_PATH_ID)
+	public JerseyResponse updateCustomFieldData(@PathParam(NextConfigUrls.CUSTOM_FIELD_DATA_ID) Long customFieldDataId,
+			@Valid @BeanParam SessionParams sessionParams, @Valid CustomFieldDataDTO customFieldDataDTO) {
+		return customFieldDataService.updateCustomFieldData(customFieldDataId, sessionParams, customFieldDataDTO);
+	}
+
+	@PUT
+	@Path(NextConfigUrls.BULK)
+	public JerseyResponse addOrupdateCustomFieldData(
+			@Valid @BeanParam SessionParams sessionParams, @Valid  List<CustomFieldDataDTO> customFieldDataDTOs) {
+		return customFieldDataService.addOrupdateCustomFieldData(sessionParams, customFieldDataDTOs);
+	}
+
+	
+	@DELETE
+	@Path(NextConfigUrls.CUSTOM_FIELD_DATA_PATH_ID)
+	public JerseyResponse deleteCustomFieldData(@PathParam(NextConfigUrls.CUSTOM_FIELD_DATA_ID) Long customFieldDataId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFieldDataService.deleteCustomFieldData(customFieldDataId, sessionParams);
+	}
+
+	@POST
+	public JerseyResponse addCustomFieldData(@Valid @BeanParam SessionParams sessionParams,
+			@Valid CustomFieldDataDTO customFieldDataDTO) {
+		return customFieldDataService.addCustomFieldData(sessionParams, customFieldDataDTO);
+	}
+
+	@POST
+	@Path(NextConfigUrls.BULK)
+	public JerseyResponse addCustomFieldData(@Valid @BeanParam SessionParams sessionParams,
+			@Valid List<CustomFieldDataDTO> customFieldDataDTOs) {
+		return customFieldDataService.addCustomFieldData(sessionParams, customFieldDataDTOs);
+	}
+
+	@GET
+	public List<CustomFieldDataDTO> fetchAllCustomFieldData(
+			@BeanParam CustomFieldDataFetchParams customFieldDataFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldDataService.fetchCustomFieldData(customFieldDataFetchParams, sessionParams, queryable);
+	}
+
+}

@@ -1,0 +1,156 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.CustomFormElementMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFormElementRepository;
+import com.nexteducation.NextConfig.module.repository.StandardFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFormElementService;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+
+@Service("customFormElementService")
+public class CustomFormElementServiceImpl implements CustomFormElementService {
+
+	@Autowired
+	CustomFormElementRepository customFormElementRepository;
+
+	@Autowired
+	CustomFormElementMapper customFormElementMapper;
+
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	@Autowired
+	StandardFieldRepository standardFieldRepository;
+
+	/**
+	 * s CustomFormElement i.e Master Tempelate Id and its Custom Field.
+	 * @param sessionParams
+	 * @param queryable
+	 * @param customFormElementRequest
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFormElements(SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequest) {
+		if (customFormElementRequest.getCustomFieldId() == null && customFormElementRequest.getStandardFieldId() == 0) {
+			throw new NextServiceException("NextConfig", "BadRequest", 400,
+					"Both Standard and custom field Ids are null",
+					"Please provide atleast one custom/standard field Id");
+		}
+		CustomFormElement customFormElement = new CustomFormElement();
+		if (customFormElementRequest.getCustomFieldId() != null) {
+			CustomField customField = customFieldRepository.findById((customFormElementRequest.getCustomFieldId()));
+			customFormElement.setCustomField(customField);
+		} else {
+			Long standardField = customFormElementRequest.getStandardFieldId();
+			customFormElement.setStandardField(standardFieldRepository.findById((standardField)));
+		}
+		customFormElement.setBranchId((customFormElementRequest.getBranchId()));
+		customFormElement.setCreatedBy(sessionParams.getUserId());
+		customFormElement.setCreatedOn(DU.now());
+		customFormElement.setModifiedBy(sessionParams.getUserId());
+		customFormElement.setModifiedOn(DU.now());
+		customFormElement.setStatus(customFormElementRequest.getStatus());
+		customFormElementRepository.save(customFormElement);
+		return new JerseyResponse().withMsg("Record added Successfully").withCode("Success")
+				.withId(customFormElement.getId());
+	}
+
+	/**
+	 * Deletes the custom Field Mapping for a given CustomFormElement Long.
+	 * @param customFormElementDeleteParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElementDelete = customFormElementRepository.findById(customFormElementId);
+		if (customFormElementDelete == null) {
+			throw new NextServiceException("DeleteCustomFormElement", "NotFound", 404,
+					"Custom Form Element not found in the repository",
+					"Custom Form Element not found in the repository");
+		}
+		if (customFormElementDelete.getStandardField() != null) {
+			throw new NextServiceException("DeleteCustomFormElement", "BadRequest", 400, "Cannot delete Standard field",
+					"Cannot delete Standard field");
+		}
+		customFormElementRepository.delete(customFormElementDelete);
+		return new JerseyResponse().withMsg("Record deleted Successfully").withCode("Success");
+	}
+
+	/**
+	 * Fetches all the Custom form elements.
+	 * @param CustomFieldDataFetchParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return List <customFormElementDTO>
+	 */
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			CustomFormElementFetchParams customFormElementFetchParams, SessionParams sessionParams,
+			QueryableParams queryableParams) {
+		if (customFormElementFetchParams.getBranchId() == null) {
+			customFormElementFetchParams.setBranchId(sessionParams.getBranchId());
+		}
+		List<CustomFormElement> customFormElementList = customFormElementRepository
+				.findByBOFilters(customFormElementFetchParams, queryableParams);
+		List<CustomFormElementResponse> customFormElementDTO = customFormElementMapper
+				.customFormElementToCustomFormElementResponse(customFormElementList);
+		return customFormElementDTO;
+
+	}
+
+	@Override
+	public JerseyResponse toggleCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElementToggle = customFormElementRepository.findById(customFormElementId);
+		if (customFormElementToggle == null) {
+			throw new NextServiceException("DeleteCustomFormElement", "NotFound", 404,
+					"Custom Form Element not found in the repository",
+					"Custom Form Element not found in the repository");
+		}
+		if (customFormElementToggle.getStatus() == Status.Active) {
+			customFormElementToggle.setStatus(Status.Inactive);
+		} else {
+			customFormElementToggle.setStatus(Status.Active);
+		}
+		customFormElementToggle.setModifiedBy(sessionParams.getUserId());
+		customFormElementToggle.setModifiedOn(DU.now());
+		customFormElementRepository.save(customFormElementToggle);
+		return new JerseyResponse().withMsg("Record Updated Successfully").withCode("Success");
+	}
+
+	@Override
+	public CustomFormElementResponse fetchCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElement = customFormElementRepository.findById(customFormElementId);
+		if (customFormElement == null) {
+			throw new NextServiceException("DeleteCustomFormElement", "NotFound", 404,
+					"Custom Form Element not found in the repository",
+					"Custom Form Element not found in the repository");
+		}
+		return customFormElementMapper.customFormElementToCustomFormElementResponse(customFormElement);
+	}
+
+}

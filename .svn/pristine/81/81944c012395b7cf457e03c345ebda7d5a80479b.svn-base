@@ -1,0 +1,27 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFormElementDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface CustomFormElementService {
+
+	public JerseyResponse addCustomFormElements(SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequest);
+
+	public JerseyResponse deleteCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+
+	public JerseyResponse toggleCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			CustomFormElementFetchParams customFormElementFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	public CustomFormElementResponse fetchCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+}

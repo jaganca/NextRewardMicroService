@@ -1,0 +1,222 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.mapper.CustomFieldMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldList;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.bo.Form;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldDataRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFieldListRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFormElementRepository;
+import com.nexteducation.NextConfig.module.repository.StandardFieldRepository;
+import com.nexteducation.NextConfig.module.repository.StandardFormRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldListService;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+
+@Service("customFieldService")
+public class CustomFieldServiceImpl implements CustomFieldService {
+
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	@Autowired
+	CustomFieldMapper customFieldMapper;
+
+	@Autowired
+	CustomFieldListService customFieldListService;
+
+	@Autowired
+	CustomFieldListRepository customFieldListRepository;
+
+	@Autowired
+	CustomFormElementRepository customFormElementRepository;
+
+	@Autowired
+	CustomFieldDataRepository customFieldDataRepository;
+
+	@Autowired
+	StandardFormRepository standardFormRepository;
+
+	@Autowired
+	StandardFieldRepository standardFieldRepository;
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public CustomFieldDTO fetchCustomFields(Long customFieldId, SessionParams sessionParams) {
+		CustomField customField = customFieldRepository.findById(customFieldId);
+		if (customField == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		CustomFieldDTO customFieldDTO = customFieldMapper.customFieldToCustomFieldDTO(customField);
+		return customFieldDTO;
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse updateCustomFields(Long customFieldId, SessionParams sessionParams,
+			CustomFieldDTO customFieldDTO) {
+		CustomField customFieldUpdate = customFieldRepository.findById(customFieldId);
+		if (customFieldUpdate == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		CustomField customFieldInRepository = customFieldRepository.findByBranchIdAndEntityNameAndDefaultLabel(
+				sessionParams.getBranchId(), customFieldDTO.getEntityName(), customFieldDTO.getDefaultLabel());
+		if (customFieldUpdate.getFieldType().equals(FieldType.Text)
+				|| customFieldUpdate.getFieldType().equals(FieldType.Paragraph)
+				|| customFieldUpdate.getFieldType().equals(FieldType.Date)) {
+			if (customFieldInRepository != null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400, "Duplicate Entry",
+						"Duplicate Label For This Entity");
+			}
+		} else {
+			if (customFieldInRepository != null
+					&& !customFieldInRepository.getDefaultLabel().equals(customFieldUpdate.getDefaultLabel())) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400, "Duplicate Entry",
+						"Duplicate Label For This Entity");
+			}
+		}
+		List<StandardField> standardField = standardFieldRepository
+				.findByDefaultLabelAndEntityName(customFieldDTO.getDefaultLabel(), customFieldDTO.getEntityName());
+		if (standardField != null && !standardField.isEmpty()) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400, "Duplicate Entry",
+					"Already Standard Field Exists With This Name");
+		}
+		CustomField customField = customFieldMapper.customFieldDTOToCustomField(customFieldDTO);
+		/*String key = WordUtils.capitalizeFully(customField.getDefaultLabel(), new char[] { ' ', '_' })
+				.replaceAll("[^a-zA-Z0-9]", "");*/
+		String key = customField.getDefaultLabel().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+		customField.setKey(key);
+		customFieldUpdate.setAll(customField);
+		customFieldUpdate.setModifiedBy(sessionParams.getUserId());
+		customFieldUpdate.setModifiedOn(DU.now());
+		customFieldRepository.save(customFieldUpdate);
+		customFieldListService.addOrUpdateCustomFieldLists(customFieldId, sessionParams,
+				customFieldDTO.getCustomFieldLists());
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFields(Long customFieldId, SessionParams sessionParams) {
+		CustomField customFieldDelete = customFieldRepository.findById(customFieldId);
+		if (customFieldDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		List<CustomFormElement> customFormElements = customFormElementRepository.findByCustomField_Id(customFieldId);
+		if (customFormElements != null && !customFormElements.isEmpty()) {
+			throw new NextServiceException(Constants.MODULE_NAME, "NotFound", 404,
+					"Already This Field Is Added To " + customFormElements.get(0).getForm().getDefaultLabel() + " Page",
+					"Already This Field Is Added To " + customFormElements.get(0).getForm().getDefaultLabel()
+							+ " Page");
+		}
+		List<CustomFieldData> customFieldDatas = customFieldDataRepository.findByCustomField_Id(customFieldId);
+		if (customFieldDatas != null && !customFieldDatas.isEmpty()) {
+			throw new NextServiceException(Constants.MODULE_NAME, "NotFound", 404,
+					"Already Data Is Added To " + customFieldDelete.getEntityName() + " For This Custom Field ",
+					"Already Data Is Added To " + customFieldDelete.getEntityName() + " For This Custom Field ");
+		}
+		List<CustomFieldList> customFieldLists = customFieldDelete.getCustomFieldLists();
+		customFieldListRepository.deleteInBatch(customFieldLists);
+		customFieldRepository.delete(customFieldDelete);
+		return new JerseyResponse().withMsg(Constants.RECORDS_DELETED).withCode(Constants.SUCCESS);
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<CustomFieldDTO> fetchCustomFields(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		if (customFieldFetchParams.getBranchId() == null) {
+			customFieldFetchParams.setBranchId(sessionParams.getBranchId());
+		}
+		List<CustomField> customFieldList = customFieldRepository.findByBOFilters(customFieldFetchParams, queryable);
+		return customFieldMapper.customFieldListToCustomFieldDTOList(customFieldList);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFields(SessionParams sessionParams, CustomFieldDTO customFieldDTO) {
+		if (customFieldDTO.getId() != null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 404,
+					"Cannot update entity in Add method", "Custom field is already present in the Database");
+		}
+		List<String> entitiesList = Arrays.asList(customFieldDTO.getEntityName().split(","));
+		for (String entity : entitiesList) {
+			CustomField customFieldInRepository = customFieldRepository.findByBranchIdAndEntityNameAndDefaultLabel(
+					sessionParams.getBranchId(), entity, customFieldDTO.getDefaultLabel());
+			if (customFieldInRepository != null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 404, "Duplicate Entry",
+						"Duplicate Label For " + entity + " Entity");
+			}
+			List<StandardField> standardField = standardFieldRepository
+					.findByDefaultLabelAndEntityName(customFieldDTO.getDefaultLabel(), entity);
+			if (standardField != null && !standardField.isEmpty()) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 404, "Duplicate Entry",
+						"Already Standard Field Exists With This Name for " + entity + " entity");
+			}
+		}
+		List<String> entities = Arrays.asList(customFieldDTO.getEntityName().split(","));
+		for (String entity : entities) {
+			CustomField customField = customFieldMapper.customFieldDTOToCustomField(customFieldDTO);
+			customField.setEntityName(entity);
+			customField.setCreatedBy(sessionParams.getUserId());
+			customField.setCreatedOn(DU.now());
+			/*String key = WordUtils.capitalizeFully(customField.getDefaultLabel(), new char[] { ' ', '_' })
+					.replaceAll("[^a-zA-Z0-9]", "");*/
+			String key = customField.getDefaultLabel().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+			customField.setKey(key);
+			customField.setBranchId(sessionParams.getBranchId());
+			customField.setModifiedBy(sessionParams.getUserId());
+			customField.setModifiedOn(DU.now());
+			customFieldRepository.save(customField);
+			customFieldListService.addOrUpdateCustomFieldLists(customField.getId(), sessionParams,
+					customFieldDTO.getCustomFieldLists());
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS);
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<CustomFieldDTO> fetchCustomFieldsNotInForm(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		if (customFieldFetchParams.getBranchId() == null) {
+			customFieldFetchParams.setBranchId(sessionParams.getBranchId());
+		}
+		Form form = standardFormRepository.findByKey(customFieldFetchParams.getFormName());
+		if (form == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"Custom Form  not found in the repository", "Custom Form  not found in the repository");
+		}
+		List<CustomField> customFieldList = customFieldRepository.findByBOFiltersNotInForm(customFieldFetchParams,
+				queryable, form.getId());
+		return customFieldMapper.customFieldListToCustomFieldDTOList(customFieldList);
+	}
+
+}

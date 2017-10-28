@@ -1,0 +1,108 @@
+package com.nexteducation.NextConfig.util;
+
+public class NextConfigUrls {
+
+	public static String SERVER_URL = "http://octopus.nexterp.in/NextConfig/NextConfig";
+
+	public static final String HELLO_URL = "/hello";
+	public static final String JERSEY = "/jersey";
+	public static final String V1 = "/v1";
+	public static final String VERSION = "/v1";
+	public static final String JERSEY_HELLO_URL = "/hello/{pathLong}";
+	public static final String BULK = "/bulk";
+	public static final String EXCEL = "/excel";
+
+	/////////////////////////Query and Path Parameters/////////////////////////
+	public static final String CUSTOM_FIELD_ID = "custom_field_id";
+	public static final String CUSTOM_FIELD_LIST_ID = "custom_field_list_id";
+	public static final String ENTITY_NAME = "entity";
+	public static final String ENTITY_NAMES = "entities";
+	public static final String BRANCH_ID = "branch_id";
+	public static final String ENTITY_INSTANCE_ID = "entity_instance_id";
+	public static final String ENTITY_INSTANCE_IDS = "entity_instance_ids";
+	public static final String FORM_ID = "form_id";
+	public static final String FORM_NAME = "form_name";
+	public static final String FETCH = "fetch";
+	public static final String CUSTOM_FORM_ELEMENT_ID = "custom_form_element_id";
+	public static final String CUSTOM_FIELD_DATA_ID = "custom_field_data_id";
+	public static final String SEARCH = "search";
+	public static final String CATEGORY_ID = "category_id";
+	public static final String CASTE_ID = "caste_id";
+	public static final String LANGUAGE_ID = "language_id";
+	public static final String PRODUCT_FEATURE_ID = "product_feature_id";
+	public static final String RELIGION_ID = "religion_id";
+
+	/////////////////////////AUTO NUMBERING/////////////////////////
+	public static final String AUTO_NUMBERING = "/auto_numberings";
+	public static final String AUTO_NUMBERING_BULK = "/auto_numberings/bulk";
+	public static final String AUTO_NUMBERING_Long = "/auto_numberings/{autoNumberingId}";
+	public static final String AUTO_NUMBERING_GENERATE = "/auto_numberings/generate";
+	public static final String AUTO_NUMBERING_GENERATE_ID = "/auto_numberings/generate/{autoNumberingId}";
+	public static final String GENERATE_AUTO_NUMBER = "/generate_auto_number";
+
+	/////////////////////////CUSTOM FIELD LIST/////////////////////////
+	public static final String CUSTOM_FIELD_LIST = "/custom_field_lists";
+	public static final String CUSTOM_FIELD_LIST_PATH_ID = "{" + CUSTOM_FIELD_LIST_ID + "}";
+	public static final String CUSTOM_FIELD_LIST_Long = "/custom_fields/{pathLong}/lists";
+
+	/////////////////////////MASTER TEMPLATE/////////////////////////
+	public static final String MASTER_TEMPLATE = "/master_templates";
+	public static final String NEXT_CONFIG_URL = "/nextConfig/nextConfig";
+
+	/////////////////////////PRODUCT FEATURE/////////////////////////
+	public static final String PRODUCT_FEATURES = "/product_features";
+	public static final String PRODUCT_FEATURE_PATH_ID = "{" + PRODUCT_FEATURE_ID + "}";
+
+	//////////////////////////CUSTOM FIELD//////////////////////////
+	public static final String CUSTOM_FIELDS = "/custom_fields";
+	public static final String CUSTOM_FIELDS_WITH_DATA = "/data";
+	public static final String CUSTOM_FIELD_PATH_ID = "{" + CUSTOM_FIELD_ID + "}";
+	public static final String FETCH_CUSTOM_FIELD_DATA = "custom_fields/{pathLong}/custom_fields_data";
+	public static final String FETCH_CUSTOM_FIELD_MAPPING = "custom_fields/{pathLong}/custom_fields_mapping";
+	public static final String CUSTOM_FIELDS_NOT_IN_FORM = "not_in_form";
+	public static final String COUNT = "count";
+	public static final String CUSTOM_FIELD_IDS = "custom_field_ids";
+
+	////////////////////////ENTITIES///////////////////////////////
+	public static final String ENTITIES = "/entities";
+
+	///////////////////////CUSTOM FIELDS DATA ///////////////////
+	public static final String CUSTOM_FIELD_DATA = "/custom_field_data";
+	public static final String CUSTOM_FIELD_DATA_PATH_ID = "{" + CUSTOM_FIELD_DATA_ID + "}";
+
+	//////////////////////CUSTOM FIELDS MAPPING//////////////////
+	public static final String CUSTOM_FIELDS_MAPPING = "/custom_fields_mapping";
+	public static final String CUSTOM_FIELDS_MAPPING_Long = "/custom_fields_mapping/{pathLong}";
+
+	//////////////////////CUSTOM FORM ELEMENTS//////////////////
+	public static final String CUSTOM_FORM_ELEMENTS = "/custom_form_elements";
+	public static final String CUSTOM_FORM_ELEMENTS_PATH_ID = "{" + CUSTOM_FORM_ELEMENT_ID + "}";
+
+	/////////////////////////RELIGION/////////////////////////
+	public static final String RELIGIONS = "/religions";
+	public static final String RELIGION_PATH_ID = "{" + RELIGION_ID + "}";
+
+	/////////////////////////CASTE/////////////////////////
+	public static final String CASTES = "/castes";
+	public static final String CASTES_PARENT = "/castes_parent";
+	public static final String CASTE_PATH_ID = "{" + CASTE_ID + "}";
+	public static final String CASTE_SUB = "{" + CASTE_ID + "}/sub";
+
+	////////////////////////LANGUAGE/////////////////////////
+	public static final String LANGUAGES = "/languages";
+	public static final String LANGUAGE_PATH_ID = "{" + LANGUAGE_ID + "}";
+
+	/////////////////////////CATEGORIES/////////////////////////
+	public static final String CATEGORIES = "/categories";
+	public static final String CATEGORY_PATH_ID = "{" + CATEGORY_ID + "}";
+
+	////////////////////////Roll number settings////////////////
+	public static final String ROLL_NUMBER_SETTING = "/roll_no_settings";
+
+	/////////////////////////STANDARD FIELDS/////////////////////////
+	public static final String STANDARD_FIELDS = "/standard_fields";
+
+	public static final String PARENT_CASTE_IDS = "parent_ids";
+	public static final String CASTE_IDS = "caste_ids";
+
+}

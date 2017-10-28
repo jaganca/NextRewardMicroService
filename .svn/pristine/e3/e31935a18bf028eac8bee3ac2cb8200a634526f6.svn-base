@@ -1,0 +1,99 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldCountResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELDS)
+@Api(value = "Custom Fields")
+public class CustomFieldController {
+
+	@Autowired
+	CustomFieldService customFieldService;
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Add Custom Fields", notes = "Add new Custom Fields")
+	public JerseyResponse addCustomFields(@Valid @BeanParam SessionParams sessionParams,
+			@Valid CustomFieldDTO customFieldDTO) {
+		return customFieldService.addCustomFields(sessionParams, customFieldDTO);
+	}
+
+	@PUT
+	@Path(NextConfigUrls.CUSTOM_FIELD_PATH_ID)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Update Custom Fields", notes = "Update existing Custom Fields")
+	public JerseyResponse updateCustomFields(@NotNull @PathParam(NextConfigUrls.CUSTOM_FIELD_ID) Long customFieldId,
+			@BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable,
+			@Valid CustomFieldDTO customFieldDTO) {
+		return customFieldService.updateCustomFields(customFieldId, sessionParams, customFieldDTO);
+	}
+
+	@DELETE
+	@Path(NextConfigUrls.CUSTOM_FIELD_PATH_ID)
+	@ApiOperation(value = "Delete Custom Fields", notes = "Delete Custom Fields")
+	public JerseyResponse deleteCustomFields(@NotNull @PathParam(NextConfigUrls.CUSTOM_FIELD_ID) Long customFieldId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFieldService.deleteCustomFields(customFieldId, sessionParams);
+	}
+
+	@GET
+	@ApiOperation(value = "Fetch Custom Fields", notes = "Fetch Custom Fields based on filters")
+	public List<CustomFieldDTO> fetchCustomFields(@Valid @BeanParam CustomFieldFetchParams customFieldFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldService.fetchCustomFields(customFieldFetchParams, sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.COUNT)
+	@ApiOperation(value = "Fetch Custom Fields Count", notes = "Fetch Custom Fields Count")
+	public CustomFieldCountResponse fetchCustomFieldsCount(@Valid @BeanParam CustomFieldFetchParams customFieldFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldService.fetchCustomFieldsCount(customFieldFetchParams, sessionParams, queryable);
+	}
+
+
+	@GET
+	@Path(NextConfigUrls.CUSTOM_FIELD_PATH_ID)
+	@ApiOperation(value = "Fetch Custom Fields", notes = "Fetch Custom fields based on Id")
+	public CustomFieldDTO fetchCustomFields(@NotNull @PathParam(NextConfigUrls.CUSTOM_FIELD_ID) Long customFieldId,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldService.fetchCustomFields(customFieldId, sessionParams);
+	}
+
+	@GET
+	@Path(NextConfigUrls.CUSTOM_FIELDS_NOT_IN_FORM)
+	@ApiOperation(value = "Fetch Custom Fields Not In Form", notes = "Fetch Custom Fields based on filters")
+	public List<CustomFieldDTO> fetchCustomFieldsNotInForm(
+			@Valid @BeanParam CustomFieldFetchParams customFieldFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldService.fetchCustomFieldsNotInForm(customFieldFetchParams, sessionParams, queryable);
+	}
+
+}

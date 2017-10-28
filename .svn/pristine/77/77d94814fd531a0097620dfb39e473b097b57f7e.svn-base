@@ -1,0 +1,58 @@
+package com.nexteducation.NextConfig.module.repository.custom.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFormElementRepositoryCustom;
+import com.nexteducation.NextConfig.util.ERPApp;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+@Repository
+public class CustomFormElementRepositoryImpl implements CustomFormElementRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<CustomFormElement> findByBOFilters(CustomFormElementFetchParams customFormElementFetchParams,
+			QueryableParams queryableParams) {
+		final StringBuilder builder = new StringBuilder(" select distinct cfe from CustomFormElement cfe left join fetch cfe.form left join fetch cfe.customField as customField left join fetch customField.customFieldLists cfcfl left join fetch cfe.standardField");
+		builder.append(" where 1 = 1 ");
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getBranchId())) {
+			builder.append(" and cfe.branchId = :branchId ");
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getFormId())) {
+			builder.append(" and cfe.form.id = :formId ");
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getFormName())) {
+			builder.append(" and cfe.form.key = :formName ");
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getEntityName())) {
+			builder.append(" and ( cfe.customField.entityName = :entityName or cfe.standardField.entityName = :entityName ) ");
+		}
+		final TypedQuery<CustomFormElement> query = entityManager.createQuery(builder.toString(),
+				CustomFormElement.class);
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getBranchId())) {
+			query.setParameter("branchId", customFormElementFetchParams.getBranchId());
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getFormId())) {
+			query.setParameter("formId", customFormElementFetchParams.getFormId());
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getFormName())) {
+			query.setParameter("formName", customFormElementFetchParams.getFormName());
+		}
+		if (!ERPApp.isEmptyObject(customFormElementFetchParams.getEntityName())) {
+			query.setParameter("entityName", customFormElementFetchParams.getEntityName());
+		}
+		List<CustomFormElement> customFormElements = query.getResultList();
+		return customFormElements;
+	}
+
+}

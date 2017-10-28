@@ -1,0 +1,55 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.CustomFieldList.CustomFieldListFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldListService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1)
+public class CustomFieldListController {
+
+	@Autowired
+	CustomFieldListService customFieldListService;
+
+	/*@POST
+	@Path(NextConfigUrls.CUSTOM_FIELD_LIST)
+	public JerseyResponse addCustomFieldLists(@Valid @BeanParam SessionParams sessionParams,
+			@BeanParam QueryableParams queryable, @Valid CustomFieldListDTO customFieldListDTO)
+			throws NextServiceException {
+		return customFieldListService.addCustomFieldLists(sessionParams, customFieldListDTO);
+	}*/
+
+	@DELETE
+	@Path(NextConfigUrls.CUSTOM_FIELD_LIST_PATH_ID)
+	public JerseyResponse deleteCustomFieldLists(@PathParam(NextConfigUrls.CUSTOM_FIELD_LIST_ID) Long customFieldListId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFieldListService.deleteCustomFieldLists(customFieldListId, sessionParams);
+	}
+
+	@GET
+	public List<CustomFieldListResponse> fetchCustomFieldLists(
+			@BeanParam CustomFieldListFetchParams customFieldListFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFieldListService.fetchCustomFieldLists(customFieldListFetchParams, sessionParams, queryable);
+	}
+
+}

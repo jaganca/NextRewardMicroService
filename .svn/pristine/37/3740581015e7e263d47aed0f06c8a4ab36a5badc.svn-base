@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+
+
+public interface CategoryService {	
+
+    CategoryResponse fetchCategorys(CategoryFetchParams categoryFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+    
+//
+	JerseyResponse updateCategorys(CategoryUpdateParams categoryUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, CategoryUpdateRequest categoryUpdateRequest);
+//
+	JerseyResponse deleteCategorys(CategoryDeleteParams categoryDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	List<CategoryResponse> fetchAllCategorys(SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	JerseyResponse addCategorys(SessionParams sessionParams,
+			QueryableParams queryable, CategoryAddRequest categoryAddRequest);
+
+
+
+}

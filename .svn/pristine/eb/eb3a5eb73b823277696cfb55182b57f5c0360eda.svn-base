@@ -1,0 +1,38 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum InputType {
+	/*Input("input"), Textarea("textarea"), Select("select");*/
+	
+	String("string"), Number("number");
+
+	private String inputType;
+
+	InputType(final String inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
+	}
+
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+
+	public String getName() {
+		return this.getName();
+	}
+
+	public static InputType valueOf(final byte val) {
+		for (final InputType customFieldType : values()) {
+			if (customFieldType.getOrdinal() == val) {
+				return customFieldType;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+}

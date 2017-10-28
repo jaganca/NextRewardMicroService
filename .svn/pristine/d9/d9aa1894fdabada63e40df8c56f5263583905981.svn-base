@@ -1,0 +1,314 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.InputType;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+/**
+ * The Class CustomFieldDTO.
+ */
+public class CustomFieldDTO {
+
+	/** The id. */
+	private Long id;
+
+	/** The branch id. */
+	private Long branchId;
+
+	/** The default label. */
+	@NotNull
+	private String defaultLabel;
+
+	/** The entity name. */
+	@NotNull
+	private String entityName;
+
+	/** The field type. */
+	@NotNull
+	private FieldType fieldType;
+
+	/** The input type. */
+	private InputType inputType;
+
+	/** The key. */
+	private String key;
+
+	/** The status. */
+	private Status status;
+
+	/** The created by. */
+	private Long createdBy;
+
+	/** The created on. */
+	private Date createdOn;
+
+	/** The modified by. */
+	private Long modifiedBy;
+
+	/** The modified on. */
+	private Date modifiedOn;
+
+	/** The custom field lists. */
+	private List<CustomFieldListDTO> customFieldLists;
+
+	/** The custom field data. */
+	private List<CustomFieldDataShortDTO> customFieldData;
+
+	/**
+	 * Gets the custom field data.
+	 *
+	 * @return the custom field data
+	 */
+	public List<CustomFieldDataShortDTO> getCustomFieldData() {
+		return customFieldData;
+	}
+
+	/**
+	 * Sets the custom field data.
+	 *
+	 * @param customFieldData the new custom field data
+	 */
+	public void setCustomFieldData(List<CustomFieldDataShortDTO> customFieldData) {
+		this.customFieldData = customFieldData;
+	}
+
+	/**
+	 * Gets the custom field lists.
+	 *
+	 * @return the custom field lists
+	 */
+	public List<CustomFieldListDTO> getCustomFieldLists() {
+		return customFieldLists;
+	}
+
+	/**
+	 * Sets the custom field lists.
+	 *
+	 * @param customFieldLists the new custom field lists
+	 */
+	public void setCustomFieldLists(List<CustomFieldListDTO> customFieldLists) {
+		this.customFieldLists = customFieldLists;
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Gets the branch id.
+	 *
+	 * @return the branch id
+	 */
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	/**
+	 * Sets the branch id.
+	 *
+	 * @param branchId the new branch id
+	 */
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	/**
+	 * Gets the default label.
+	 *
+	 * @return the default label
+	 */
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	/**
+	 * Sets the default label.
+	 *
+	 * @param defaultLabel the new default label
+	 */
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	/**
+	 * Gets the entity name.
+	 *
+	 * @return the entity name
+	 */
+	public String getEntityName() {
+		return entityName;
+	}
+
+	/**
+	 * Sets the entity name.
+	 *
+	 * @param entityName the new entity name
+	 */
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	/**
+	 * Gets the field type.
+	 *
+	 * @return the field type
+	 */
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	/**
+	 * Sets the field type.
+	 *
+	 * @param fieldType the new field type
+	 */
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	/**
+	 * Gets the input type.
+	 *
+	 * @return the input type
+	 */
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	/**
+	 * Sets the input type.
+	 *
+	 * @param inputType the new input type
+	 */
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
+	}
+
+	/**
+	 * Gets the key.
+	 *
+	 * @return the key
+	 */
+	public String getKey() {
+		return key;
+	}
+
+	/**
+	 * Sets the key.
+	 *
+	 * @param key the new key
+	 */
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * Gets the created by.
+	 *
+	 * @return the created by
+	 */
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * Sets the created by.
+	 *
+	 * @param createdBy the new created by
+	 */
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * Gets the created on.
+	 *
+	 * @return the created on
+	 */
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	/**
+	 * Sets the created on.
+	 *
+	 * @param createdOn the new created on
+	 */
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * Gets the modified by.
+	 *
+	 * @return the modified by
+	 */
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * Sets the modified by.
+	 *
+	 * @param modifiedBy the new modified by
+	 */
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * Gets the modified on.
+	 *
+	 * @return the modified on
+	 */
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	/**
+	 * Sets the modified on.
+	 *
+	 * @param modifiedOn the new modified on
+	 */
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

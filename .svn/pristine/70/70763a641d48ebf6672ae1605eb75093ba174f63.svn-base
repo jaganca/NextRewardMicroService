@@ -1,0 +1,71 @@
+package com.nexteducation.NextConfig.module.model.request.productFeature;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+
+
+public class ProductFeatureUpdateRequest {
+	 
+	private Long branchId;
+
+
+	@NotEmpty(message="Feature Description should not be empty!")
+	private String featureDesc;
+	
+	@NotEmpty(message="Feature Value should not be empty!")
+	private String featureValue;
+
+
+	 
+	private String modifiedBy;
+	
+	 
+	private Long id;
+
+	
+
+
+	public String getFeatureDesc() {
+		return featureDesc;
+	}
+
+	public void setFeatureDesc(String featureDesc) {
+		this.featureDesc = featureDesc;
+	}
+
+	public String getFeatureValue() {
+		return featureValue;
+	}
+
+	public void setFeatureValue(String featureValue) {
+		this.featureValue = featureValue;
+	}
+
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public  Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+
+}

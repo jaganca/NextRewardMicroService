@@ -1,0 +1,92 @@
+package com.nexteducation.NextConfig.module.model.response.CustomField;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class CustomFieldMappingResponse {
+
+	private String id;
+
+	private Long branchId;
+
+	private CustomField customField;
+
+	//private MasterTemplate masterTemplate;
+
+	private Status status;
+
+	private String createdBy;
+
+	private Date createdOn;
+
+	private String modifiedBy;
+
+	private Date modifiedOn;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public CustomField getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomField customField) {
+		this.customField = customField;
+	}
+
+}

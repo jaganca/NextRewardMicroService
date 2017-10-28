@@ -1,0 +1,147 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.InputType;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class CustomFieldDTO {
+
+	private Long id;
+
+	private Long branchId;
+
+	@NotNull
+	private String defaultLabel;
+
+	@NotNull
+	private String entityName;
+
+	@NotNull
+	private FieldType fieldType;
+
+	private InputType inputType;
+
+	private String key;
+
+	private Status status;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	private List<CustomFieldListDTO> customFieldLists;
+
+	public List<CustomFieldListDTO> getCustomFieldLists() {
+		return customFieldLists;
+	}
+
+	public void setCustomFieldLists(List<CustomFieldListDTO> customFieldLists) {
+		this.customFieldLists = customFieldLists;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.model.params.Language;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class LanguageFetchParams {
+
+	@NotNull(message = "Language ID should not be null")
+	@PathParam(NextConfigUrls.LANGUAGE_ID)
+	private Long languageId;
+
+	public Long getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(Long languageId) {
+		this.languageId = languageId;
+	}
+
+}

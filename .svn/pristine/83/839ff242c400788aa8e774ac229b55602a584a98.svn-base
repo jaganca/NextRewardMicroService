@@ -1,0 +1,75 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Language.LanguageResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface LanguageService.
+ */
+public interface LanguageService {
+
+	/**
+	 * Fetch languages.
+	 *
+	 * @param languageFetchParams the language fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the language response
+	 */
+	LanguageResponse fetchLanguages(LanguageFetchParams languageFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Update languages.
+	 *
+	 * @param languageUpdateParams the language update params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param languageUpdateRequest the language update request
+	 * @return the jersey response
+	 */
+	JerseyResponse updateLanguages(LanguageUpdateParams languageUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, LanguageUpdateRequest languageUpdateRequest);
+
+	/**
+	 * Delete languages.
+	 *
+	 * @param languageDeleteParams the language delete params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the jersey response
+	 */
+	JerseyResponse deleteLanguages(LanguageDeleteParams languageDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Fetch all languages.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<LanguageResponse> fetchAllLanguages(SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Adds the languages.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param languageAddRequest the language add request
+	 * @return the adds the response
+	 */
+	AddResponse addLanguages(SessionParams sessionParams, QueryableParams queryable,
+			LanguageAddRequest languageAddRequest);
+
+}

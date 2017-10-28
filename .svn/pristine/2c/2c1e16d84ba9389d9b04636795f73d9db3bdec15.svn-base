@@ -1,0 +1,124 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import com.nexteducation.NextConfig.module.service.core.ReligionService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class ReligionServiceClient implements ReligionService{
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+	
+	public ReligionServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	
+	@Override
+	public AddResponse addReligions(SessionParams sessionParams, QueryableParams queryable,
+			ReligionAddRequest religionAddRequest) throws NextServiceException{
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.RELIGIONS;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(religionAddRequest,headers);
+		ResponseEntity<AddResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<AddResponse>() {
+				});
+		return responseEntity.getBody();
+	
+	}
+
+	
+	@Override
+	public JerseyResponse updateReligions(ReligionUpdateParams religionUpdateContextParams,
+			SessionParams sessionParams, QueryableParams queryable,
+			ReligionUpdateRequest religionUpdateRequest)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.RELIGIONS;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(religionUpdateRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteReligions(ReligionDeleteParams religionDeleteContextParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI =serverUrl + NextConfigUrls.V1 + NextConfigUrls.RELIGIONS+"/"+religionDeleteContextParams.getReligionId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE,null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<ReligionResponse> fetchAllReligions(SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.RELIGIONS;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<ReligionResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<ReligionResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+
+	@Override
+	public ReligionResponse fetchReligions(ReligionFetchParams religionFetchParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.RELIGIONS+"/"+religionFetchParams.getReligionId();;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<ReligionResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<ReligionResponse>() {
+				});
+		return responseEntity.getBody();
+		}
+
+}

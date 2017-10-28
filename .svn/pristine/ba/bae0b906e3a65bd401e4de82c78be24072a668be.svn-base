@@ -1,0 +1,32 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CasteMapper {
+
+	CasteMapper INSTANCE = Mappers.getMapper(CasteMapper.class);
+
+	Caste casteAddRequestToCaste(CasteAddRequest casteAddRequest);
+
+	Caste casteUpdateRequestToCaste(CasteUpdateRequest casteUpdateRequest);
+
+	CasteResponse casteToCasteResponse(Caste caste);
+
+	CasteCustomResponse casteToCasteCustomResponse(Caste caste);
+
+	List<CasteCustomResponse> casteListToCasteCustomResponseList(List<Caste> casteList);
+
+	List<CasteResponse> casteListToCasteResponseList(List<Caste> casteList);
+
+}

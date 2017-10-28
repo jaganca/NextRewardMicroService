@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFieldRepositoryCustom;
+
+public interface CustomFieldRepository extends JpaRepository<CustomField, Serializable>, CustomFieldRepositoryCustom {
+
+	@EntityGraph(attributePaths = { "customFormElements" })
+	public CustomField findById(Long id);
+
+	public CustomField findByIdAndBranchId(Long id, Long branchId);
+
+	public List<CustomField> findByBranchId(Long branchId);
+
+	public CustomField findByKey(String key);
+
+	public CustomField findByBranchIdAndEntityNameAndDefaultLabel(Long branchId, String entityName,
+			String defaultLabel);
+
+}

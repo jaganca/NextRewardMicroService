@@ -1,0 +1,29 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.RollNumberSettingResponse;
+import com.nexteducation.NextConfig.module.model.response.StatusResponse;
+
+/**
+ * 
+ * @author adarshk
+ * roll number setting service
+ */
+public interface RollNumberSettingService {
+
+	public StatusResponse addRollNumberSetting(@Valid @NotNull @QueryParam("lbid") Long branchId,
+			final RollNumberSettingAddRequest rollNumberSettingAddRequest) ;
+	
+	
+	StatusResponse updateRollNumberSetting(SessionParams sessionParams, RollNumberSettingUpdateRequest rollNumberSettingUpdateRequest);
+	
+	RollNumberSettingResponse fetchRollNumberSetting(SessionParams sessionParams);
+	
+}

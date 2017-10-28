@@ -1,0 +1,74 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface ReligionService.
+ */
+public interface ReligionService {
+
+	/**
+	 * Fetches the religions.
+	 *
+	 * @param religionFetchParams the religion fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the religion response
+	 */
+	ReligionResponse fetchReligions(ReligionFetchParams religionFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Update religions.
+	 *
+	 * @param religionUpdateParams the religion update params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param religionUpdateRequest the religion update request
+	 * @return the jersey response
+	 */
+	JerseyResponse updateReligions(ReligionUpdateParams religionUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, ReligionUpdateRequest religionUpdateRequest);
+
+	/**
+	 * Delete religions.
+	 *
+	 * @param religionDeleteParams the religion delete params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the jersey response
+	 */
+	JerseyResponse deleteReligions(ReligionDeleteParams religionDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Fetches the all religions.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<ReligionResponse> fetchAllReligions(SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Adds religions.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param religionAddRequest the religion add request
+	 * @return the jersey response
+	 */
+	JerseyResponse addReligions(SessionParams sessionParams, QueryableParams queryable,
+			ReligionAddRequest religionAddRequest);
+
+}

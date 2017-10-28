@@ -1,0 +1,35 @@
+package com.nexteducation.NextRewards.module.model.response;
+
+public class PageResponse {
+
+	private int page;
+
+	private int size;
+
+	private Long total;
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+
+}

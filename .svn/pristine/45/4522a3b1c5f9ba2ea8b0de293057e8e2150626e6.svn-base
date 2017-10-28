@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum ValidationType {
+	Step("step"), Min("min"), Max("max"), Pattern("pattern"), Maxlength("maxlength"), MinLength("minLength");
+
+	private String inputType;
+
+	ValidationType(final String inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
+	}
+
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+
+	public String getName() {
+		return this.name();
+	}
+
+	public static ValidationType valueOf(final byte val) {
+		for (final ValidationType validationType : values()) {
+			if (validationType.getOrdinal() == val) {
+				return validationType;
+			}
+		}
+		throw new IllegalArgumentException(String.valueOf(val));
+	}
+}

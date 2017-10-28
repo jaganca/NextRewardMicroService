@@ -1,0 +1,79 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomFieldList.CustomFieldListFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface CustomFieldListService.
+ */
+public interface CustomFieldListService {
+
+	/**
+	 * Adds the custom field lists.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @param customFieldListDTO the custom field list DTO
+	 * @return the jersey response
+	 */
+	JerseyResponse addCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO);
+
+	/**
+	 * Fetch custom field lists.
+	 *
+	 * @param CustomFieldListFetchParams the custom field list fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<CustomFieldListResponse> fetchCustomFieldLists(CustomFieldListFetchParams CustomFieldListFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Fetch custom field lists.
+	 *
+	 * @param customFieldListId the custom field list id
+	 * @param sessionParams the session params
+	 * @return the custom field list response
+	 */
+	CustomFieldListResponse fetchCustomFieldLists(Long customFieldListId, SessionParams sessionParams);
+
+	/**
+	 * Delete custom field lists.
+	 *
+	 * @param customFieldListId the custom field list id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	JerseyResponse deleteCustomFieldLists(Long customFieldListId, SessionParams sessionParams);
+
+	/**
+	 * Update custom field lists.
+	 *
+	 * @param customFieldListId the custom field list id
+	 * @param sessionParams the session params
+	 * @param customFieldListDTO the custom field list DTO
+	 * @return the jersey response
+	 */
+	JerseyResponse updateCustomFieldLists(Long customFieldListId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO);
+
+	/**
+	 * Adds the or update custom field lists.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @param customFieldListDTOs the custom field list DT os
+	 * @return the jersey response
+	 */
+	JerseyResponse addOrUpdateCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			List<CustomFieldListDTO> customFieldListDTOs);
+
+}

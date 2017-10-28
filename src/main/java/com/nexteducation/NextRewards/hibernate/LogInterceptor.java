@@ -1,0 +1,119 @@
+package com.nexteducation.NextRewards.hibernate;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.hibernate.EmptyInterceptor;
+import org.hibernate.Transaction;
+import org.hibernate.type.Type;
+
+import com.nexteducation.NextRewards.util.ServiceLogger;
+
+/**
+ * The Class LogInterceptor.
+ */
+public class LogInterceptor extends EmptyInterceptor {
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
+	/** The Constant MODIFIED_BY_VARIABLE. */
+	public static final String MODIFIED_BY_VARIABLE = "modifiedBy";
+	
+	/** The Constant CREATED_BY_VARIABLE. */
+	public static final String CREATED_BY_VARIABLE = "createdBy";
+	
+	/** The Constant MODIFIED_ON_VARIABLE. */
+	public static final String MODIFIED_ON_VARIABLE = "modifiedOn";
+	
+	/** The Constant CREATED_ON_VARIABLE. */
+	public static final String CREATED_ON_VARIABLE = "createdOn";
+
+	/** 
+	 * @see org.hibernate.EmptyInterceptor#onSave(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
+	 */
+	@Override
+	public boolean onSave(final Object entity, final Serializable id, final Object[] state,
+			final String[] propertyNames, final Type[] types) {
+		return false;
+	}
+
+	/** 
+	 * @see org.hibernate.EmptyInterceptor#afterTransactionCompletion(org.hibernate.Transaction)
+	 */
+	@Override
+	public void afterTransactionCompletion(final Transaction tx) {
+		super.afterTransactionCompletion(tx);
+	}
+
+	/** 
+	 * @see org.hibernate.EmptyInterceptor#onFlushDirty(java.lang.Object, java.io.Serializable, java.lang.Object[], java.lang.Object[], java.lang.String[], org.hibernate.type.Type[])
+	 */
+	@Override
+	public boolean onFlushDirty(final Object entity, final Serializable id, final Object[] currentState,
+			final Object[] previousState, final String[] propertyNames, final Type[] types) {
+		return false;
+	}
+
+	/**
+	 * Can skip created on audit.
+	 *
+	 * @param entity the entity
+	 * @return true, if successful
+	 */
+	public boolean canSkipCreatedOnAudit(final Object entity) {
+		boolean canSkipCreatedOnAudit = false;
+		if (entity != null) {
+			final Field[] fields = entity.getClass().getDeclaredFields();
+			for (final Field field : fields) {
+				if (field.getName().equalsIgnoreCase("skipCreatedOnAudit")) {
+					try {
+						canSkipCreatedOnAudit = (Boolean) PropertyUtils.getProperty(entity, field.getName());
+					} catch (final IllegalArgumentException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final IllegalAccessException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final InvocationTargetException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final NoSuchMethodException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					}
+					break;
+				}
+			}
+		}
+		return canSkipCreatedOnAudit;
+	}
+
+	/**
+	 * Can skip user audit.
+	 *
+	 * @param entity the entity
+	 * @return true, if successful
+	 */
+	public boolean canSkipUserAudit(final Object entity) {
+		boolean canSkipUserAudit = false;
+		if (entity != null) {
+			final Field[] fields = entity.getClass().getDeclaredFields();
+			for (final Field field : fields) {
+				if (field.getName().equalsIgnoreCase("skipUserAudit")) {
+					try {
+						canSkipUserAudit = (Boolean) PropertyUtils.getProperty(entity, field.getName());
+					} catch (final IllegalArgumentException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final IllegalAccessException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final InvocationTargetException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					} catch (final NoSuchMethodException e) {
+						ServiceLogger.error(e.getMessage(), e);
+					}
+					break;
+				}
+			}
+		}
+		return canSkipUserAudit;
+	}
+}

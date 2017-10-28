@@ -1,0 +1,34 @@
+package com.nexteducation.NextRewards.module.model.response;
+
+public class AddResponse {
+
+	private String code;
+	private String msg;
+	private Long id;
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long Long) {
+		this.id = Long;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	
+}

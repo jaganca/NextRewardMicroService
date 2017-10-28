@@ -1,0 +1,77 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.AutoNumbering;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingGenerateRequest;
+import com.nexteducation.NextConfig.module.model.response.AutoNumberingResponse;
+
+/**
+ * The Interface AutoNumberingMapper.
+ */
+@Mapper(componentModel = "spring")
+public interface AutoNumberingMapper {
+
+	/** The instance. */
+	AutoNumberingMapper INSTANCE = Mappers.getMapper(AutoNumberingMapper.class);
+
+	/**
+	 * Auto numbering add request to auto numbering.
+	 *
+	 * @param autoNumberingAddRequest the auto numbering add request
+	 * @return the auto numbering
+	 */
+	@Mappings({ @Mapping(target = "createdOn", expression = "java(com.nexteducation.NextConfig.util.DU.now())"),
+			@Mapping(target = "modifiedOn", expression = "java(com.nexteducation.NextConfig.util.DU.now())") })
+	AutoNumbering AutoNumberingAddRequestToAutoNumbering(AutoNumberingAddRequest autoNumberingAddRequest);
+
+	/**
+	 * Auto numberingadd request list to auto numbering list.
+	 *
+	 * @param autoNumberingAddRequest the auto numbering add request
+	 * @return the list
+	 */
+	List<AutoNumbering> AutoNumberingaddRequestListToAutoNumberingList(
+			List<AutoNumberingAddRequest> autoNumberingAddRequest);
+
+	/**
+	 * Auto numbering list to auto numbering response list.
+	 *
+	 * @param autoNumbering the auto numbering
+	 * @return the list
+	 */
+	List<AutoNumberingResponse> AutoNumberingListToAutoNumberingResponseList(List<AutoNumbering> autoNumbering);
+
+	/**
+	 * Auto numbering to auto numbering response.
+	 *
+	 * @param autoNumbering the auto numbering
+	 * @return the auto numbering response
+	 */
+	AutoNumberingResponse AutoNumberingToAutoNumberingResponse(AutoNumbering autoNumbering);
+
+	/**
+	 * Auto numbering generate request to auto numbering.
+	 *
+	 * @param AutoNumberingGenerateRequest the auto numbering generate request
+	 * @return the auto numbering
+	 */
+	AutoNumbering AutoNumberingGenerateRequestToAutoNumbering(
+			AutoNumberingGenerateRequest AutoNumberingGenerateRequest);
+
+	/**
+	 * Auto numbering generate request to auto numbering.
+	 *
+	 * @param AutoNumberingGenerateRequest the auto numbering generate request
+	 * @return the list
+	 */
+	List<AutoNumbering> AutoNumberingGenerateRequestToAutoNumbering(
+			List<AutoNumberingGenerateRequest> AutoNumberingGenerateRequest);
+
+}

@@ -1,0 +1,108 @@
+package com.nexteducation.NextRewards.hibernate.common.crud.impl;
+
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService;
+
+/**
+ * The Class CRUDServiceImpl.
+ *
+ * @author ashishpratap
+ * @param <T> the generic type
+ * @param <E> the element type
+ */
+public class CRUDServiceImpl<T, E> implements CRUDService<T, E> {
+
+	/** The session factory. */
+	@Autowired
+	SessionFactory sessionFactory;
+
+	/**
+	 * Gets the session factory.
+	 *
+	 * @return the session factory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	/**
+	 * Gets the session.
+	 *
+	 * @return the session
+	 */
+	public Session getSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#save(java.lang.Object)
+	 */
+	@Override
+	public T save(final T obj) {
+		this.getSession().save(obj);
+		return obj;
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#delete(java.lang.Object)
+	 */
+	@Override
+	public void delete(final T obj) {
+		this.getSession().delete(obj);
+	}
+
+	/**
+	 * Sets the session factory.
+	 *
+	 * @param sessionFactory the new session factory
+	 */
+	public void setSessionFactory(final SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#update(java.lang.Object)
+	 */
+	@Override
+	public T update(final T obj) {
+		getSession().update(obj);
+		return obj;
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#findById(java.lang.Object)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public T findById(final E id) {
+		final Class<T> typeOfT = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
+		return (T) getSession().get(typeOfT, (Serializable) id);
+
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#findAll(java.lang.Class)
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<T> findAll(final Class<T> obj) {
+		return getSession().createCriteria(obj).list();
+	}
+
+	/** 
+	 * @see com.nexteducation.NextRewards.hibernate.common.crud.core.CRUDService#count(java.lang.Class)
+	 */
+	@Override
+	public int count(final Class<T> obj) {
+		return getSession().createCriteria(obj).list().size();
+	}
+
+}

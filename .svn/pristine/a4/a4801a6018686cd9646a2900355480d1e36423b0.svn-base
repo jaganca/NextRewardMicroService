@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFieldDataRepositoryCustom;
+
+public interface CustomFieldDataRepository
+		extends JpaRepository<CustomFieldData, Serializable>, CustomFieldDataRepositoryCustom {
+
+	public CustomFieldData findByEntityInstanceId(Long id);
+
+	public List<CustomFieldData> findByCustomField(CustomField customField);
+	
+	public List<CustomFieldData> findByCustomField_Id(Long customFieldId);
+
+	public CustomFieldData findById(Long id);
+}

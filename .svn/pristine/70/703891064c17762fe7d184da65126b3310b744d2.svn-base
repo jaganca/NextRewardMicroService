@@ -1,0 +1,74 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureFetchParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+import com.nexteducation.NextConfig.module.service.core.ProductFeatureService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES)
+public class ProductFeatureController {
+
+	@Autowired
+	ProductFeatureService productFeatureService;
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse addProductFeature(@Valid @BeanParam SessionParams sessionParams,
+			@BeanParam QueryableParams queryable, @Valid ProductFeatureAddRequest productFeatureAddRequest) {
+		return productFeatureService.addProductFeatures(sessionParams, queryable, productFeatureAddRequest);
+	}
+
+	@PUT
+	@Path(NextConfigUrls.PRODUCT_FEATURE_PATH_ID)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse updateProductFeature(@BeanParam ProductFeatureUpdateParams productFeatureUpdateParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable,
+			@Valid ProductFeatureUpdateRequest productFeatureUpdateRequest) {
+		return productFeatureService.updateProductFeatures(productFeatureUpdateParams, sessionParams, queryable,
+				productFeatureUpdateRequest);
+	}
+
+	@DELETE
+	@Path(NextConfigUrls.PRODUCT_FEATURE_PATH_ID)
+	public JerseyResponse deleteProductFeature(@BeanParam ProductFeatureDeleteParams productFeatureDeleteParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return productFeatureService.deleteProductFeatures(productFeatureDeleteParams, sessionParams, queryable);
+	}
+
+	@GET
+	public List<ProductFeatureResponse> fetchAllProductFeatures(@Valid @BeanParam SessionParams sessionParams,
+			@BeanParam QueryableParams queryable) {
+		return productFeatureService.fetchAllProductFeatures(sessionParams, queryable);
+	}
+
+	@GET
+	@Path(NextConfigUrls.PRODUCT_FEATURE_PATH_ID)
+	public ProductFeatureResponse getProductFeature(@BeanParam ProductFeatureFetchParams productFeatureFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return productFeatureService.fetchProductFeatures(productFeatureFetchParams, sessionParams, queryable);
+	}
+
+}

@@ -1,0 +1,88 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.nexteducation.NextConfig.module.model.enums.Gender;
+import com.nexteducation.NextConfig.module.model.enums.RollNOGenrationOrder;
+
+@Entity
+@Table(name = "ROLL_NUMBER_SETTING")
+public class RollNumberSetting {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ROLL_NUMBER_SETTING_ID", columnDefinition = "BIGINT(20)")
+	private Long id;
+
+	@Column(name = "BRANCH_ID", columnDefinition = "BIGINT(20)")
+	private Long branchId;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ROLL_NO_GENERATION_ORDER", columnDefinition = "VARCHAR(20)")
+	private RollNOGenrationOrder rollNOGenrationOrder;
+
+	@Column(name = "IS_ASSIGN_NEW_ROLL_NO")
+	private boolean assignNewRollNo;
+
+	@Column(name = "IS_RETIRE_ROLL_NO")
+	private boolean retireRollNo;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "GENDER_PREFERENCE",columnDefinition = "VARCHAR(10)")
+	private Gender genderPrference;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public RollNOGenrationOrder getRollNOGenrationOrder() {
+		return rollNOGenrationOrder;
+	}
+
+	public void setRollNOGenrationOrder(RollNOGenrationOrder rollNOGenrationOrder) {
+		this.rollNOGenrationOrder = rollNOGenrationOrder;
+	}
+
+	public boolean isAssignNewRollNo() {
+		return assignNewRollNo;
+	}
+
+	public void setAssignNewRollNo(boolean assignNewRollNo) {
+		this.assignNewRollNo = assignNewRollNo;
+	}
+
+	public boolean isRetireRollNo() {
+		return retireRollNo;
+	}
+
+	public void setRetireRollNo(boolean retireRollNo) {
+		this.retireRollNo = retireRollNo;
+	}
+
+	public Gender getGenderPrference() {
+		return genderPrference;
+	}
+
+	public void setGenderPrference(Gender genderPrference) {
+		this.genderPrference = genderPrference;
+	}
+
+}

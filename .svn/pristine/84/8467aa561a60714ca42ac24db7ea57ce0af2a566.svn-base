@@ -1,0 +1,76 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldMapping;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldMappingAddRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldMappingResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CustomFieldMappingMapperImpl implements CustomFieldMappingMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public CustomFieldMapping CustomFieldMappingAddRequestToCustomFieldMapping(CustomFieldMappingAddRequest customFieldMappingAddRequest) {
+        if ( customFieldMappingAddRequest == null ) {
+            return null;
+        }
+
+        CustomFieldMapping customFieldMapping = new CustomFieldMapping();
+
+        customFieldMapping.setStatus( customFieldMappingAddRequest.getStatus() );
+        customFieldMapping.setBranchId( uuidMapper.asString( customFieldMappingAddRequest.getBranchId() ) );
+        customFieldMapping.setCreatedBy( uuidMapper.asString( customFieldMappingAddRequest.getCreatedBy() ) );
+        customFieldMapping.setModifiedBy( uuidMapper.asString( customFieldMappingAddRequest.getModifiedBy() ) );
+
+        customFieldMapping.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        customFieldMapping.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return customFieldMapping;
+    }
+
+    @Override
+    public CustomFieldMappingResponse CustomFieldMappingToCustomFieldMappingResponse(CustomFieldMapping customFieldMapping) {
+        if ( customFieldMapping == null ) {
+            return null;
+        }
+
+        CustomFieldMappingResponse customFieldMappingResponse = new CustomFieldMappingResponse();
+
+        customFieldMappingResponse.setId( uuidMapper.asString( customFieldMapping.getId() ) );
+        customFieldMappingResponse.setBranchId( uuidMapper.asString( customFieldMapping.getBranchId() ) );
+        customFieldMappingResponse.setStatus( customFieldMapping.getStatus() );
+        customFieldMappingResponse.setCreatedBy( uuidMapper.asString( customFieldMapping.getCreatedBy() ) );
+        customFieldMappingResponse.setCreatedOn( customFieldMapping.getCreatedOn() );
+        customFieldMappingResponse.setModifiedBy( uuidMapper.asString( customFieldMapping.getModifiedBy() ) );
+        customFieldMappingResponse.setModifiedOn( customFieldMapping.getModifiedOn() );
+        customFieldMappingResponse.setCustomField( customFieldMapping.getCustomField() );
+        customFieldMappingResponse.setMasterTemplate( customFieldMapping.getMasterTemplate() );
+
+        return customFieldMappingResponse;
+    }
+
+    @Override
+    public List<CustomFieldMappingResponse> CustomFieldMappingListToCustomFieldMappingResponseList(List<CustomFieldMapping> customFieldMappingList) {
+        if ( customFieldMappingList == null ) {
+            return null;
+        }
+
+        List<CustomFieldMappingResponse> list = new ArrayList<CustomFieldMappingResponse>();
+        for ( CustomFieldMapping customFieldMapping : customFieldMappingList ) {
+            list.add( CustomFieldMappingToCustomFieldMappingResponse( customFieldMapping ) );
+        }
+
+        return list;
+    }
+}

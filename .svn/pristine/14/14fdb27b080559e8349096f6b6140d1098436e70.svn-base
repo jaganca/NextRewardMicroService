@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.nexteducation.NextConfig.module.model.bo.Language;
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+
+
+public interface LanguageRepository extends JpaRepository<Language, Serializable>{
+
+	Language findByIdAndBranchId(Long id, Long branchId);
+
+	Language findById(Long id);
+
+	List<Language> findByBranchId(Long BranchId);
+	
+	@Query("select distinct l from Language l where (l.branchId = :branchId or l.branchId is null)")
+	List<Language> fetchMasterAndCustomLanguages(@Param("branchId") Long  getBranchId);
+	
+}

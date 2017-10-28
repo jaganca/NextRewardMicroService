@@ -1,0 +1,113 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFormElementDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.StandardFieldResponse;
+
+/**
+ * The Interface CustomFormElementMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { FormMapper.class,
+		CustomFieldMapper.class, StandardFieldMapper.class, FormMapper.class })
+public interface CustomFormElementMapper {
+
+	/** The instance. */
+	CustomFormElementMapper INSTANCE = Mappers.getMapper(CustomFormElementMapper.class);
+
+	/**
+	 * Custom form element DTO to custom form element.
+	 *
+	 * @param customFormElementDTO the custom form element DTO
+	 * @return the custom form element
+	 */
+	CustomFormElement customFormElementDTOToCustomFormElement(CustomFormElementDTO customFormElementDTO);
+
+	/**
+	 * Custom form element to custom form element DTO.
+	 *
+	 * @param customFormElement the custom form element
+	 * @return the custom form element DTO
+	 */
+	CustomFormElementDTO customFormElementToCustomFormElementDTO(CustomFormElement customFormElement);
+
+	/**
+	 * Custom form element request to custom form element.
+	 *
+	 * @param customFormElementRequest the custom form element request
+	 * @return the custom form element
+	 */
+	CustomFormElement customFormElementRequestToCustomFormElement(CustomFormElementRequest customFormElementRequest);
+
+	/**
+	 * Custom form element list to custom form element DTO list.
+	 *
+	 * @param customFormElementList the custom form element list
+	 * @return the list
+	 */
+	List<CustomFormElementDTO> customFormElementListToCustomFormElementDTOList(
+			List<CustomFormElement> customFormElementList);
+
+	/**
+	 * Custom form element request list to custom form element list.
+	 *
+	 * @param customFormElementRequestList the custom form element request list
+	 * @return the list
+	 */
+	List<CustomFormElement> customFormElementRequestListToCustomFormElementList(
+			List<CustomFormElementRequest> customFormElementRequestList);
+
+	/**
+	 * Custom form element to custom form element response.
+	 *
+	 * @param customFormElement the custom form element
+	 * @return the custom form element response
+	 */
+	@Mappings({ @Mapping(target = "systemMandatory", source = "customField.mandatory") })
+	CustomFormElementResponse customFormElementToCustomFormElementResponse(CustomFormElement customFormElement);
+
+	/**
+	 * Custom form element to custom form element response.
+	 *
+	 * @param customFormElementList the custom form element list
+	 * @return the list
+	 */
+	List<CustomFormElementResponse> customFormElementToCustomFormElementResponse(
+			List<CustomFormElement> customFormElementList);
+
+	/**
+	 * Standard field response to custom form element response.
+	 *
+	 * @param standardFieldResponse the standard field response
+	 * @return the custom form element response
+	 */
+	@Mappings({ @Mapping(target = "id", ignore = true) })
+	CustomFormElementResponse standardFieldResponseToCustomFormElementResponse(
+			StandardFieldResponse standardFieldResponse);
+
+	/**
+	 * Standard field response to custom form element response.
+	 *
+	 * @param standardFieldResponse the standard field response
+	 * @return the list
+	 */
+	List<CustomFormElementResponse> standardFieldResponseToCustomFormElementResponse(
+			List<StandardFieldResponse> standardFieldResponse);
+
+	@Mappings({ @Mapping(target = "label", source = "defaultLabel"), @Mapping(target = "id", ignore = true),
+			@Mapping(target = "standardFieldId", source = "id") })
+	CustomFormElementResponse standardFieldToCustomFormElementResponse(StandardField standardField);
+
+	List<CustomFormElementResponse> standardFieldToCustomFormElementResponse(List<StandardField> standardField);
+
+}

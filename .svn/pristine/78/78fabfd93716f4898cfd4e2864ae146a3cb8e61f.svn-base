@@ -1,0 +1,30 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomFieldList.CustomFieldListFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface CustomFieldListService {
+
+	JerseyResponse addCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO);
+
+	List<CustomFieldListResponse> fetchCustomFieldLists(CustomFieldListFetchParams CustomFieldListFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	CustomFieldListResponse fetchCustomFieldLists(Long customFieldListId, SessionParams sessionParams);
+
+	JerseyResponse deleteCustomFieldLists(Long customFieldListId, SessionParams sessionParams);
+
+	JerseyResponse updateCustomFieldLists(Long customFieldListId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO);
+
+	JerseyResponse addOrUpdateCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			List<CustomFieldListDTO> customFieldListDTOs);
+
+}

@@ -1,0 +1,5 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum RollNOGenrationOrder {
+	ALPHABET_ASC,ALPHABET_DSC,ADMISSION_DATE_ASC,ADMISSION_DATE_DSC
+}

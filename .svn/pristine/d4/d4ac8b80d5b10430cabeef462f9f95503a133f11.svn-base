@@ -1,0 +1,99 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldResponse;
+
+public class CustomFieldDataDTO {
+
+	private Long id;
+
+	private CustomFieldDTO customField;
+
+	private Long customFieldId;
+
+	private Long entityInstanceId;
+
+	private String value;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public CustomFieldDTO getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomFieldDTO customField) {
+		this.customField = customField;
+	}
+
+	public Long getEntityInstanceId() {
+		return entityInstanceId;
+	}
+
+	public void setEntityInstanceId(Long entityInstanceId) {
+		this.entityInstanceId = entityInstanceId;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+}

@@ -1,0 +1,199 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+
+/**
+ * The Class CustomFieldDataDTO.
+ */
+public class CustomFieldDataDTO {
+
+	/** The id. */
+	private Long id;
+
+	/** The custom field. */
+	private CustomFieldDTO customField;
+
+	/** The custom field id. */
+	private Long customFieldId;
+
+	/** The entity instance id. */
+	private Long entityInstanceId;
+
+	/** The value. */
+	private String value;
+
+	/** The created by. */
+	private Long createdBy;
+
+	/** The created on. */
+	private Date createdOn;
+
+	/** The modified by. */
+	private Long modifiedBy;
+
+	/** The modified on. */
+	private Date modifiedOn;
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Gets the custom field.
+	 *
+	 * @return the custom field
+	 */
+	public CustomFieldDTO getCustomField() {
+		return customField;
+	}
+
+	/**
+	 * Sets the custom field.
+	 *
+	 * @param customField the new custom field
+	 */
+	public void setCustomField(CustomFieldDTO customField) {
+		this.customField = customField;
+	}
+
+	/**
+	 * Gets the entity instance id.
+	 *
+	 * @return the entity instance id
+	 */
+	public Long getEntityInstanceId() {
+		return entityInstanceId;
+	}
+
+	/**
+	 * Sets the entity instance id.
+	 *
+	 * @param entityInstanceId the new entity instance id
+	 */
+	public void setEntityInstanceId(Long entityInstanceId) {
+		this.entityInstanceId = entityInstanceId;
+	}
+
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * Gets the created by.
+	 *
+	 * @return the created by
+	 */
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * Sets the created by.
+	 *
+	 * @param createdBy the new created by
+	 */
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * Gets the created on.
+	 *
+	 * @return the created on
+	 */
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	/**
+	 * Sets the created on.
+	 *
+	 * @param createdOn the new created on
+	 */
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * Gets the modified by.
+	 *
+	 * @return the modified by
+	 */
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * Sets the modified by.
+	 *
+	 * @param modifiedBy the new modified by
+	 */
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * Gets the modified on.
+	 *
+	 * @return the modified on
+	 */
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	/**
+	 * Sets the modified on.
+	 *
+	 * @param modifiedOn the new modified on
+	 */
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	/**
+	 * Gets the custom field id.
+	 *
+	 * @return the custom field id
+	 */
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	/**
+	 * Sets the custom field id.
+	 *
+	 * @param customFieldId the new custom field id
+	 */
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+}

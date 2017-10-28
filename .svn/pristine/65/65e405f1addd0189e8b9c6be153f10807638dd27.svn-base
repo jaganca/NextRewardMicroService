@@ -1,0 +1,161 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementAddParams;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFormElementService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Class CustomFormElementController.
+ */
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FORM_ELEMENTS)
+public class CustomFormElementController {
+
+	/** The custom form element service. */
+	@Autowired
+	CustomFormElementService customFormElementService;
+
+	/**
+	 * Delete custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	@DELETE
+	@Path(NextConfigUrls.CUSTOM_FORM_ELEMENTS_PATH_ID)
+	public JerseyResponse deleteCustomFormElements(
+			@NotNull @PathParam(NextConfigUrls.CUSTOM_FORM_ELEMENT_ID) Long customFormElementId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFormElementService.deleteCustomFormElements(customFormElementId, sessionParams);
+	}
+
+	/**
+	 * Adds custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequest the custom form element request
+	 * @return the jersey response
+	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse addCustomFormElements(@BeanParam CustomFormElementAddParams customFormElementAddParams,
+			@Valid @BeanParam SessionParams sessionParams, @Valid CustomFormElementRequest customFormElementRequest) {
+		return customFormElementService.addCustomFormElements(customFormElementAddParams, sessionParams,
+				customFormElementRequest);
+	}
+
+	/**
+	 * Adds custom form elements bulk.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	@POST
+	@Path("bulk_add")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse addCustomFormElementsBulk(@BeanParam CustomFormElementAddParams customFormElementAddParams,
+			@Valid @BeanParam SessionParams sessionParams,
+			@Valid List<CustomFormElementRequest> customFormElementRequests) {
+		return customFormElementService.addCustomFormElements(customFormElementAddParams, sessionParams,
+				customFormElementRequests);
+	}
+
+	/**
+	 * Fetches the custom form elements.
+	 *
+	 * @param customFormElementFetchParams the custom form element fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	@GET
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			@BeanParam CustomFormElementFetchParams customFormElementFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFormElementService.fetchCustomFormElements(customFormElementFetchParams, sessionParams, queryable);
+	}
+
+	/**
+	 * Fetches the custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the custom form element response
+	 */
+	@GET
+	@Path(NextConfigUrls.CUSTOM_FORM_ELEMENTS_PATH_ID)
+	public CustomFormElementResponse fetchCustomFormElements(
+			@NotNull @PathParam(NextConfigUrls.CUSTOM_FORM_ELEMENT_ID) Long customFormElementId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFormElementService.fetchCustomFormElements(customFormElementId, sessionParams);
+	}
+
+	/**
+	 * Adds or update custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	@POST
+	@Path(NextConfigUrls.BULK)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse addOrUpdateCustomFormElements(
+			@BeanParam CustomFormElementAddParams customFormElementAddParams,
+			@Valid @BeanParam SessionParams sessionParams,
+			@Valid List<CustomFormElementRequest> customFormElementRequests) {
+		return customFormElementService.addOrUpdateCustomFormElements(customFormElementAddParams, sessionParams,
+				customFormElementRequests);
+
+	}
+
+	/**
+	 * Update custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param key the key
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse UpdateCustomFormElements(
+			@QueryParam(NextConfigUrls.CUSTOM_FORM_ELEMENT_ID) Long customFormElementId,
+			@QueryParam(NextConfigUrls.FORM_NAME) String key, @Valid @BeanParam SessionParams sessionParams,
+			@Valid CustomFormElementRequest customFormElementRequests) {
+		return customFormElementService.updateCustomFormElements(customFormElementId, key, sessionParams,
+				customFormElementRequests);
+
+	}
+
+}

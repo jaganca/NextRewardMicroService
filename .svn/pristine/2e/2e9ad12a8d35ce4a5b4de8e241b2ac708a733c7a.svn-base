@@ -1,0 +1,167 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+  
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextService.exception.NextServiceClientException;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextConfig.module.mapper.CategoryMapper;
+import com.nexteducation.NextConfig.module.model.bo.Category;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import com.nexteducation.NextConfig.module.repository.CategoryRepository;
+import com.nexteducation.NextConfig.module.service.core.CategoryService;
+import com.nexteducation.NextConfig.util.DU;
+
+@Service("CategoryService")
+public class CategoryServiceImpl implements CategoryService {
+
+	@Autowired
+	CategoryRepository categoryRepository;
+
+	@Autowired
+	CategoryMapper categoryMapper;
+
+	
+	/**
+	 * Fetches the Category for a given Category Long.
+	 * @param CategoryFetchParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return CategoryResponse
+	 */
+	@Override
+	@Transactional
+	@ReadOnlyConnection	
+	public CategoryResponse fetchCategorys(CategoryFetchParams categoryFetchParams,
+			@Valid SessionParams sessionParams, @Valid QueryableParams queryable)
+			throws NextServiceException, NextServiceClientException {
+
+		Category category = categoryRepository.findByIdAndBranchId(categoryFetchParams.getCategoryId(), sessionParams. getBranchId());
+//		if(category == null){
+//			throw new NextServiceException("FetchCategoryData","not found",500,"Category not found in the repositroy for a given categoryId","Internal Server error");
+//		}
+		CategoryResponse categoryResponse = categoryMapper
+				.CategoryToCategoryResponse(category);
+		return categoryResponse;
+
+	}
+
+	/**
+	 * Update the Category for a given Category Long.
+	 * @param CategoryUpdateParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateCategorys(@Valid CategoryUpdateParams categoryUpdateParams,
+			@Valid SessionParams sessionParams, QueryableParams queryable,
+			CategoryUpdateRequest categoryUpdateRequest)
+			throws NextServiceException, NextServiceClientException {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+
+		Category category = categoryMapper
+				.CategoryUpdateRequestToCategory(categoryUpdateRequest);
+		if(category == null){
+			throw new NextServiceException("updateCategorys","not found",500,"Category not found in the repository for a given categoryId","Internal Server error");
+		}
+		Category categoryUpdate = categoryRepository
+				.findById( (categoryUpdateRequest.getId()));
+		categoryUpdate.setModifiedBy(sessionParams.getUserId());
+		categoryUpdate.setModifiedOn(DU.now());
+		categoryUpdate.setAll(category);
+		categoryRepository.save(categoryUpdate);
+		return jerseyResponse.withCode("true").withMsg("Record Updated Successfully");
+
+	}
+	/**
+	 * Delete the Category for a given Category Long.
+	 * @param CategoryDeleteParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return CategoryResponse
+	 */
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteCategorys(@Valid CategoryDeleteParams categoryDeleteParams,
+			@Valid SessionParams sessionParams, QueryableParams queryable) {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+		Long Long = categoryDeleteParams.getCategoryId();
+		Category categoryDelete = categoryRepository.findById(Long);
+		if(categoryDelete == null){
+			throw new NextServiceException("deleteCategorys","not found",500,"Category not found in the repository for a given categoryId","Internal Server error");
+		}
+		try
+		{
+			categoryRepository.delete(categoryDelete);
+		}
+		catch(DataIntegrityViolationException e)
+		{
+			throw new NextServiceException("deleteCategories","Constraint Violation",500,"Constraint Violation Exception","Please unassign all the Students and the Staff associated with this Category and try again!");
+
+		}
+		return jerseyResponse.withMsg("Record deleted Successfully").withCode("true");
+	}
+
+	/**
+	 * Fetches all the categorys corresponding to the Branch and Academic Session ID
+	 * @param sessionParams
+	 * @param queryable
+	 * @return List<CategoryResponse>
+	 */
+	
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CategoryResponse> fetchAllCategorys(SessionParams sessionParams,
+			QueryableParams queryable) {
+		List<Category> categoryList = categoryRepository.findByBranchId(sessionParams. getBranchId());
+		categoryList.addAll(categoryRepository.findByBranchId(null));
+
+//		if(categoryList == null){
+//			throw new NextServiceException("fetchAllCategorys","not found",500,"No category found","Internal Server error");
+//		}
+		return categoryMapper.CategoryListToCategoryResponseList(categoryList);
+
+	}
+	/**
+	 * Adds a new Category
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+
+	@Override
+	@Transactional	
+	public JerseyResponse addCategorys(SessionParams sessionParams, QueryableParams queryable,
+			CategoryAddRequest categoryAddRequest) {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+		Category category = categoryMapper
+				.CategoryAddRequestToCategory(categoryAddRequest);
+		category.setCreatedBy(sessionParams.getUserId());
+		category.setModifiedBy(sessionParams.getUserId());
+		category.setBranchId(categoryAddRequest.getBranchId());
+		categoryRepository.save(category);
+		return jerseyResponse.withMsg("Record Added Successfully").withCode("true");
+
+	}
+
+}

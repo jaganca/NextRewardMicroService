@@ -1,0 +1,81 @@
+package com.nexteducation.NextConfig.module.model.response.CustomField;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class CustomFieldListResponse {
+
+	private Long id;
+
+	//private CustomFieldResponse customField;
+
+	private String value;
+
+	private Status status;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

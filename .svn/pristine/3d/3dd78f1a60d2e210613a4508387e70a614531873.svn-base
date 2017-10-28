@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureFetchParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+
+
+public interface ProductFeatureService {	
+
+    ProductFeatureResponse fetchProductFeatures(ProductFeatureFetchParams productFeatureFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+    
+//
+	JerseyResponse updateProductFeatures(ProductFeatureUpdateParams productFeatureUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, ProductFeatureUpdateRequest productFeatureUpdateRequest);
+//
+	JerseyResponse deleteProductFeatures(ProductFeatureDeleteParams productFeatureDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	List<ProductFeatureResponse> fetchAllProductFeatures(SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	JerseyResponse addProductFeatures(SessionParams sessionParams,
+			QueryableParams queryable, ProductFeatureAddRequest productFeatureAddRequest);
+
+
+
+}

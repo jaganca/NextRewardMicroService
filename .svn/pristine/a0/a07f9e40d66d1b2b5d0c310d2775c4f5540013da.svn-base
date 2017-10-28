@@ -1,0 +1,38 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.response.Entities.EntityResponse;
+import com.nexteducation.NextConfig.module.service.core.EntitiesService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1)
+public class EntitiesController {
+
+	@Autowired
+	EntitiesService entitiesService;
+	
+	
+	@GET
+	@Path(NextConfigUrls.ENTITIES)
+	public List<EntityResponse> fetchAllEntities(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable)throws NextServiceException {
+		return entitiesService.fetchAllEntities(sessionParams, queryable);
+	}
+	
+
+}

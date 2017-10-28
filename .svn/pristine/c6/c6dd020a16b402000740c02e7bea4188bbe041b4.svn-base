@@ -1,0 +1,99 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldCountResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface CustomFieldService.
+ */
+public interface CustomFieldService {
+
+	/**
+	 * Fetch custom fields.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @return the custom field DTO
+	 */
+	public CustomFieldDTO fetchCustomFields(Long customFieldId, SessionParams sessionParams);
+
+	/**
+	 * Update custom fields.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @param customFieldDTO the custom field DTO
+	 * @return the jersey response
+	 */
+	public JerseyResponse updateCustomFields(Long customFieldId, SessionParams sessionParams,
+			CustomFieldDTO customFieldDTO);
+
+	/**
+	 * Delete custom fields.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse deleteCustomFields(Long customFieldId, SessionParams sessionParams);
+
+	/**
+	 * Adds the custom fields.
+	 *
+	 * @param sessionParams the session params
+	 * @param customFieldDTO the custom field DTO
+	 * @return the jersey response
+	 */
+	public JerseyResponse addCustomFields(SessionParams sessionParams, CustomFieldDTO customFieldDTO);
+
+	/**
+	 * Fetch custom fields.
+	 *
+	 * @param customFieldFetchParams the custom field fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<CustomFieldDTO> fetchCustomFields(CustomFieldFetchParams customFieldFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Fetch custom fields not in form.
+	 *
+	 * @param customFieldFetchParams the custom field fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	public List<CustomFieldDTO> fetchCustomFieldsNotInForm(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Fetch custom fields with data.
+	 *
+	 * @param customFieldFetchParams the custom field fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	public List<CustomFieldDTO> fetchCustomFieldsWithData(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Fetch custom fields count.
+	 *
+	 * @param customFieldFetchParams the custom field fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the custom field count response
+	 */
+	public CustomFieldCountResponse fetchCustomFieldsCount(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+}

@@ -1,0 +1,37 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum Type {
+	/*EnrollmentNo,*/
+	VoucherNo,
+	AdmissionRegistrationNo,
+	ReceiptNo,
+	AccessionNo,
+	ResourceNo,
+	LetterFormatNo,
+	BankRefNo,
+	LeavePassNo,
+	AdmissionStep,
+	ChallanNo,
+	ItemNo,
+	PurchaseOrderNo,
+	InventoryReceiptsNo,
+	LibMembershipNo,
+	employeeId,
+	EnquiryNo,
+	Ledger_Code,
+	Group_Code,
+	AdmissionOnlineFeePayment;
+
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+	public String getName() {
+		return this.name();
+	}
+	public boolean hasSubType(){
+		if(this.ordinal() == 1) {
+			return true;
+		}
+		return false;
+	}
+};

@@ -1,0 +1,76 @@
+package com.nexteducation.NextRewards.hibernate.datasourceRouting;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+/**
+ * The Class ReadOnlyConnectionInterceptor.
+ *
+ * @author krishnakanthv
+ */
+@Aspect
+@Component
+@Order(2)
+public class ReadOnlyConnectionInterceptor implements Ordered {
+
+	/** The order. */
+	private int order;
+
+	/**
+	 * Sets the order.
+	 *
+	 * @param order the new order
+	 */
+	@Value("20")
+	public void setOrder(final int order) {
+		this.order = order;
+	}
+
+	/** 
+	 * @see org.springframework.core.Ordered#getOrder()
+	 */
+	@Override
+	public int getOrder() {
+		return order;
+	}
+
+//	@Around("execution(* *fetch*(..))")
+//	public Object proceed(final ProceedingJoinPoint pjp) throws Throwable {
+//		try {
+//			DbContextHolder.setDbType(DbType.REPLICA);
+//			final Object result = pjp.proceed();
+//			DbContextHolder.clearDbType();
+//			return result;
+//		} finally {
+//			// restore state
+//			DbContextHolder.clearDbType();
+//		}
+//	}
+/**
+ * Proceed.
+ *
+ * @param pjp the pjp
+ * @param readOnlyConnection the read only connection
+ * @return the object
+ * @throws Throwable the throwable
+ */
+//	
+	@Around("@annotation(readOnlyConnection)")
+    public Object proceed(final ProceedingJoinPoint pjp, final ReadOnlyConnection readOnlyConnection) throws Throwable {
+        try {
+            DbContextHolder.setDbType(DbType.REPLICA);
+            final Object result = pjp.proceed();
+            DbContextHolder.clearDbType();
+            return result;
+        } finally {
+            // restore state
+            DbContextHolder.clearDbType();
+        }
+    }
+
+}

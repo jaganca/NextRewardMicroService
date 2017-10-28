@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.filter.core;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+
+/**
+ * The Interface FieldMap.
+ */
+@Retention(RUNTIME)
+public @interface FieldMap {
+	
+	/**
+	 * Field code.
+	 *
+	 * @return the string
+	 */
+	public abstract String fieldCode() default "";
+	
+	/**
+	 * Field name.
+	 *
+	 * @return the string
+	 */
+	public abstract String fieldName() default "";
+}

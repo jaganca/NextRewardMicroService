@@ -1,0 +1,5 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum Status {
+	Active, Inactive
+}

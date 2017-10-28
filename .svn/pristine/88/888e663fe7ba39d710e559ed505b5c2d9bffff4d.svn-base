@@ -1,0 +1,62 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+
+/**
+ * The Interface ReligionMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE )
+public interface ReligionMapper {
+
+	/** The instance. */
+	ReligionMapper INSTANCE = Mappers.getMapper(ReligionMapper.class);
+
+	/**
+	 * Religion add request to religion.
+	 *
+	 * @param religionAddRequest the religion add request
+	 * @return the religion
+	 */
+	@Mappings({
+		@Mapping(target="createdOn", expression="java(com.nexteducation.NextConfig.util.DU.now())"),
+		@Mapping(target="modifiedOn", expression="java(com.nexteducation.NextConfig.util.DU.now())")
+		}
+	)
+	Religion ReligionAddRequestToReligion(ReligionAddRequest religionAddRequest);
+
+	/**
+	 * Religion update request to religion.
+	 *
+	 * @param religionUpdateRequest the religion update request
+	 * @return the religion
+	 */
+	Religion ReligionUpdateRequestToReligion(ReligionUpdateRequest religionUpdateRequest);
+	
+	/**
+	 * Religion to religion response.
+	 *
+	 * @param religion the religion
+	 * @return the religion response
+	 */
+	ReligionResponse ReligionToReligionResponse(Religion religion);
+	
+	/**
+	 * Religion list to religion response list.
+	 *
+	 * @param religionList the religion list
+	 * @return the list
+	 */
+	List<ReligionResponse> ReligionListToReligionResponseList(List<Religion> religionList);
+
+}

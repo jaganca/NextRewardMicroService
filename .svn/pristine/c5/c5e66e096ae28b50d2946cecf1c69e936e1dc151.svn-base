@@ -1,0 +1,62 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldResponse;
+
+/**
+ * The Class CustomFieldMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {
+		CustomFieldListMapper.class, CustomFieldDataMapper.class })
+public abstract class CustomFieldMapper extends CommonMapper {
+
+	/**
+	 * Custom field DTO to custom field.
+	 *
+	 * @param customFieldDTO the custom field DTO
+	 * @return the custom field
+	 */
+	public abstract CustomField customFieldDTOToCustomField(CustomFieldDTO customFieldDTO);
+
+	//CustomField customFieldUpdateDTOToCustomField(CustomFieldUpdateDTO customFieldDTO);
+
+	/**
+	 * Custom field to custom field DTO.
+	 *
+	 * @param customField the custom field
+	 * @return the custom field DTO
+	 */
+	public abstract CustomFieldDTO customFieldToCustomFieldDTO(CustomField customField);
+
+	/**
+	 * Custom field list to custom field DTO list.
+	 *
+	 * @param customFieldList the custom field list
+	 * @return the list
+	 */
+	public abstract List<CustomFieldDTO> customFieldListToCustomFieldDTOList(List<CustomField> customFieldList);
+
+	/**
+	 * Custom field to custom field response.
+	 *
+	 * @param customField the custom field
+	 * @return the custom field response
+	 */
+	public abstract CustomFieldResponse customFieldToCustomFieldResponse(CustomField customField);
+
+	/**
+	 * Custom field list to custom field response list.
+	 *
+	 * @param customFieldList the custom field list
+	 * @return the list
+	 */
+	public abstract List<CustomFieldResponse> customFieldListToCustomFieldResponseList(
+			List<CustomField> customFieldList);
+
+}

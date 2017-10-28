@@ -1,0 +1,7 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+public interface HelloService {
+
+	String sayHello(String name);
+
+}

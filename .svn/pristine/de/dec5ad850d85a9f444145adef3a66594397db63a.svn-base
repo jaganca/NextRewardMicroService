@@ -1,0 +1,189 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class CustomFormElementDTO {
+
+	private Long id;
+
+	private Long branchId;
+
+	private String label;
+
+	private String placeholder;
+
+	private CustomFieldDTO customField;
+
+	private Long customFieldId;
+
+	private FormDTO form;
+
+	private Long formId;
+
+	private String entityName;
+
+	private StandardFieldDTO standardField;
+
+	private Long standardFieldId;
+
+	private Status status;
+
+	private boolean ifMandatory;
+
+	private boolean ifHide;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+
+	public Long getStandardFieldId() {
+		return standardFieldId;
+	}
+
+	public void setStandardFieldId(Long standardFieldId) {
+		this.standardFieldId = standardFieldId;
+	}
+
+	public FormDTO getForm() {
+		return form;
+	}
+
+	public void setForm(FormDTO form) {
+		this.form = form;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	public boolean isIfHide() {
+		return ifHide;
+	}
+
+	public void setIfHide(boolean ifHide) {
+		this.ifHide = ifHide;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public CustomFieldDTO getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomFieldDTO customField) {
+		this.customField = customField;
+	}
+
+	public StandardFieldDTO getStandardField() {
+		return standardField;
+	}
+
+	public void setStandardField(StandardFieldDTO standardField) {
+		this.standardField = standardField;
+	}
+
+}

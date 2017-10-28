@@ -1,0 +1,86 @@
+package com.nexteducation.NextRewards.hibernate.listener;
+
+import java.io.IOException;
+
+import org.hibernate.event.spi.PostDeleteEvent;
+import org.hibernate.event.spi.PostDeleteEventListener;
+import org.hibernate.event.spi.PostInsertEvent;
+import org.hibernate.event.spi.PostInsertEventListener;
+import org.hibernate.event.spi.PostUpdateEvent;
+import org.hibernate.event.spi.PostUpdateEventListener;
+import org.hibernate.persister.entity.EntityPersister;
+import org.springframework.stereotype.Component;
+
+/**
+ * The listener interface for receiving traditionalDB events.
+ * The class that is interested in processing a traditionalDB
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addTraditionalDBListener<code> method. When
+ * the traditionalDB event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @author ashishpratap
+ */
+@Component
+public class TraditionalDBListener
+		implements PostInsertEventListener, PostDeleteEventListener, PostUpdateEventListener {
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
+	/** 
+	 * @see org.hibernate.event.spi.PostInsertEventListener#onPostInsert(org.hibernate.event.spi.PostInsertEvent)
+	 */
+	@Override
+	public void onPostInsert(final PostInsertEvent event) {
+		try {
+			processEntity(event.getEntity(), 1);
+		} catch (final IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	/** 
+	 * @see org.hibernate.event.spi.PostInsertEventListener#requiresPostCommitHanding(org.hibernate.persister.entity.EntityPersister)
+	 */
+	public boolean requiresPostCommitHanding(final EntityPersister persister) {
+		return false;
+	}
+
+	/** 
+	 * @see org.hibernate.event.spi.PostDeleteEventListener#onPostDelete(org.hibernate.event.spi.PostDeleteEvent)
+	 */
+	@Override
+	public void onPostDelete(final PostDeleteEvent event) {
+		try {
+			processEntity(event.getEntity(), 2);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/** 
+	 * @see org.hibernate.event.spi.PostUpdateEventListener#onPostUpdate(org.hibernate.event.spi.PostUpdateEvent)
+	 */
+	@Override
+	public void onPostUpdate(final PostUpdateEvent event) {
+		try {
+			processEntity(event.getEntity(), 3);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Process entity.
+	 *
+	 * @param entity the entity
+	 * @param operation the operation
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	private void processEntity(final Object entity, final int operation) throws IOException {
+	}
+
+}

@@ -1,0 +1,45 @@
+package com.nexteducation.NextConfig.module.model.request.Language;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+
+public class LanguageAddRequest {
+
+	 
+	private Long branchId;
+	
+	
+	@NotEmpty(message="Language Name should not be empty!")
+	private String name;
+
+	@NotEmpty(message="Language Iso Code should not be empty!")
+	private String isoCode;
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public  Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getIsoCode() {
+		return isoCode;
+	}
+
+	public void setIsoCode(String isoCode) {
+		this.isoCode = isoCode;
+	}
+
+
+}

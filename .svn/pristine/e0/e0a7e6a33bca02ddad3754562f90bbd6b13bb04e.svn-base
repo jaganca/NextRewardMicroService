@@ -1,0 +1,16 @@
+log4j.rootLogger=INFO,ConsoleAppender,FileAppender
+log4j.appender.ConsoleAppender=org.apache.log4j.ConsoleAppender
+log4j.appender.ConsoleAppender.layout=com.nexteducation.NextService.util.NEJSONEventLayoutV1
+
+log4j.appender.FileAppender=org.apache.log4j.RollingFileAppender
+log4j.appender.FileAppender.File=/tmp/application.log
+log4j.appender.file.MaxFileSize=10MB
+log4j.appender.file.MaxBackupIndex=10
+log4j.appender.FileAppender.layout=com.nexteducation.NextService.util.NEJSONEventLayoutV1
+log4j.logger.org.hibernate=INFO
+log4j.logger.org.hibernate.SQL=debug
+log4j.logger.org.hibernate.tool.hbm2ddl=debug
+log4j.logger.org.hibernate.type=debug
+
+log4j.appender.FileAppender.layout.UserFields=application:NextConfig
+log4j.appender.ConsoleAppender.layout.UserFields=application:NextConfig

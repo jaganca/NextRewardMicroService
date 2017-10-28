@@ -1,0 +1,14 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextConfig.module.service.core.HelloService;
+
+@Service("helloService")
+public class HelloServiceImpl implements HelloService {
+
+	@Override
+	public String sayHello(String name) {
+		return "Hello! " + name;
+	}
+}

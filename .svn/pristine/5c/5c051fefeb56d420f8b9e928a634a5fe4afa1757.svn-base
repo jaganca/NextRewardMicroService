@@ -1,0 +1,146 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.mapper.CustomFieldDataMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldDataRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldDataService;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+
+@Service("customFieldDataService")
+public class CustomFieldDataServiceImpl implements CustomFieldDataService {
+
+	@Autowired
+	CustomFieldDataRepository customFieldDataRepository;
+
+	@Autowired
+	CustomFieldDataMapper customFieldDataMapper;
+
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	@Transactional
+	@ReadOnlyConnection
+	@Override
+	public CustomFieldDataDTO fetchCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		CustomFieldData customFieldData = customFieldDataRepository.findById(customFieldDataId);
+		if (customFieldData == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"Custom Field Data not found in the repository", "Custom Field Data not found in the repository");
+		}
+		CustomFieldDataDTO customFieldDataDTO = customFieldDataMapper
+				.customFieldDataToCustomFieldDataDTO(customFieldData);
+		return customFieldDataDTO;
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse updateCustomFieldData(Long customFieldDataId, SessionParams sessionParams,
+			CustomFieldDataDTO customFieldDataDTO) {
+		CustomFieldData customFieldDataUpdate = customFieldDataRepository.findById((customFieldDataDTO.getId()));
+		if (customFieldDataUpdate == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"Custom Field Data not found in the repository", "Custom Field Data not found in the repository");
+		}
+		CustomFieldData customFieldData = customFieldDataMapper.customFieldDataDTOToCustomFieldData(customFieldDataDTO);
+		customFieldDataUpdate.setAll(customFieldData);
+		customFieldDataUpdate.setModifiedOn(DU.now());
+		customFieldDataUpdate.setModifiedBy(sessionParams.getUserId());
+		customFieldDataRepository.save(customFieldDataUpdate);
+		return new JerseyResponse().withCode("Success").withMsg("Record Updated Successfully");
+
+	}
+	
+	@Override
+	@Transactional
+	public JerseyResponse addOrupdateCustomFieldData( SessionParams sessionParams,List<CustomFieldDataDTO> customFieldDataDTOs) {
+		
+		for(CustomFieldDataDTO customFieldDataDTO:customFieldDataDTOs){
+			if (customFieldDataDTO.getId() != null) {
+			  updateCustomFieldData(customFieldDataDTO.getId(), sessionParams, customFieldDataDTO);
+			}
+			else
+			{
+				addCustomFieldData(sessionParams, customFieldDataDTO);
+			}
+		}
+		return new JerseyResponse().withCode("Success").withMsg("Record Updated Successfully");
+
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		CustomFieldData customFieldDataDelete = customFieldDataRepository.findById(customFieldDataId);
+		if (customFieldDataDelete == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"Custom Field Data not found in the repository", "Custom Field Data not found in the repository");
+		}
+		customFieldDataRepository.delete(customFieldDataDelete);
+		return new JerseyResponse().withMsg("Record deleted Successfully").withCode("Success");
+
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, CustomFieldDataDTO customFieldDataDTO) {
+		CustomField customField = customFieldRepository.findById((customFieldDataDTO.getCustomFieldId()));
+		if (customField == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404, "Custom Field not found in the repository",
+					"Custom Field not found in the repository");
+		}
+		CustomFieldData customFieldData = customFieldDataMapper.customFieldDataDTOToCustomFieldData(customFieldDataDTO);
+		customFieldData.setBranchId(sessionParams.getBranchId());
+		customFieldData.setCustomField(customField);
+		customFieldData.setCreatedBy(sessionParams.getUserId());
+		customFieldData.setCreatedOn(DU.now());
+		customFieldData.setModifiedOn(DU.now());
+		customFieldData.setModifiedBy(sessionParams.getUserId());
+		customFieldDataRepository.save(customFieldData);
+		return new JerseyResponse().withMsg("Record Added Successfully").withCode("Success")
+				.withId(customFieldData.getId());
+
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) {
+		List<JerseyResponse> jerseyResponses = new ArrayList<JerseyResponse>();
+		for (CustomFieldDataDTO customFieldDataDTO : customFieldDataDTOs) {
+			jerseyResponses.add(addCustomFieldData(sessionParams, customFieldDataDTO));
+		}
+		return new JerseyResponse().withMsg("Record Added Successfully").withCode("Success");
+
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CustomFieldDataDTO> fetchCustomFieldData(CustomFieldDataFetchParams customFieldDataFetchParams,
+			SessionParams sessionParams, QueryableParams queryableParams) {
+		List<CustomFieldData> customFieldDatas = customFieldDataRepository.findByBOFilters(customFieldDataFetchParams,
+				queryableParams);
+		List<CustomFieldDataDTO> customFieldDataDTOList = customFieldDataMapper
+				.customFieldDataToCustomFieldDataDTO(customFieldDatas);
+		return customFieldDataDTOList;
+
+	}
+
+}

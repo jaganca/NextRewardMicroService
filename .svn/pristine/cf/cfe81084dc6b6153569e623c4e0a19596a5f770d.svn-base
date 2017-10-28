@@ -1,0 +1,57 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class FormRequest {
+
+	private Long id;
+
+	private String defaultLabel;
+
+	private String key;
+
+	private String description;
+
+	private Status status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+}

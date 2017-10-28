@@ -1,0 +1,19 @@
+package com.nexteducation.NextConfig.module.repository.custom.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+public interface CustomFieldRepositoryCustom {
+
+	List<CustomField> findByBOFilters(CustomFieldFetchParams customFieldElementFetchParams,
+			QueryableParams queryableParams);
+	
+	public List<CustomField> findByBOFiltersNotInForm(CustomFieldFetchParams customFieldFetchParams,
+			QueryableParams queryable , Long fromId);
+	
+	public Long findByCountBOFilters(CustomFieldFetchParams customFieldFetchParams,
+			QueryableParams queryable);
+}

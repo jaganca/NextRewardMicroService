@@ -1,0 +1,99 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.text.ParseException;
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface CustomFieldDataService.
+ */
+public interface CustomFieldDataService {
+
+	/**
+	 * Fetch custom field data.
+	 *
+	 * @param customFieldDataId the custom field data id
+	 * @param sessionParams the session params
+	 * @return the custom field data DTO
+	 */
+	public CustomFieldDataDTO fetchCustomFieldData(Long customFieldDataId, SessionParams sessionParams);
+
+	/**
+	 * Update custom field data.
+	 *
+	 * @param customFieldDataId the custom field data id
+	 * @param sessionParams the session params
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the jersey response
+	 */
+	public JerseyResponse updateCustomFieldData(Long customFieldDataId, SessionParams sessionParams,
+			CustomFieldDataDTO customFieldDataDTO);
+
+	/**
+	 * Delete custom field data.
+	 *
+	 * @param customFieldDataId the custom field data id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse deleteCustomFieldData(Long customFieldDataId, SessionParams sessionParams);
+
+	/**
+	 * Adds the custom field data.
+	 *
+	 * @param sessionParams the session params
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the jersey response
+	 * @throws ParseException the parse exception
+	 */
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, CustomFieldDataDTO customFieldDataDTO) throws ParseException;
+
+	/**
+	 * Adds the custom field data.
+	 *
+	 * @param sessionParams the session params
+	 * @param customFieldDataDTOs the custom field data DT os
+	 * @return the jersey response
+	 * @throws ParseException the parse exception
+	 */
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, List<CustomFieldDataDTO> customFieldDataDTOs) throws ParseException;
+
+	/**
+	 * Fetch custom field data.
+	 *
+	 * @param customFieldDataFetchParams the custom field data fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	public List<CustomFieldDataDTO> fetchCustomFieldData(CustomFieldDataFetchParams customFieldDataFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	/**
+	 * Adds the orupdate custom field data.
+	 *
+	 * @param sessionParams the session params
+	 * @param customFieldDataDTOs the custom field data DT os
+	 * @return the jersey response
+	 * @throws ParseException the parse exception
+	 */
+	JerseyResponse addOrupdateCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) throws ParseException;
+
+	/**
+	 * Save custom field data for excel.
+	 *
+	 * @param sessionParams the session params
+	 * @param customFieldDataDTOs the custom field data DT os
+	 * @return the jersey response
+	 * @throws ParseException the parse exception
+	 */
+	JerseyResponse saveCustomFieldDataForExcel(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) throws ParseException;
+
+}

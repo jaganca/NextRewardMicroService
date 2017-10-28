@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.model.params.Religion;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class ReligionFetchParams {
+
+	@NotNull(message = "Religion ID should not be null")
+	@PathParam(NextConfigUrls.RELIGION_ID)
+	private Long religionId;
+
+	public Long getReligionId() {
+		return religionId;
+	}
+
+	public void setReligionId(Long religionId) {
+		this.religionId = religionId;
+	}
+
+}

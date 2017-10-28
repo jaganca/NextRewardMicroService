@@ -1,0 +1,91 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldDataAddRequest;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldDataUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldDataResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CustomFieldDataMapperImpl implements CustomFieldDataMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public CustomFieldData CustomFieldDataAddRequestToCustomFieldData(CustomFieldDataAddRequest customFieldDataAddRequest) {
+        if ( customFieldDataAddRequest == null ) {
+            return null;
+        }
+
+        CustomFieldData customFieldData = new CustomFieldData();
+
+        customFieldData.setCreatedBy( uuidMapper.asString( customFieldDataAddRequest.getCreatedBy() ) );
+        customFieldData.setModifiedBy( uuidMapper.asString( customFieldDataAddRequest.getModifiedBy() ) );
+        customFieldData.setValue( customFieldDataAddRequest.getValue() );
+        customFieldData.setEntityInstanceId( uuidMapper.asString( customFieldDataAddRequest.getEntityInstanceId() ) );
+
+        customFieldData.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        customFieldData.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return customFieldData;
+    }
+
+    @Override
+    public CustomFieldData CustomFieldDataUpdateRequestToCustomFieldData(CustomFieldDataUpdateRequest customFieldDataAddRequest) {
+        if ( customFieldDataAddRequest == null ) {
+            return null;
+        }
+
+        CustomFieldData customFieldData = new CustomFieldData();
+
+        customFieldData.setId( uuidMapper.asString( customFieldDataAddRequest.getId() ) );
+        customFieldData.setModifiedBy( uuidMapper.asString( customFieldDataAddRequest.getModifiedBy() ) );
+        customFieldData.setValue( customFieldDataAddRequest.getValue() );
+
+        return customFieldData;
+    }
+
+    @Override
+    public CustomFieldDataResponse CustomFieldDataToCustomFieldDataResponse(CustomFieldData customFieldData) {
+        if ( customFieldData == null ) {
+            return null;
+        }
+
+        CustomFieldDataResponse customFieldDataResponse = new CustomFieldDataResponse();
+
+        customFieldDataResponse.setId( uuidMapper.asString( customFieldData.getId() ) );
+        customFieldDataResponse.setValue( customFieldData.getValue() );
+        customFieldDataResponse.setCreatedBy( uuidMapper.asString( customFieldData.getCreatedBy() ) );
+        customFieldDataResponse.setCreatedOn( customFieldData.getCreatedOn() );
+        customFieldDataResponse.setModifiedBy( uuidMapper.asString( customFieldData.getModifiedBy() ) );
+        customFieldDataResponse.setModifiedOn( customFieldData.getModifiedOn() );
+        customFieldDataResponse.setCustomField( customFieldData.getCustomField() );
+        customFieldDataResponse.setEntityInstanceId( uuidMapper.asString( customFieldData.getEntityInstanceId() ) );
+
+        return customFieldDataResponse;
+    }
+
+    @Override
+    public List<CustomFieldDataResponse> CustomFieldDataListToCustomFieldDataResponseList(List<CustomFieldData> customFieldDataList) {
+        if ( customFieldDataList == null ) {
+            return null;
+        }
+
+        List<CustomFieldDataResponse> list = new ArrayList<CustomFieldDataResponse>();
+        for ( CustomFieldData customFieldData : customFieldDataList ) {
+            list.add( CustomFieldDataToCustomFieldDataResponse( customFieldData ) );
+        }
+
+        return list;
+    }
+}

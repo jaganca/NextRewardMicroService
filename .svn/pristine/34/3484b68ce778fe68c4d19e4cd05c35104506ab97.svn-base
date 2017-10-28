@@ -1,0 +1,88 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.Language;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Language.LanguageResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class LanguageMapperImpl implements LanguageMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public Language LanguageAddRequestToLanguage(LanguageAddRequest languageAddRequest) {
+        if ( languageAddRequest == null ) {
+            return null;
+        }
+
+        Language language = new Language();
+
+        language.setName( languageAddRequest.getName() );
+        language.setBranchId( uuidMapper.asString( languageAddRequest.getBranchId() ) );
+
+        language.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        language.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return language;
+    }
+
+    @Override
+    public Language LanguageUpdateRequestToLanguage(LanguageUpdateRequest languageUpdateRequest) {
+        if ( languageUpdateRequest == null ) {
+            return null;
+        }
+
+        Language language = new Language();
+
+        language.setName( languageUpdateRequest.getName() );
+        language.setId( uuidMapper.asString( languageUpdateRequest.getId() ) );
+        language.setBranchId( uuidMapper.asString( languageUpdateRequest.getBranchId() ) );
+
+        return language;
+    }
+
+    @Override
+    public LanguageResponse LanguageToLanguageResponse(Language language) {
+        if ( language == null ) {
+            return null;
+        }
+
+        LanguageResponse languageResponse = new LanguageResponse();
+
+        languageResponse.setBranchId( language.getBranchId() );
+        languageResponse.setName( language.getName() );
+        languageResponse.setCreatedBy( language.getCreatedBy() );
+        languageResponse.setCreatedOn( language.getCreatedOn() );
+        languageResponse.setModifiedBy( language.getModifiedBy() );
+        languageResponse.setModifiedOn( language.getModifiedOn() );
+        languageResponse.setId( language.getId() );
+
+        return languageResponse;
+    }
+
+    @Override
+    public List<LanguageResponse> LanguageListToLanguageResponseList(List<Language> languageList) {
+        if ( languageList == null ) {
+            return null;
+        }
+
+        List<LanguageResponse> list = new ArrayList<LanguageResponse>();
+        for ( Language language : languageList ) {
+            list.add( LanguageToLanguageResponse( language ) );
+        }
+
+        return list;
+    }
+}

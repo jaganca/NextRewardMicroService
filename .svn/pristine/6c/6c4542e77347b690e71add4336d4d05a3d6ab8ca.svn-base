@@ -1,0 +1,41 @@
+package com.nexteducation.NextConfig.hibernate;
+
+import javax.annotation.PostConstruct;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.event.service.spi.EventListenerRegistry;
+import org.hibernate.event.spi.EventType;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.nexteducation.NextConfig.hibernate.listener.EventableEntityListener;
+import com.nexteducation.NextConfig.hibernate.listener.TraditionalDBListener;
+
+@Component
+public class HibernateEventWiring {
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Autowired
+	private TraditionalDBListener trailEventListener;
+
+	@Autowired
+	private EventableEntityListener eventableEntityListener;
+
+	@PostConstruct
+	public void registerListeners() {
+		final EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory).getServiceRegistry()
+				.getService(EventListenerRegistry.class);
+		registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(trailEventListener);
+		registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(trailEventListener);
+		registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(trailEventListener);
+
+		registry.getEventListenerGroup(EventType.POST_INSERT).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_UPDATE).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_DELETE).appendListener(eventableEntityListener);
+		registry.getEventListenerGroup(EventType.POST_LOAD).appendListener(eventableEntityListener);
+	}
+
+}

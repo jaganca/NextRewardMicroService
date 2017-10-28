@@ -1,0 +1,39 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface CasteService {
+
+	CasteResponse fetchCastes(CasteFetchParams casteFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	
+	JerseyResponse updateCastes(CasteUpdateParams casteUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, CasteUpdateRequest casteUpdateRequest);
+
+	
+	JerseyResponse deleteCastes(CasteDeleteParams casteDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	List<CasteResponse> fetchAllCastes(SessionParams sessionParams, QueryableParams queryable);
+
+	AddResponse addCastes(SessionParams sessionParams, QueryableParams queryable, CasteAddRequest casteAddRequest);
+
+	List<CasteCustomResponse> fetchAllParentCastes(SessionParams sessionParams, QueryableParams queryable);
+
+	List<CasteResponse> fetchSubCastes(CasteFetchParams casteFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+}

@@ -1,0 +1,19 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.repository.custom.core.StandardFieldRepositoryCustom;
+
+public interface StandardFieldRepository extends JpaRepository<StandardField, Serializable>,StandardFieldRepositoryCustom {
+
+	public StandardField findById(Long id);
+	
+	public List<StandardField> findByDefaultLabelAndEntityName(String label , String entityName);
+
+	public List<StandardField> findByEntityName(String entityName);
+
+}

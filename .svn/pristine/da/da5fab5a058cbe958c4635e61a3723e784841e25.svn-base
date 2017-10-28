@@ -1,0 +1,113 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+@Entity
+@Table(name="ENTITY")
+public class Entities {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ENTITY_ID")
+	private Long id;
+	
+	
+	
+	@Column(name="NAME")
+	private String entityName;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="STATUS",columnDefinition = "TINYINT(4)")
+	private Status status;
+	
+	
+	@Column(name="CREATED_BY")
+	private Long createdBy;
+
+	@Column(name="CREATED_ON")
+	private Date createdOn;
+
+
+	@Column(name="MODIFIED_BY")
+	private Long modifiedBy;
+
+
+	@Column(name="MODIFIED_ON")
+	private Date modifiedOn;
+
+
+
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	
+}

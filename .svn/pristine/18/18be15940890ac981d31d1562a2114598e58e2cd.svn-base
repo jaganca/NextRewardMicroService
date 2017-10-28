@@ -1,0 +1,48 @@
+package com.nexteducation.NextConfig.module.model.enums;
+
+public enum FieldType {
+	Checkbox("checkbox"), Color("color"), Date("date"), Datetime("datetime"), Email("email"), File("file"), Hidden(
+			"hidden"), Image("image"), List("list"), MultiSelect("multiselect"), Number(
+					"number"), Password("password"), Paragraph(
+							"paragraph"), Radio("radio"), Range("range"), Text("text"), Time("time"), Url("url");
+
+	private String fieldType;
+
+	FieldType(final String fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+
+	public String getName() {
+		return this.getName();
+	}
+
+	public static FieldType valueOf(final byte val) {
+		for (final FieldType customFieldType : values()) {
+			if (customFieldType.getOrdinal() == val) {
+				return customFieldType;
+			}
+		}
+		throw new IllegalArgumentException(String.valueOf(val));
+	}
+
+	public static FieldType fromString(final String val) {
+		for (final FieldType customFieldType : values()) {
+			if (customFieldType.getFieldType().equalsIgnoreCase(val)) {
+				return customFieldType;
+			}
+		}
+		return null;
+	}
+}

@@ -1,0 +1,102 @@
+package com.nexteducation.NextConfig.module.model.response.MasterTemplate;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class MasterTemplateResponse {
+
+	private String id;
+	
+	private String erpUrlId;
+
+	private String entityId;
+	
+	private String masterTemplateName;
+
+	private Status status;
+	
+	private String createdBy;
+
+	private Date createdOn;
+
+	private String modifiedBy;
+
+	private Date modifiedOn;
+
+
+	public String getMasterTemplateName() {
+		return masterTemplateName;
+	}
+
+	public void setMasterTemplateName(String masterTemplateName) {
+		this.masterTemplateName = masterTemplateName;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getErpUrlId() {
+		return erpUrlId;
+	}
+
+	public void setErpUrlId(String erpUrlId) {
+		this.erpUrlId = erpUrlId;
+	}
+
+	public String getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(String entityId) {
+		this.entityId = entityId;
+	}
+
+
+
+}

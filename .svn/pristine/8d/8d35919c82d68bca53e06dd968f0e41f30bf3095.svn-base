@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.model.params.productFeature;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class ProductFeatureFetchParams {
+
+	@NotNull(message = "Product Feature ID should not be null")
+	@PathParam(NextConfigUrls.PRODUCT_FEATURE_ID)
+	private Long productFeatureId;
+
+	public Long getProductFeatureId() {
+		return productFeatureId;
+	}
+
+	public void setProductFeatureId(Long productFeatureId) {
+		this.productFeatureId = productFeatureId;
+	}
+
+}

@@ -1,0 +1,79 @@
+package com.nexteducation.NextConfig.module.model.response.CustomField;
+
+import java.util.Date;
+
+public class CustomFieldDataResponse {
+
+	private Long id;
+
+	//private CustomFieldResponse customField;
+
+	private Long entityInstanceId;
+
+	private String value;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getEntityInstanceId() {
+		return entityInstanceId;
+	}
+
+	public void setEntityInstanceId(Long entityInstanceId) {
+		this.entityInstanceId = entityInstanceId;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

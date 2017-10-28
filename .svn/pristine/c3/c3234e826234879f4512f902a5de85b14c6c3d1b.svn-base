@@ -1,0 +1,39 @@
+//package com.nexteducation.NextConfig.validators.ProductFeatures;
+//
+//import javax.validation.ConstraintValidator;
+//import javax.validation.ConstraintValidatorContext;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//
+//import com.nexteducation.NextConfig.module.repository.ProductFeatureRepository;
+//
+//public class ProductFeatureLongConstraintValidator implements ConstraintValidator<ProductFeatureLong, String> {
+//
+//	@Autowired
+//	ProductFeatureRepository productFeatureRepository; 
+//	
+//	@Override
+//	public void initialize(ProductFeatureLong Long) {
+//		
+//	}
+//
+//	@Override
+//	public boolean isValid(String Long, ConstraintValidatorContext context) {
+//		
+//		if(Long.isEmpty())
+//		{
+//			return false;
+//		}
+//		//ProductFeature productFeature = productFeatureRepository.findById(Long);
+////		if(productFeature==null)
+////		{
+////			return false;
+////		}
+//		return true;
+//	}
+//	public boolean isValid(ConstraintValidatorContext context) {
+//
+//		return false;
+//	}
+//
+//}

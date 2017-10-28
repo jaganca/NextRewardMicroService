@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+
+
+public interface ReligionRepository extends JpaRepository<Religion, Serializable>{
+
+	Religion findByIdAndBranchId(Long id, Long branchId);
+
+	Religion findById(Long id);
+
+	List<Religion> findByBranchId(Long BranchId);
+	
+	
+
+}

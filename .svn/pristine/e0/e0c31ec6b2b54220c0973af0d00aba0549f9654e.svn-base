@@ -1,0 +1,35 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.AutoNumbering;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingGenerateRequest;
+import com.nexteducation.NextConfig.module.model.response.AutoNumberingResponse;
+
+
+@Mapper(componentModel = "spring" )
+public interface AutoNumberingMapper {
+
+	AutoNumberingMapper INSTANCE = Mappers.getMapper(AutoNumberingMapper.class);
+
+	@Mappings({
+		@Mapping(target="createdOn", expression="java(com.nexteducation.NextConfig.util.DU.now())"),
+		@Mapping(target="modifiedOn", expression="java(com.nexteducation.NextConfig.util.DU.now())")
+		}
+	)
+	AutoNumbering AutoNumberingAddRequestToAutoNumbering(AutoNumberingAddRequest autoNumberingAddRequest);
+	List<AutoNumbering> AutoNumberingaddRequestListToAutoNumberingList(List<AutoNumberingAddRequest> autoNumberingAddRequest);
+	List<AutoNumberingResponse> AutoNumberingListToAutoNumberingResponseList(List<AutoNumbering> autoNumbering);
+	AutoNumberingResponse AutoNumberingToAutoNumberingResponse(AutoNumbering autoNumbering);
+	
+	AutoNumbering AutoNumberingGenerateRequestToAutoNumbering(AutoNumberingGenerateRequest AutoNumberingGenerateRequest);
+	List<AutoNumbering> AutoNumberingGenerateRequestToAutoNumbering(List<AutoNumberingGenerateRequest> AutoNumberingGenerateRequest);
+	
+	
+}

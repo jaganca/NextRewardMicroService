@@ -1,0 +1,19 @@
+package com.nexteducation.NextRewards.hibernate.datasourceRouting;
+
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+
+/**
+ * The Class RoutingDataSource.
+ *
+ * @author krishnakanthv
+ */
+public class RoutingDataSource extends AbstractRoutingDataSource {
+	
+	/** 
+	 * @see org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource#determineCurrentLookupKey()
+	 */
+	@Override
+	protected Object determineCurrentLookupKey() {
+		return DbContextHolder.getDbType();
+	}
+}

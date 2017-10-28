@@ -1,0 +1,33 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.service.core.StandardFieldService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.STANDARD_FIELDS)
+public class StandardFieldController {
+
+	@Autowired
+	StandardFieldService standardFieldService;
+
+	@GET
+	public List<StandardFieldDTO> fetchStandardFields(@BeanParam StandardFieldFetchParams standardFieldFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return standardFieldService.fetchStandardFields(standardFieldFetchParams, sessionParams, queryable);
+	}
+}

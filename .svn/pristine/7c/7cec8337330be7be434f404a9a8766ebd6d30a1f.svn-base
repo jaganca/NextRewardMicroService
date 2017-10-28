@@ -1,0 +1,133 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.ReligionMapper;
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import com.nexteducation.NextConfig.module.repository.ReligionRepository;
+import com.nexteducation.NextConfig.module.service.core.ReligionService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextConfig.util.DU;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Service("ReligionService")
+public class ReligionServiceImpl implements ReligionService {
+
+	@Autowired
+	ReligionRepository religionRepository;
+
+	@Autowired
+	ReligionMapper religionMapper;
+
+	/**
+	 * Fetches the Religion for a given Religion Long.
+	 * @param ReligionFetchParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return ReligionResponse
+	 */
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public ReligionResponse fetchReligions(ReligionFetchParams religionFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		Religion religion = religionRepository.findByIdAndBranchId(religionFetchParams.getReligionId(),
+				sessionParams.getBranchId());
+		if (religion == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					Constants.INVALID_IDENTIFIER, Constants.INVALID_IDENTIFIER);
+		}
+		ReligionResponse religionResponse = religionMapper.ReligionToReligionResponse(religion);
+		return religionResponse;
+	}
+
+	/**
+	 * Update the Religion for a given Religion Long.
+	 * @param ReligionUpdateParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateReligions(ReligionUpdateParams religionUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, ReligionUpdateRequest religionUpdateRequest) {
+		Religion religionUpdate = religionRepository.findById((religionUpdateRequest.getId()));
+		if (religionUpdate == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					Constants.INVALID_IDENTIFIER, Constants.INVALID_IDENTIFIER);
+		}
+		Religion religion = religionMapper.ReligionUpdateRequestToReligion(religionUpdateRequest);
+		religionUpdate.setModifiedBy(sessionParams.getUserId());
+		religionUpdate.setModifiedOn(DU.now());
+		religionUpdate.setAll(religion);
+		religionRepository.save(religionUpdate);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	/**
+	 * Delete the Religion for a given Religion Long.
+	 * @param ReligionDeleteParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return ReligionResponse
+	 */
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteReligions(ReligionDeleteParams religionDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		Long religionId = religionDeleteParams.getReligionId();
+		Religion religionDelete = religionRepository.findById(religionId);
+		if (religionDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					Constants.INVALID_IDENTIFIER, Constants.INVALID_IDENTIFIER);
+		}
+		religionRepository.delete(religionDelete);
+		return new JerseyResponse().withMsg(Constants.RECORDS_DELETED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Adds a new Religion
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addReligions(SessionParams sessionParams, QueryableParams queryable,
+			ReligionAddRequest religionAddRequest) {
+		Religion religion = religionMapper.ReligionAddRequestToReligion(religionAddRequest);
+		religion.setCreatedBy(sessionParams.getUserId());
+		religion.setModifiedBy(sessionParams.getUserId());
+		religion.setBranchId(sessionParams.getBranchId());
+		religion.setParentReligion(religionRepository.findById(religionAddRequest.getParentReligionId()));
+		religionRepository.save(religion);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_INSERTED)
+				.withId(religion.getId());
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<ReligionResponse> fetchAllReligions(SessionParams sessionParams, QueryableParams queryable) {
+		List<Religion> religionList = religionRepository.fetchMasterAndCustomReligions(sessionParams.getBranchId());
+		return religionMapper.ReligionListToReligionResponseList(religionList);
+	}
+
+}

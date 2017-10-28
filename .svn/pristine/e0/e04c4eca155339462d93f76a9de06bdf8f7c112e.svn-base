@@ -1,0 +1,96 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomFieldList.CustomFieldListFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldListService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class CustomFieldListServiceClient implements CustomFieldListService {
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+
+	public CustomFieldListServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+
+	@Override
+	public JerseyResponse addCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_LIST;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldListDTO, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<CustomFieldListResponse> fetchCustomFieldLists(CustomFieldListFetchParams CustomFieldListFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_LIST;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<CustomFieldListResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<CustomFieldListResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteCustomFieldLists(Long customFieldListId, SessionParams sessionParams) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_LIST + "/"
+				+ customFieldListId;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE, null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public CustomFieldListResponse fetchCustomFieldLists(Long customFieldListId, SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JerseyResponse updateCustomFieldLists(Long customFieldListId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JerseyResponse addOrUpdateCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			List<CustomFieldListDTO> customFieldListDTOs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

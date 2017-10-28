@@ -1,0 +1,14 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.response.PageResponse;
+
+/**
+ * The Class CustomFieldPageDTO.
+ */
+public class CustomFieldPageDTO extends PageResponse {
+
+	/** The custom field DT os. */
+	List<CustomFieldDTO> customFieldDTOs;
+}

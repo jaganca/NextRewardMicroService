@@ -1,0 +1,25 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.nexteducation.NextConfig.module.model.bo.Form;
+
+public interface StandardFormRepository extends JpaRepository<Form, Serializable> {
+
+	public Form findByKey(String key);
+
+	public Form findById(Long id);
+
+	public List<Form> findByKeyIn(List<String> string);
+
+	@Query(" select f from Form f left join fetch f.customFormElements fcfe left join fetch fcfe.customField fcfec "
+			+ " where (fcfe is null or (fcfec.branchId = :branchId and fcfec.id = :customFieldId)) ")
+	public List<Form> findByCustomFieldIdAndBranchId(@Param("customFieldId") Long customFieldId,
+			@Param("branchId") Long branchId);
+
+}

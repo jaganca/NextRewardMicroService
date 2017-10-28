@@ -1,0 +1,32 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Language.LanguageUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Language.LanguageUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Language.LanguageResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface LanguageService {
+
+	LanguageResponse fetchLanguages(LanguageFetchParams languageFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	JerseyResponse updateLanguages(LanguageUpdateParams languageUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, LanguageUpdateRequest languageUpdateRequest);
+
+	JerseyResponse deleteLanguages(LanguageDeleteParams languageDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	List<LanguageResponse> fetchAllLanguages(SessionParams sessionParams, QueryableParams queryable);
+
+	AddResponse addLanguages(SessionParams sessionParams, QueryableParams queryable,
+			LanguageAddRequest languageAddRequest);
+
+}

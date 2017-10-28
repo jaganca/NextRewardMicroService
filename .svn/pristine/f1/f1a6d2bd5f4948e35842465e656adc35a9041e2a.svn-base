@@ -1,0 +1,157 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+  
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextService.exception.NextServiceClientException;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextConfig.module.mapper.ProductFeatureMapper;
+import com.nexteducation.NextConfig.module.model.bo.ProductFeature;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureFetchParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+import com.nexteducation.NextConfig.module.repository.ProductFeatureRepository;
+import com.nexteducation.NextConfig.module.service.core.ProductFeatureService;
+import com.nexteducation.NextConfig.util.DU;
+
+@Service("ProductFeatureService")
+public class ProductFeatureServiceImpl implements ProductFeatureService {
+
+	@Autowired
+	ProductFeatureRepository productFeatureRepository;
+
+	@Autowired
+	ProductFeatureMapper productFeatureMapper;
+
+	/**
+	 * Fetches the Product Feature for a given Product Feature Long.
+	 * @param Product FeatureFetchParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return Product FeatureResponse
+	 */
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public ProductFeatureResponse fetchProductFeatures(ProductFeatureFetchParams productFeatureFetchParams,
+			@Valid SessionParams sessionParams, @Valid QueryableParams queryable)
+			throws NextServiceException, NextServiceClientException {
+
+		ProductFeature productFeature = productFeatureRepository.findById(productFeatureFetchParams.getProductFeatureId());
+		if(productFeature == null){
+			throw new NextServiceException("FetchProductFeatureData","not found",500,"ProductFeature not found in the repositroy for a given productFeatureId","Internal Server error");
+		}
+		ProductFeatureResponse productFeatureResponse = productFeatureMapper
+				.ProductFeatureToProductFeatureResponse(productFeature);
+		return productFeatureResponse;
+
+	}
+
+	/**
+	 * Update the Product Feature for a given Product Feature Long.
+	 * @param Product FeatureUpdateParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateProductFeatures(@Valid ProductFeatureUpdateParams productFeatureUpdateParams,
+			@Valid SessionParams sessionParams, QueryableParams queryable,
+			ProductFeatureUpdateRequest productFeatureUpdateRequest)
+			throws NextServiceException, NextServiceClientException {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+
+		ProductFeature productFeature = productFeatureMapper
+				.ProductFeatureUpdateRequestToProductFeature(productFeatureUpdateRequest);
+
+		ProductFeature productFeatureUpdate = productFeatureRepository
+				.findById( (productFeatureUpdateRequest.getId()));
+		if(productFeature == null){
+			throw new NextServiceException("updateProductFeatures","not found",500,"ProductFeature not found in the repository for a given productFeatureId","Internal Server error");
+		}
+		productFeatureUpdate.setModifiedOn(DU.now());
+		productFeatureUpdate.setModifiedBy(sessionParams.getUserId());
+		productFeatureUpdate.setAll(productFeature);
+		productFeatureRepository.save(productFeatureUpdate);
+		return jerseyResponse.withCode("true").withMsg("Record Updated Successfully");
+
+	}
+
+	/**
+	 * Delete the Product Feature for a given Product Feature Long.
+	 * @param Product FeatureDeleteParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return Product FeatureResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse deleteProductFeatures(@Valid ProductFeatureDeleteParams productFeatureDeleteParams,
+			@Valid SessionParams sessionParams, QueryableParams queryable) {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+		Long Long = productFeatureDeleteParams.getProductFeatureId();
+		ProductFeature productFeatureDelete = productFeatureRepository.findById(Long);
+		if(productFeatureDelete == null){
+			throw new NextServiceException("deleteProductFeatures","not found",500,"ProductFeature not found in the repository for a given productFeatureId","Internal Server error");
+		}
+		productFeatureRepository.delete(productFeatureDelete);
+		return jerseyResponse.withMsg("Record deleted Successfully").withCode("true");
+	}
+
+	/**
+	 * Fetches all the product features corresponding to the Branch and Academic Session ID
+	 * @param sessionParams
+	 * @param queryable
+	 * @return List<Product FeatureResponse>
+	 */
+	
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<ProductFeatureResponse> fetchAllProductFeatures(SessionParams sessionParams,
+			QueryableParams queryable) {
+		List<ProductFeature> productFeatureList = productFeatureRepository.findByBranchId(sessionParams. getBranchId());
+//		if(productFeatureList == null){
+//			throw new NextServiceException("fetchAllProductFeatures","not found",500,"No productFeature found","Internal Server error");
+//		}
+		return productFeatureMapper.ProductFeatureListToProductFeatureResponseList(productFeatureList);
+
+	}
+
+	/**
+	 * Adds a new Product Feature
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+
+	@Override
+	@Transactional
+	public JerseyResponse addProductFeatures(SessionParams sessionParams, QueryableParams queryable,
+			ProductFeatureAddRequest productFeatureAddRequest) {
+		JerseyResponse jerseyResponse = new JerseyResponse();
+		ProductFeature productFeature = productFeatureMapper
+				.ProductFeatureAddRequestToProductFeature(productFeatureAddRequest);		
+		productFeature.setCreatedBy(sessionParams.getUserId());
+		productFeature.setModifiedBy(sessionParams.getUserId());
+		productFeature.setBranchId(sessionParams. getBranchId());
+		productFeatureRepository.save(productFeature);
+		return jerseyResponse.withMsg("Record Added Successfully").withCode("true");
+
+	}
+
+}

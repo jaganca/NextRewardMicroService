@@ -1,0 +1,190 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.InputType;
+
+@Entity
+@Table(name = "CUSTOM_FIELD", uniqueConstraints = { @UniqueConstraint(columnNames = { "BRANCH_ID", "ENTITY_NAME",
+		"INPUT_KEY" }, name = "IDX__UNIQUE__BRANCH_ID__ENTITY_NAME__DEFAULT_LABEL") })
+public class CustomField {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CUSTOM_FIELD_ID", columnDefinition = "BIGINT(20)")
+	private Long id;
+
+	@Column(name = "BRANCH_ID", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long branchId;
+
+	@Column(name = "DEFAULT_LABEL", nullable = false)
+	private String defaultLabel;
+
+	@Column(name = "ENTITY_NAME", columnDefinition = "VARCHAR(15)", nullable = false)
+	private String entityName;
+
+	@Column(name = "FIELD_TYPE_ID", columnDefinition = "VARCHAR(20)", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private FieldType fieldType;
+
+	@Column(name = "INPUT_TYPE_ID", columnDefinition = "TINYINT(2)")
+	private InputType inputType;
+
+	@Column(name = "INPUT_KEY", columnDefinition = "VARCHAR(100)", nullable = false)
+	private String key;
+
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long createdBy;
+
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long modifiedBy;
+
+	@Column(name = "MODIFIED_ON", nullable = false)
+	private Date modifiedOn;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customField")
+	private List<CustomFormElement> customFormElements;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customField")
+	private List<CustomFieldList> customFieldLists;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customField")
+	private List<CustomFieldData> customFieldData;
+
+	public List<CustomFieldData> getCustomFieldData() {
+		return customFieldData;
+	}
+
+	public void setCustomFieldData(List<CustomFieldData> customFieldData) {
+		this.customFieldData = customFieldData;
+	}
+
+	public List<CustomFieldList> getCustomFieldLists() {
+		return customFieldLists;
+	}
+
+	public void setCustomFieldLists(List<CustomFieldList> customFieldLists) {
+		this.customFieldLists = customFieldLists;
+	}
+
+	public List<CustomFormElement> getCustomFormElements() {
+		return customFormElements;
+	}
+
+	public void setCustomFormElements(List<CustomFormElement> customFormElements) {
+		this.customFormElements = customFormElements;
+	}
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+	public InputType getInputType() {
+		return inputType;
+	}
+
+	public void setInputType(InputType inputType) {
+		this.inputType = inputType;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public void setAll(CustomField customField) {
+		this.setDefaultLabel(customField.getDefaultLabel());
+		this.setEntityName(customField.getEntityName());
+		this.setFieldType(customField.getFieldType());
+		this.setInputType(customField.getInputType());
+	}
+
+}

@@ -1,0 +1,69 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.validators.CustomFieldList.CustomFieldListName;
+
+public class CustomFieldListAddRequest {
+	 
+	@NotEmpty(message="Custom Field Id should not be empty!")
+	private String customFieldId;
+	
+	
+	@NotEmpty(message="Value should not be empty!")
+	@CustomFieldListName(message="Name already exists!")
+	private String value;
+
+	private Status status;
+
+	 
+	private String createdBy;
+
+	 
+	private String modifiedBy;
+
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public String getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(String customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+
+}

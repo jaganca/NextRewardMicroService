@@ -1,0 +1,56 @@
+package com.nexteducation.NextConfig.module.model.request.productFeature;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+
+public class ProductFeatureAddRequest {	
+	
+	@NotEmpty(message="Feature Description should not be empty!")
+	private String featureDesc;
+	
+	@NotEmpty(message="Feature Value should not be empty!")
+	private String featureValue;
+	
+	
+	 
+	private String createdBy;
+
+	 
+	private String modifiedBy;
+
+	public String getFeatureDesc() {
+		return featureDesc;
+	}
+
+	public void setFeatureDesc(String featureDesc) {
+		this.featureDesc = featureDesc;
+	}
+
+	public String getFeatureValue() {
+		return featureValue;
+	}
+
+	public void setFeatureValue(String featureValue) {
+		this.featureValue = featureValue;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	
+
+
+}

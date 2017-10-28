@@ -1,0 +1,125 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementAddParams;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFormElementService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class CustomFormElementServiceClient implements CustomFormElementService {
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+
+	public CustomFormElementServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+
+	@Override
+	public JerseyResponse addCustomFormElements(SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequest) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELDS_MAPPING;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFormElementRequest, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELDS_MAPPING + "/"
+				+ customFormElementId;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE, null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			CustomFormElementFetchParams customFormElementFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELDS_MAPPING;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		List<Object> objects = Arrays.asList(sessionParams, customFormElementFetchParams, queryable);
+		ResponseEntity<List<CustomFormElementResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(objects, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<CustomFormElementResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse toggleCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomFormElementResponse fetchCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELDS_MAPPING + "/"
+				+ customFormElementId;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		List<Object> objects = Arrays.asList(sessionParams);
+		ResponseEntity<CustomFormElementResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(objects, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<CustomFormElementResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse addOrUpdateCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, List<CustomFormElementRequest> customFormElementRequests) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JerseyResponse updateHideStatus(Long customFormElementId, SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JerseyResponse updateMandatoryStatus(Long customFormElementId, SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JerseyResponse UpdateCustomFormElements(Long customFormElementId, String key, SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequests) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

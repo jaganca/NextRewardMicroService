@@ -1,0 +1,20 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.AutoNumbering;
+import com.nexteducation.NextConfig.module.model.enums.Type;;
+
+public interface AutoNumberingRepository extends JpaRepository<AutoNumbering, Serializable> {
+		public AutoNumbering findById(Long id);
+		
+		public AutoNumbering findByBranchIdAndTypeAndSubTypeAndAcademicSessionId(Long branchId,Type type,long subType,Long academicSessionId);
+
+		public List<AutoNumbering> findByBranchIdAndAcademicSessionIdAndType(Long branchId,Long academicSessionId,Type type);
+		
+		public List<AutoNumbering> findByBranchIdAndAcademicSessionId(Long branchId,Long academicSessionId);
+
+}

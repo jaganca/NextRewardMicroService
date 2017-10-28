@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.filter.queryable;
+
+/**
+ * The Enum FilterableOperator.
+ */
+enum FilterableOperator {
+	
+	/** The eq. */
+	eq, 
+ /** The ne. */
+ ne, 
+ /** The gt. */
+ gt, 
+ /** The ge. */
+ ge, 
+ /** The lt. */
+ lt, 
+ /** The le. */
+ le, 
+ /** The or. */
+ or, 
+ /** The and. */
+ and, 
+ /** The not. */
+ not;
+}

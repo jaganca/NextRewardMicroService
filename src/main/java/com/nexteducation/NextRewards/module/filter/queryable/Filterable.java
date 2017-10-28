@@ -1,0 +1,113 @@
+package com.nexteducation.NextRewards.module.filter.queryable;
+
+/**
+ * The Class Filterable.
+ */
+class Filterable {
+
+	/** The first. */
+	Filterable first;
+
+	/** The operator. */
+	FilterableOperator operator;
+
+	/** The second. */
+	Filterable second;
+
+	/** The field. */
+	String field;
+
+	/** The value. */
+	String value;
+
+	/**
+	 * Gets the first.
+	 *
+	 * @return the first
+	 */
+	public Filterable getFirst() {
+		return first;
+	}
+
+	/**
+	 * Sets the first.
+	 *
+	 * @param first the new first
+	 */
+	public void setFirst(Filterable first) {
+		this.first = first;
+	}
+
+	/**
+	 * Gets the operator.
+	 *
+	 * @return the operator
+	 */
+	public FilterableOperator getOperator() {
+		return operator;
+	}
+
+	/**
+	 * Sets the operator.
+	 *
+	 * @param operator the new operator
+	 */
+	public void setOperator(FilterableOperator operator) {
+		this.operator = operator;
+	}
+
+	/**
+	 * Gets the second.
+	 *
+	 * @return the second
+	 */
+	public Filterable getSecond() {
+		return second;
+	}
+
+	/**
+	 * Sets the second.
+	 *
+	 * @param second the new second
+	 */
+	public void setSecond(Filterable second) {
+		this.second = second;
+	}
+
+	/**
+	 * Gets the field.
+	 *
+	 * @return the field
+	 */
+	public String getField() {
+		return field;
+	}
+
+	/**
+	 * Sets the field.
+	 *
+	 * @param field the new field
+	 */
+	public void setField(String field) {
+		this.field = field;
+	}
+
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+}

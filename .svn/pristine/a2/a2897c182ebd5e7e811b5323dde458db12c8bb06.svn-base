@@ -1,0 +1,56 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.ProductFeature;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+
+/**
+ * The Interface ProductFeatureMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface ProductFeatureMapper {
+
+	/** The instance. */
+	ProductFeatureMapper INSTANCE = Mappers.getMapper(ProductFeatureMapper.class);
+
+	/**
+	 * Product feature add request to product feature.
+	 *
+	 * @param productFeatureAddRequest the product feature add request
+	 * @return the product feature
+	 */
+	ProductFeature productFeatureAddRequestToProductFeature(ProductFeatureAddRequest productFeatureAddRequest);
+
+	/**
+	 * Product feature update request to product feature.
+	 *
+	 * @param productFeatureUpdateRequest the product feature update request
+	 * @return the product feature
+	 */
+	ProductFeature productFeatureUpdateRequestToProductFeature(ProductFeatureUpdateRequest productFeatureUpdateRequest);
+
+	/**
+	 * Product feature to product feature response.
+	 *
+	 * @param productFeature the product feature
+	 * @return the product feature response
+	 */
+	ProductFeatureResponse productFeatureToProductFeatureResponse(ProductFeature productFeature);
+
+	/**
+	 * Product feature list to product feature response list.
+	 *
+	 * @param productFeatureList the product feature list
+	 * @return the list
+	 */
+	List<ProductFeatureResponse> productFeatureListToProductFeatureResponseList(
+			List<ProductFeature> productFeatureList);
+
+}

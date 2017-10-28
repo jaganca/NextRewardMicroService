@@ -1,0 +1,25 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CustomFieldDataMapper {
+
+	CustomFieldDataMapper INSTANCE = Mappers.getMapper(CustomFieldDataMapper.class);
+
+	CustomFieldData customFieldDataDTOToCustomFieldData(CustomFieldDataDTO customFieldDataDTO);
+
+	List<CustomFieldData> customFieldDataDTOToCustomFieldData(List<CustomFieldDataDTO> customFieldDataDTO);
+
+	CustomFieldDataDTO customFieldDataToCustomFieldDataDTO(CustomFieldData customFieldData);
+
+	List<CustomFieldDataDTO> customFieldDataToCustomFieldDataDTO(List<CustomFieldData> customFieldData);
+
+}

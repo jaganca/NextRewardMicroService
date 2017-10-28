@@ -1,0 +1,81 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.RollNumberSettingResponse;
+import com.nexteducation.NextConfig.module.model.response.StatusResponse;
+import com.nexteducation.NextConfig.module.service.core.RollNumberSettingService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class RollNumberServiceClient implements RollNumberSettingService {
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+	
+	public RollNumberServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	@Override
+	public StatusResponse addRollNumberSetting(Long branchId,
+			RollNumberSettingAddRequest rollNumberSettingAddRequest) {
+		// TODO Auto-generated method stub
+		final String REST_URI = serverUrl + NextConfigUrls.VERSION + NextConfigUrls.ROLL_NUMBER_SETTING;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(rollNumberSettingAddRequest,headers);
+		ResponseEntity<StatusResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(branchId, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<StatusResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public StatusResponse updateRollNumberSetting(SessionParams sessionParams,
+			RollNumberSettingUpdateRequest rollNumberSettingUpdateRequest) {
+		// TODO Auto-generated method stub
+		final String REST_URI = serverUrl + NextConfigUrls.VERSION + NextConfigUrls.ROLL_NUMBER_SETTING;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(rollNumberSettingUpdateRequest,headers);
+		ResponseEntity<StatusResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<StatusResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public RollNumberSettingResponse fetchRollNumberSetting(SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+		final String REST_URI = serverUrl + NextConfigUrls.VERSION + NextConfigUrls.ROLL_NUMBER_SETTING;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<RollNumberSettingResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<RollNumberSettingResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+}

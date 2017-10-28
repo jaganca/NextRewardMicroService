@@ -1,0 +1,25 @@
+package com.nexteducation.NextConfig.module.model.params.Category;
+
+  
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+ 
+
+public class CategoryUpdateParams {
+	 
+	@NotNull(message = "Language ID should not be null")
+	@PathParam("languageId")
+	String languageId;
+
+	public String getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(String languageId) {
+		this.languageId = languageId;
+	}
+
+}
+

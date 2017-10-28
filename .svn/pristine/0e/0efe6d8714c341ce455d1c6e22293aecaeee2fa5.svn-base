@@ -1,0 +1,101 @@
+package com.nexteducation.NextConfig.module.repository.custom.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFieldRepositoryCustom;
+import com.nexteducation.NextConfig.util.ERPApp;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+@Repository
+public class CustomFieldRepositoryImpl implements CustomFieldRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<CustomField> findByBOFilters(CustomFieldFetchParams customFieldFetchParams,
+			QueryableParams queryableParams) {
+		final StringBuilder builder = new StringBuilder(" select distinct cf from CustomField cf ");
+		if (customFieldFetchParams.getFetch() != null && !customFieldFetchParams.getFetch().isEmpty()) {
+			if (containsCaseInsensitive("custom_field_lists", customFieldFetchParams.getFetch())) {
+				builder.append(" left join fetch cf.customFieldLists cfcfl ");
+			}
+			if (containsCaseInsensitive("custom_form_elements", customFieldFetchParams.getFetch())) {
+				builder.append(" left join fetch cf.customFormElements cfcfe ");
+			}
+		}
+		builder.append(" where 1 = 1 ");
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getBranchId())) {
+			builder.append(" and cf.branchId = :branchId ");
+		}
+		if (! ERPApp.isNullOrEmptyList(customFieldFetchParams.getEntityNames())) {
+			builder.append(" and cf.entityName in :entityName ");
+		}
+		final TypedQuery<CustomField> query = entityManager.createQuery(builder.toString(), CustomField.class);
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getBranchId())) {
+			query.setParameter("branchId", customFieldFetchParams.getBranchId());
+		}
+		if (! ERPApp.isNullOrEmptyList(customFieldFetchParams.getEntityNames())) {
+			query.setParameter("entityName", customFieldFetchParams.getEntityNames());
+		}
+		List<CustomField> customField = query.getResultList();
+		return customField;
+	}
+
+	private boolean containsCaseInsensitive(String s, List<String> l) {
+		for (String string : l) {
+			if (string.equalsIgnoreCase(s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<CustomField> findByBOFiltersNotInForm(CustomFieldFetchParams customFieldFetchParams,
+			QueryableParams queryable , Long formId) {
+		final StringBuilder builder = new StringBuilder(" select distinct cf from CustomField cf ");
+		if (customFieldFetchParams.getFetch() != null && !customFieldFetchParams.getFetch().isEmpty()) {
+			if (containsCaseInsensitive("custom_field_lists", customFieldFetchParams.getFetch())) {
+				builder.append(" left join fetch cf.customFieldLists cfcfl ");
+			}
+			if (containsCaseInsensitive("custom_form_elements", customFieldFetchParams.getFetch())) {
+				builder.append(" left join fetch cf.customFormElements cfcfe ");
+			}
+		}
+		builder.append(" where 1 = 1 ");
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getFormName())) {
+			builder.append(" and cf.id not in ( select cfe.customField.id from CustomFormElement cfe where cfe.form.id =:formId  and cfe.branchId =:branchId ) ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getBranchId())) {
+			builder.append(" and cf.branchId = :branchId ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getBranchId())) {
+			builder.append(" and cf.branchId = :branchId ");
+		}
+		if (! ERPApp.isNullOrEmptyList(customFieldFetchParams.getEntityNames())) {
+			builder.append(" and cf.entityName in :entityName ");
+		}
+		final TypedQuery<CustomField> query = entityManager.createQuery(builder.toString(), CustomField.class);
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getFormName())) {
+			query.setParameter("formId",formId );
+		}
+		if (!ERPApp.isEmptyObject(customFieldFetchParams.getBranchId())) {
+			query.setParameter("branchId", customFieldFetchParams.getBranchId());
+		}
+		if (! ERPApp.isNullOrEmptyList(customFieldFetchParams.getEntityNames())) {
+			query.setParameter("entityName", customFieldFetchParams.getEntityNames());
+		}
+		List<CustomField> customField = query.getResultList();
+		return customField;
+	}
+
+}

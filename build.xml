@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!-- Configuration of the Ant build system to generate a Jar file -->
+<project name="ClientJarMain" default="CreateJar">
+	<target name="CreateJar" description="Create Jar file">
+		<jar destfile="target/NextRewardsClient.jar">
+			<fileset dir="target/classes">
+				<include name="**/module/dto/*.class" />
+				<include name="**/model/enums/*.class" />
+				<include name="**/model/params/*/*.class" />
+				<include name="**/model/params/*.class" />
+				<include name="**/model/request/*/*.class" />
+				<include name="**/model/request/*.class" />
+				<include name="**/model/response/*/*.class" />
+				<include name="**/model/response/*.class" />
+				<include name="**/service/core/*.class" />
+				<include name="**/service/client/*.class" />
+				<include name="**/NextRewards/util/*.class" />
+			</fileset>
+			<fileset dir="src/main/java">
+				<include name="**/module/dto/*.java" />
+				<include name="**/model/enums/*.java" />
+				<include name="**/model/params/*/*.java" />
+				<include name="**/model/params/*.java" />
+				<include name="**/model/request/*/*.java" />
+				<include name="**/model/request/*.java" />
+				<include name="**/model/response/*/*.java" />
+				<include name="**/model/response/*.java" />
+				<include name="**/service/core/*.java" />
+				<include name="**/service/client/*.java" />
+				<include name="**/NextRewards/util/*.java" />
+			</fileset>
+		</jar>
+	</target>
+</project>

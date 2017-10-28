@@ -1,0 +1,29 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {
+		CustomFieldListMapper.class })
+public abstract class CustomFieldMapper extends CommonMapper {
+
+	public abstract CustomField customFieldDTOToCustomField(CustomFieldDTO customFieldDTO);
+
+	//CustomField customFieldUpdateDTOToCustomField(CustomFieldUpdateDTO customFieldDTO);
+
+	public abstract CustomFieldDTO customFieldToCustomFieldDTO(CustomField customField);
+
+	public abstract List<CustomFieldDTO> customFieldListToCustomFieldDTOList(List<CustomField> customFieldList);
+
+	public abstract CustomFieldResponse customFieldToCustomFieldResponse(CustomField customField);
+
+	public abstract List<CustomFieldResponse> customFieldListToCustomFieldResponseList(
+			List<CustomField> customFieldList);
+
+}

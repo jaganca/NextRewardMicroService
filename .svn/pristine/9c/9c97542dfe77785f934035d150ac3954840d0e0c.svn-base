@@ -1,0 +1,21 @@
+package com.nexteducation.NextConfig.module.model.params.Caste;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CasteFetchParams {
+
+	@NotNull(message = "CASTE ID should not be null")
+	@PathParam(NextConfigUrls.CASTE_ID)
+	private Long casteId;
+
+	public Long getCasteId() {
+		return casteId;
+	}
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+}

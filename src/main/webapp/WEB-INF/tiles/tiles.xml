@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- Templates -->
+	
+	<definition name="layout.basic" template="/index.jsp">
+		<put-attribute name="aside" value="/aside.jsp" />
+		<put-attribute name="header" value="/header.jsp" />
+		<put-attribute name="body" value=""/>
+		<put-attribute name="footer" value="/footer.jsp" />
+	</definition>
+	
+	<!-- Pages -->	
+	
+	<definition name="/template/body" extends="layout.basic">
+		<put-attribute name="body" value="/body.jsp" />
+	</definition>
+<!-- 	<definition name="/*/*" extends="layout.basic"> -->
+<!-- 		<put-attribute name="body" value="/body.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="/*/*/*" extends="layout.basic"> -->
+<!-- 		<put-attribute name="body" value="/body.jsp" /> -->
+<!-- 	</definition> -->
+<!-- 	<definition name="/greet" extends="layout.basic"> -->
+<!-- 		<put-attribute name="body" value="/greet.jsp" /> -->
+<!-- 	</definition> -->
+	<!-- Body Mapping With Layout Template-->
+<!--     <definition name="body/*" template="layout.basic"> -->
+<!-- 		<put-attribute name="body" value="/view/body/{1}.jsp" /> -->
+<!-- 	</definition> -->
+	
+<!--     <definition name="body/*/*" template="layout.basic"> -->
+<!-- 		<put-attribute name="body" value="/view/body/{1}/{2}.jsp" /> -->
+<!-- 	</definition> -->
+	
+	<!-- Component Mapping -->
+<!-- 	<definition name="component/*/*" template="/view/component/{1}/{2}.jsp"> -->
+<!-- 	</definition> -->
+	
+	<definition name="login" template="/login.jsp">
+	</definition>
+    
+</tiles-definitions>

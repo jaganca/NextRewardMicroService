@@ -1,0 +1,69 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.validators.CustomFields.CustomFieldName;
+public class CustomFieldUpdateRequest {
+	
+	 
+	@NotEmpty(message = "Id should not be empty")
+	private Long Id;
+	
+	@NotEmpty(message = "Fieldname should not be empty")
+	@CustomFieldName(message="Fieldname is already in use!")
+	private String fieldName;
+
+	private boolean ifMandatory;
+
+	private Status status;
+	
+	 
+	private Long modifiedBy;
+
+	
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getId() {
+		return Id;
+	}
+
+	public void setId(Long id) {
+		Id = id;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+
+	
+}

@@ -1,0 +1,191 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.CasteMapper;
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteComplexFetchParam;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import com.nexteducation.NextConfig.module.repository.CasteRepository;
+import com.nexteducation.NextConfig.module.service.core.CasteService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextConfig.util.DU;
+import com.nexteducation.NextService.exception.NextServiceClientException;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Service("casteService")
+public class CasteServiceImpl implements CasteService {
+
+	@Autowired
+	CasteRepository casteRepository;
+
+	@Autowired
+	CasteMapper casteMapper;
+
+	/**
+	 * Fetches the Caste for a given Caste Long.
+	 * @param CasteFetchParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return CasteResponse
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public CasteResponse fetchCastes(CasteFetchParams casteFetchParams, @Valid SessionParams sessionParams,
+			@Valid QueryableParams queryable) throws NextServiceException, NextServiceClientException {
+		Caste caste = casteRepository.findByIdAndBranchId(casteFetchParams.getCasteId(), sessionParams.getBranchId());
+		if (caste == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		CasteResponse casteResponse = casteMapper.casteToCasteResponse(caste);
+		return casteResponse;
+	}
+
+	/**
+	 * Update the Caste for a given Caste Long.
+	 * @param CasteUpdateParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+
+	@Override
+	@Transactional
+	public JerseyResponse updateCastes(@Valid CasteUpdateParams casteUpdateParams, @Valid SessionParams sessionParams,
+			QueryableParams queryable, CasteUpdateRequest casteUpdateRequest)
+			throws NextServiceException, NextServiceClientException {
+		Caste casteUpdate = casteRepository.findById((casteUpdateRequest.getId()));
+		if (casteUpdate == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		Caste caste = casteMapper.casteUpdateRequestToCaste(casteUpdateRequest);
+		casteUpdate.setModifiedOn(DU.now());
+		casteUpdate.setModifiedBy(sessionParams.getUserId());
+		casteUpdate.setName(caste.getName());
+		if (casteUpdateRequest.getParentCasteId() != null) {
+			casteUpdate.setParentCaste(casteRepository.findById(Long.parseLong(casteUpdateRequest.getParentCasteId())));
+		}
+		casteUpdate.setStatus(caste.getStatus());
+		casteRepository.save(casteUpdate);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+
+	}
+
+	/**
+	 * Delete the Caste for a given Caste Long.
+	 * @param CasteDeleteParams
+	 * @param sessionParams
+	 * @param queryable
+	 * @return CasteResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse deleteCastes(@Valid CasteDeleteParams casteDeleteParams, @Valid SessionParams sessionParams,
+			QueryableParams queryable) {
+		Caste casteDelete = casteRepository.findById(casteDeleteParams.getCasteId());
+		if (casteDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		try {
+			casteRepository.delete(casteDelete);
+		} catch (DataIntegrityViolationException e) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_500, 500,
+					"Constraint Violation Exception",
+					"Please unassign all the Students, Staff and the SubCastes associated with this Caste and try again!");
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_DELETED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Fetches all the castes corresponding to the Branch and Academic Session ID
+	 * @param sessionParams
+	 * @param queryable
+	 * @return List<CasteResponse>
+	 */
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CasteCustomResponse> fetchAllParentCastes(SessionParams sessionParams, QueryableParams queryable) {
+		List<Caste> casteList = casteRepository.findAllParentCastes(sessionParams.getBranchId());
+		return casteMapper.casteListToCasteCustomResponseList(casteList);
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	@Deprecated
+	public List<CasteResponse> fetchCastes(SessionParams sessionParams, QueryableParams queryable) {
+		List<Caste> Castes = casteRepository.findByBranchIdOrBranchIdIsNull(sessionParams.getBranchId());
+		return casteMapper.casteListToCasteResponseList(Castes);
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CasteResponse> fetchCastes(CasteComplexFetchParam casteComplexFetchParam, SessionParams sessionParams,
+			QueryableParams queryable) {
+		if (casteComplexFetchParam.getBranchId() == null) {
+			casteComplexFetchParam.setBranchId(sessionParams.getBranchId());
+		}
+		List<Caste> Castes = casteRepository.findByFilters(casteComplexFetchParam, queryable);
+		return casteMapper.casteListToCasteResponseList(Castes);
+	}
+
+	/**
+	 * Adds a new Caste
+	 * @param sessionParams
+	 * @param queryable
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public AddResponse addCastes(SessionParams sessionParams, QueryableParams queryable,
+			CasteAddRequest casteAddRequest) {
+		Caste caste = casteMapper.casteAddRequestToCaste(casteAddRequest);
+		caste.setCreatedOn(DU.now());
+		caste.setCreatedBy(sessionParams.getUserId());
+		caste.setModifiedBy(sessionParams.getUserId());
+		caste.setModifiedOn(DU.now());
+		caste.setBranchId(sessionParams.getBranchId());
+		caste.setParentCaste(casteRepository.findById(casteAddRequest.getParentCasteId()));
+		casteRepository.save(caste);
+		AddResponse addResponse = new AddResponse();
+		addResponse.setId(caste.getId());
+		addResponse.setMsg("Caste added succesfully");
+		addResponse.setCode("200");
+		return addResponse;
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CasteResponse> fetchSubCastes(CasteFetchParams casteFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		List<Caste> casteList = casteRepository.findByParentCaste_Id(casteFetchParams.getCasteId());
+		List<CasteResponse> casteResponseList = casteMapper.casteListToCasteResponseList(casteList);
+		return casteResponseList;
+	}
+
+}

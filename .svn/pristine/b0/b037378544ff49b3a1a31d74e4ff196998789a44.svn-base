@@ -1,0 +1,117 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+
+@Entity
+@Table(name="PRODUCT_FEATURE",uniqueConstraints=@UniqueConstraint(columnNames = { "BRANCH_ID", "FEATURE_DESC"}, name = "IDX_PRODUCT_FEATURE_BRANCH_ID_FEATURE_DESC"))
+public class ProductFeature {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PRODUCT_FEATURE_ID" )
+	private Long id;
+
+
+	@Column(name="BRANCH_ID" )
+	private Long branchId;
+
+	@Column(name="FEATURE_DESC")
+	private String featureDesc;
+
+	@Column(name="FEATURE_VALUE")
+	private String featureValue;
+
+	@Column(name = "CREATED_BY" )
+	private Long createdBy;
+
+	@Column(name="CREATED_ON")
+	private Date createdOn = null;
+
+
+	@Column(name = "MODIFIED_BY" )
+	private Long modifiedBy;
+
+	@Column(name="MODIFIED_ON")
+	private Date modifiedOn = null;
+
+
+	public String getFeatureDesc() {
+		return featureDesc;
+	}
+
+	public void setFeatureDesc(String featureDesc) {
+		this.featureDesc = featureDesc;
+	}
+
+	public String getFeatureValue() {
+		return featureValue;
+	}
+
+	public void setFeatureValue(String featureValue) {
+		this.featureValue = featureValue;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+	
+	public void setAll(ProductFeature productFeature)
+	{
+		this.setFeatureDesc(productFeature.getFeatureDesc());
+		this.setFeatureValue(productFeature.getFeatureValue());
+	}
+
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+}

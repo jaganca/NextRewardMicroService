@@ -1,0 +1,127 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.AutoNumbering;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.AutoNumbering.AutoNumberingGenerateRequest;
+import com.nexteducation.NextConfig.module.model.response.AutoNumberingResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class AutoNumberingMapperImpl implements AutoNumberingMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public AutoNumbering AutoNumberingAddRequestToAutoNumbering(AutoNumberingAddRequest autoNumberingAddRequest) {
+        if ( autoNumberingAddRequest == null ) {
+            return null;
+        }
+
+        AutoNumbering autoNumbering = new AutoNumbering();
+
+        autoNumbering.setSubType( autoNumberingAddRequest.getSubType() );
+        autoNumbering.setType( autoNumberingAddRequest.getType() );
+        autoNumbering.setFixedValue( autoNumberingAddRequest.getFixedValue() );
+        autoNumbering.setVariableStart( autoNumberingAddRequest.getVariableStart() );
+        autoNumbering.setLastRunVariable( autoNumberingAddRequest.getLastRunVariable() );
+        autoNumbering.setStatus( autoNumberingAddRequest.getStatus() );
+        autoNumbering.setItemGroup( autoNumberingAddRequest.getItemGroup() );
+        autoNumbering.setBranchId( uuidMapper.asString( autoNumberingAddRequest.getBranchId() ) );
+        autoNumbering.setCreatedBy( uuidMapper.asString( autoNumberingAddRequest.getCreatedBy() ) );
+        autoNumbering.setAcademicSessionId( uuidMapper.asString( autoNumberingAddRequest.getAcademicSessionId() ) );
+
+        autoNumbering.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        autoNumbering.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return autoNumbering;
+    }
+
+    @Override
+    public List<AutoNumbering> AutoNumberingaddRequestListToAutoNumberingList(List<AutoNumberingAddRequest> autoNumberingAddRequest) {
+        if ( autoNumberingAddRequest == null ) {
+            return null;
+        }
+
+        List<AutoNumbering> list = new ArrayList<AutoNumbering>();
+        for ( AutoNumberingAddRequest autoNumberingAddRequest_ : autoNumberingAddRequest ) {
+            list.add( AutoNumberingAddRequestToAutoNumbering( autoNumberingAddRequest_ ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<AutoNumberingResponse> AutoNumberingListToAutoNumberingResponseList(List<AutoNumbering> autoNumbering) {
+        if ( autoNumbering == null ) {
+            return null;
+        }
+
+        List<AutoNumberingResponse> list = new ArrayList<AutoNumberingResponse>();
+        for ( AutoNumbering autoNumbering_ : autoNumbering ) {
+            list.add( AutoNumberingToAutoNumberingResponse( autoNumbering_ ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public AutoNumberingResponse AutoNumberingToAutoNumberingResponse(AutoNumbering autoNumbering) {
+        if ( autoNumbering == null ) {
+            return null;
+        }
+
+        AutoNumberingResponse autoNumberingResponse_ = new AutoNumberingResponse();
+
+        autoNumberingResponse_.setSubType( autoNumbering.getSubType() );
+        autoNumberingResponse_.setType( autoNumbering.getType() );
+        autoNumberingResponse_.setFixedValue( autoNumbering.getFixedValue() );
+        autoNumberingResponse_.setVariableStart( autoNumbering.getVariableStart() );
+        autoNumberingResponse_.setLastRunVariable( autoNumbering.getLastRunVariable() );
+        autoNumberingResponse_.setStatus( autoNumbering.getStatus() );
+        autoNumberingResponse_.setCreatedBy( uuidMapper.asString( autoNumbering.getCreatedBy() ) );
+        autoNumberingResponse_.setItemGroup( autoNumbering.getItemGroup() );
+        autoNumberingResponse_.setId( uuidMapper.asString( autoNumbering.getId() ) );
+        autoNumberingResponse_.setBranchId( uuidMapper.asString( autoNumbering.getBranchId() ) );
+        autoNumberingResponse_.setAcademicSessionId( uuidMapper.asString( autoNumbering.getAcademicSessionId() ) );
+
+        return autoNumberingResponse_;
+    }
+
+    @Override
+    public AutoNumbering AutoNumberingGenerateRequestToAutoNumbering(AutoNumberingGenerateRequest AutoNumberingGenerateRequest) {
+        if ( AutoNumberingGenerateRequest == null ) {
+            return null;
+        }
+
+        AutoNumbering autoNumbering = new AutoNumbering();
+
+        autoNumbering.setSubType( AutoNumberingGenerateRequest.getSubType() );
+        autoNumbering.setType( AutoNumberingGenerateRequest.getType() );
+
+        return autoNumbering;
+    }
+
+    @Override
+    public List<AutoNumbering> AutoNumberingGenerateRequestToAutoNumbering(List<AutoNumberingGenerateRequest> AutoNumberingGenerateRequest) {
+        if ( AutoNumberingGenerateRequest == null ) {
+            return null;
+        }
+
+        List<AutoNumbering> list = new ArrayList<AutoNumbering>();
+        for ( AutoNumberingGenerateRequest autoNumberingGenerateRequest : AutoNumberingGenerateRequest ) {
+            list.add( AutoNumberingGenerateRequestToAutoNumbering( autoNumberingGenerateRequest ) );
+        }
+
+        return list;
+    }
+}

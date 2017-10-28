@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.validators.CustomFields;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+
+public class CustomFieldNameConstraintValidator implements ConstraintValidator<CustomFieldName, String> {
+
+	@Autowired
+	CustomFieldRepository customFieldRepository; 
+	
+	@Override
+	public void initialize(CustomFieldName fieldName) {
+		
+	}
+
+	@Override
+	public boolean isValid(String fieldName, ConstraintValidatorContext context) {
+		if(fieldName!=null)
+		{
+			CustomField customField = customFieldRepository.findByKey(fieldName);
+			if(customField!=null)
+			{
+				return false;
+			}
+		}
+		return true;
+		
+	
+	}
+
+}

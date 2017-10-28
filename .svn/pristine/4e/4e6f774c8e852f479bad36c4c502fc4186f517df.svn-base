@@ -1,0 +1,110 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import java.util.List;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CustomFieldDataFetchParams {
+
+	@QueryParam(NextConfigUrls.CUSTOM_FIELD_ID)
+	private Long customFieldId;
+
+	@QueryParam(NextConfigUrls.CUSTOM_FIELD_IDS)
+	private List<Long> customFieldIds;
+
+	@QueryParam(NextConfigUrls.ENTITY_NAME)
+	private String entityName;
+
+	@QueryParam(NextConfigUrls.ENTITY_NAMES)
+	private List<String> entityNames;
+
+	@QueryParam(NextConfigUrls.FORM_ID)
+	private Long formId;
+
+	@QueryParam(NextConfigUrls.BRANCH_ID)
+	private Long branchId;
+
+	@QueryParam(NextConfigUrls.ENTITY_INSTANCE_ID)
+	private Long instanceId;
+
+	@QueryParam(NextConfigUrls.ENTITY_INSTANCE_IDS)
+	private List<Long> entityInstanceIds;
+
+	@QueryParam(NextConfigUrls.FETCH)
+	private List<String> fetch;
+
+	public List<Long> getCustomFieldIds() {
+		return customFieldIds;
+	}
+
+	public void setCustomFieldIds(List<Long> customFieldIds) {
+		this.customFieldIds = customFieldIds;
+	}
+
+	public List<String> getEntityNames() {
+		return entityNames;
+	}
+
+	public void setEntityNames(List<String> entityNames) {
+		this.entityNames = entityNames;
+	}
+
+	public List<Long> getEntityInstanceIds() {
+		return entityInstanceIds;
+	}
+
+	public void setEntityInstanceIds(List<Long> entityInstanceIds) {
+		this.entityInstanceIds = entityInstanceIds;
+	}
+
+	public List<String> getFetch() {
+		return fetch;
+	}
+
+	public void setFetch(List<String> fetch) {
+		this.fetch = fetch;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public Long getInstanceId() {
+		return instanceId;
+	}
+
+	public void setInstanceId(Long instanceId) {
+		this.instanceId = instanceId;
+	}
+
+}

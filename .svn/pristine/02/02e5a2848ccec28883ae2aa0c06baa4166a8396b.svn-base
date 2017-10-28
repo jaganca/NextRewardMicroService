@@ -1,0 +1,472 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.CustomFormElementMapper;
+import com.nexteducation.NextConfig.module.mapper.StandardFieldMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.bo.Form;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementAddParams;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFormElementRepository;
+import com.nexteducation.NextConfig.module.repository.StandardFieldRepository;
+import com.nexteducation.NextConfig.module.repository.StandardFormRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFormElementService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextConfig.util.ERPApp;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+
+/**
+ * The Class CustomFormElementServiceImpl.
+ */
+@Service("customFormElementService")
+public class CustomFormElementServiceImpl implements CustomFormElementService {
+
+	/** The custom form element repository. */
+	@Autowired
+	CustomFormElementRepository customFormElementRepository;
+
+	/** The custom form element mapper. */
+	@Autowired
+	CustomFormElementMapper customFormElementMapper;
+
+	/** The standard field mapper. */
+	@Autowired
+	StandardFieldMapper standardFieldMapper;
+
+	/** The custom field repository. */
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	/** The standard field repository. */
+	@Autowired
+	StandardFieldRepository standardFieldRepository;
+
+	/** The standard form repository. */
+	@Autowired
+	StandardFormRepository standardFormRepository;
+
+	/**
+	 * s CustomFormElement i.e Master Tempelate Id and its Custom Field.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequest the custom form element request
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, CustomFormElementRequest customFormElementRequest) {
+		if (customFormElementRequest.getCustomFieldId() == null && customFormElementRequest.getStandardFieldId() == 0) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400,
+					"Both Standard and custom field Ids are null",
+					"Please provide atleast one custom/standard field Id");
+		}
+		final Form form = standardFormRepository.findByKey(customFormElementAddParams.getFormName());
+		if (form == null) {
+			throw new NextServiceException("addOrUpdateCustomFormElements", Constants.ERROR_404, 400,
+					"Custom Form  not found in the repository", "Custom Form  not found in the repository");
+		}
+		CustomFormElement customFormElement = new CustomFormElement();
+		if (customFormElementRequest.getCustomFieldId() != null) {
+			CustomField customField = customFieldRepository
+					.findByIdAndBranchId(customFormElementRequest.getCustomFieldId(), sessionParams.getBranchId());
+			if (customField == null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+						"CustomField not found in the repository", "CustomField not found in the repository");
+			}
+			customFormElement.setLabel(customField.getDefaultLabel());
+			customFormElement.setCustomField(customField);
+			customFormElement.setIfMandatory(customField.isMandatory());
+		} else {
+			StandardField standardField = standardFieldRepository
+					.findById(customFormElementRequest.getStandardFieldId());
+			if (standardField == null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+						"StandardField not found in the repository", "StandardField not found in the repository");
+			}
+			customFormElement.setStandardField(standardField);
+		}
+		customFormElement.setBranchId(sessionParams.getBranchId());
+		customFormElement.setCreatedBy(sessionParams.getUserId());
+		customFormElement.setCreatedOn(DU.now());
+		customFormElement.setModifiedBy(sessionParams.getUserId());
+		customFormElement.setModifiedOn(DU.now());
+		customFormElement.setForm(form);
+		customFormElement.setStatus(customFormElementRequest.getStatus());
+		customFormElementRepository.save(customFormElement);
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS)
+				.withId(customFormElement.getId());
+	}
+
+	/**
+	 * Adds the custom field in all forms.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldInAllForms(Long customFieldId, SessionParams sessionParams) {
+		CustomField customField = customFieldRepository.findByIdAndBranchId(customFieldId, sessionParams.getBranchId());
+		if (customField == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"CustomField not found in the repository", "CustomField not found in the repository");
+		}
+		List<String> formNames = Constants.getFormNames(customField.getEntityName());
+		if (formNames == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"Form related to Entity not found in the repository",
+					"Not a valid Entity - " + customField.getEntityName());
+		}
+		List<Form> forms = standardFormRepository.findByKeyIn(formNames);
+		for (Form form : forms) {
+			CustomFormElement customFormElement = new CustomFormElement();
+			customFormElement.setLabel(customField.getDefaultLabel());
+			customFormElement.setCustomField(customField);
+			customFormElement.setIfMandatory(customField.isMandatory());
+			customFormElement.setBranchId(sessionParams.getBranchId());
+			customFormElement.setCreatedBy(sessionParams.getUserId());
+			customFormElement.setCreatedOn(DU.now());
+			customFormElement.setModifiedBy(sessionParams.getUserId());
+			customFormElement.setModifiedOn(DU.now());
+			customFormElement.setForm(form);
+			customFormElementRepository.save(customFormElement);
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Deletes the custom Field Mapping for a given CustomFormElement Long.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElementDelete = customFormElementRepository.findById(customFormElementId);
+		if (customFormElementDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		if (customFormElementDelete.getStandardField() != null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400,
+					"Cannot delete Standard field", "Cannot delete Standard field");
+		}
+		if (customFormElementDelete.getCustomField().isMandatory()) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400,
+					"Cannot delete Mandatory Field", "Cannot delete Mandatory Field");
+		}
+		customFormElementRepository.delete(customFormElementDelete);
+		return new JerseyResponse().withMsg(Constants.RECORDS_DELETED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Fetches all the Custom form elements.
+	 *
+	 * @param customFormElementFetchParams the custom form element fetch params
+	 * @param sessionParams the session params
+	 * @param queryableParams the queryable params
+	 * @return List <customFormElementDTO>
+	 */
+	@Override
+	@ReadOnlyConnection
+	@Transactional(readOnly = true)
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			CustomFormElementFetchParams customFormElementFetchParams, SessionParams sessionParams,
+			QueryableParams queryableParams) {
+		if (customFormElementFetchParams.getBranchId() == null) {
+			customFormElementFetchParams.setBranchId(sessionParams.getBranchId());
+		}
+		Form form = standardFormRepository.findByKey(customFormElementFetchParams.getFormName());
+		if (form == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"Form not found in the repository", "Form not found in the repository");
+		}
+		List<CustomFormElement> customFormElementList = customFormElementRepository
+				.findByBOFilters(customFormElementFetchParams, queryableParams);
+		StandardFieldFetchParams standardFieldElementFetchParams = new StandardFieldFetchParams();
+		standardFieldElementFetchParams.setEntityName(customFormElementFetchParams.getEntityName());
+		standardFieldElementFetchParams.setFormId(form.getId());
+		List<StandardField> standardFieldList = standardFieldRepository.findStandarFieldsExceptInCustomFormElements(
+				standardFieldElementFetchParams, queryableParams, sessionParams);
+		List<CustomFormElementResponse> customFormElementDTOList = customFormElementMapper
+				.customFormElementToCustomFormElementResponse(customFormElementList);
+		List<CustomFormElementResponse> standardFieldNotInCustom = customFormElementMapper
+				.standardFieldToCustomFormElementResponse(standardFieldList);
+		customFormElementDTOList.addAll(standardFieldNotInCustom);
+		return customFormElementDTOList;
+	}
+
+	/**
+	 * Toggle custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse toggleCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElementToggle = customFormElementRepository.findById(customFormElementId);
+		if (customFormElementToggle == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		if (customFormElementToggle.getCustomField().isMandatory()) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_400, 400,
+					"Cannot Update Mandatory CustomField", "Cannot Update Mandatory CustomField");
+		}
+		if (customFormElementToggle.getStatus() == Status.Active) {
+			customFormElementToggle.setStatus(Status.Inactive);
+		} else {
+			customFormElementToggle.setStatus(Status.Active);
+		}
+		customFormElementToggle.setModifiedBy(sessionParams.getUserId());
+		customFormElementToggle.setModifiedOn(DU.now());
+		customFormElementRepository.save(customFormElementToggle);
+		return new JerseyResponse().withMsg(Constants.RECORDS_UPDATED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Fetch custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the custom form element response
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public CustomFormElementResponse fetchCustomFormElements(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElement = customFormElementRepository.findById(customFormElementId);
+		if (customFormElement == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		return customFormElementMapper.customFormElementToCustomFormElementResponse(customFormElement);
+	}
+
+	/**
+	 * Adds the or update custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addOrUpdateCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, List<CustomFormElementRequest> customFormElementRequests) {
+		Form form = standardFormRepository.findByKey(customFormElementAddParams.getFormName());
+		if (form == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"Custom Form  not found in the repository", "Custom Form  not found in the repository");
+		}
+		CustomFormElementFetchParams customFormElementFetchParams = new CustomFormElementFetchParams();
+		customFormElementFetchParams.setFormId(form.getId());
+		List<CustomFormElement> customFormElements = customFormElementRepository
+				.findByBOFilters(customFormElementFetchParams, null);
+		List<CustomField> customFields = beanToPropertyValueTransform(customFormElements, "customField");
+		List<Long> formIdsInRepository = beanToPropertyValueTransform(customFields, "id");
+		List<Long> formIdsRequest = beanToPropertyValueTransform(customFormElementRequests, "id");
+		///////////////////////////common elements/////////////////////////////////////////////
+		List<Long> common = new ArrayList<>();
+		if (formIdsInRepository != null && !formIdsInRepository.isEmpty()) {
+			common.addAll(formIdsInRepository);
+			common.retainAll(formIdsRequest);
+			List<Long> deleteIds = new ArrayList<>(formIdsInRepository);
+			deleteIds.removeAll(Collections.singleton(null));
+			deleteIds.removeAll(formIdsRequest);
+			List<Long> deleteFormElementIds = new ArrayList<>();
+			if (deleteIds != null && !deleteIds.isEmpty()) {
+				deleteFormElementIds = customFormElementRepository.findByIds(deleteIds, sessionParams.getBranchId());
+			}
+			if (deleteFormElementIds != null && !deleteFormElementIds.isEmpty()) {
+				customFormElementRepository.deleteByIds(deleteFormElementIds, sessionParams.getBranchId());
+			}
+		}
+		List<CustomFormElement> customFormElements2 = customFormElementMapper
+				.customFormElementRequestListToCustomFormElementList(customFormElementRequests);
+		int i = 0;
+		for (CustomFormElement customFormElement : customFormElements2) {
+			if (customFormElement.getId() == null
+					|| (customFormElement.getId() != null && !common.contains(customFormElement.getId()))) {
+				customFormElement.setModifiedOn(DU.now());
+				customFormElement.setBranchId(sessionParams.getBranchId());
+				customFormElement.setModifiedBy(sessionParams.getUserId());
+				customFormElement.setCreatedOn(DU.now());
+				customFormElement.setCreatedBy(sessionParams.getUserId());
+				if (customFormElementRequests.get(i).getCustomFieldId() != null) {
+					CustomField customField = customFieldRepository
+							.findById(customFormElementRequests.get(i).getCustomFieldId());
+					customFormElement.setCustomField(customField);
+				} else {
+					Long standardField = customFormElementRequests.get(i).getStandardFieldId();
+					customFormElement.setStandardField(standardFieldRepository.findById((standardField)));
+				}
+				customFormElement.setForm(form);
+				customFormElementRepository.save(customFormElement);
+			}
+			i++;
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_UPDATED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Bean to property value transform.
+	 *
+	 * @param <S> the generic type
+	 * @param <T> the generic type
+	 * @param source the source
+	 * @param value the value
+	 * @return the list
+	 */
+	@SuppressWarnings("unchecked")
+	public static <S, T> List<T> beanToPropertyValueTransform(final List<S> source, final String value) {
+		if (ERPApp.isEmptyString(value) || ERPApp.isNullOrEmptyList(source)) {
+			return null;
+		}
+		List<T> list = (List<T>) CollectionUtils.collect(source, new BeanToPropertyValueTransformer(value, true));
+		return list;
+	}
+
+	/**
+	 * Update hide status.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateHideStatus(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElement = customFormElementRepository.findById(customFormElementId);
+		if (customFormElement == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		customFormElement.setModifiedBy(sessionParams.getUserId());
+		customFormElement.setModifiedOn(DU.now());
+		customFormElement.setIfHide(!customFormElement.isIfHide());
+		customFormElementRepository.save(customFormElement);
+		return new JerseyResponse().withMsg(Constants.RECORDS_UPDATED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Update mandatory status.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateMandatoryStatus(Long customFormElementId, SessionParams sessionParams) {
+		CustomFormElement customFormElement = customFormElementRepository.findById(customFormElementId);
+		if (customFormElement == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		customFormElement.setModifiedBy(sessionParams.getUserId());
+		customFormElement.setModifiedOn(DU.now());
+		customFormElement.setIfMandatory(!customFormElement.isIfMandatory());
+		customFormElementRepository.save(customFormElement);
+		return new JerseyResponse().withMsg(Constants.RECORDS_UPDATED).withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Update custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param key the key
+	 * @param sessionParams the session params
+	 * @param customFormElementRequest the custom form element request
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateCustomFormElements(Long customFormElementId, String key, SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequest) {
+		if (customFormElementId != null) {
+			CustomFormElement customFormElement = customFormElementRepository.findByIdAndBranchId(customFormElementId,
+					sessionParams.getBranchId());
+			if (customFormElement == null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+						Constants.RECORD_NOT_FOUND, Constants.RECORD_NOT_FOUND);
+			}
+			CustomFormElement customFormElementUpdate = customFormElementMapper
+					.customFormElementRequestToCustomFormElement(customFormElementRequest);
+			customFormElement.setIfMandatory(customFormElementUpdate.isIfMandatory());
+			customFormElement.setIfHide(customFormElementUpdate.isIfHide());
+			customFormElement.setModifiedBy(sessionParams.getUserId());
+			customFormElement.setModifiedOn(DU.now());
+			customFormElementRepository.save(customFormElement);
+		} else {
+			if (customFormElementRequest.getStandardFieldId() == null) {
+				return null;
+			}
+			Form form = standardFormRepository.findByKey(key);
+			if (form == null) {
+				throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+						"Custom Form not found in the repository", "Custom Form not found in the repository");
+			}
+			CustomFormElement customFormElement = customFormElementMapper
+					.customFormElementRequestToCustomFormElement(customFormElementRequest);
+			customFormElement.setModifiedOn(DU.now());
+			customFormElement.setBranchId(sessionParams.getBranchId());
+			customFormElement.setModifiedBy(sessionParams.getUserId());
+			customFormElement.setCreatedOn(DU.now());
+			customFormElement.setCreatedBy(sessionParams.getUserId());
+			Long standardField = customFormElementRequest.getStandardFieldId();
+			customFormElement.setStandardField(standardFieldRepository.findById((standardField)));
+			customFormElement.setForm(form);
+			customFormElementRepository.save(customFormElement);
+		}
+		return new JerseyResponse().withMsg("Status Updated SuccessFully").withCode(Constants.SUCCESS);
+	}
+
+	/**
+	 * Adds the custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, List<CustomFormElementRequest> customFormElementRequests) {
+		for (CustomFormElementRequest customFormElementRequest : customFormElementRequests) {
+			addCustomFormElements(customFormElementAddParams, sessionParams, customFormElementRequest);
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS);
+	}
+
+}

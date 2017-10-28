@@ -1,0 +1,9 @@
+package com.nexteducation.NextConfig.hibernate.datasourceRouting;
+/**
+ * 
+ * @author krishnakanthv
+ *
+ */
+public enum DbType {
+	MASTER, REPLICA,
+}

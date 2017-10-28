@@ -1,0 +1,76 @@
+package com.nexteducation.NextRewards.config;
+
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.glassfish.jersey.message.filtering.SelectableScopeResolver;
+import org.glassfish.jersey.message.filtering.spi.AbstractEntityProcessor;
+import org.glassfish.jersey.message.filtering.spi.EntityGraph;
+import org.glassfish.jersey.message.filtering.spi.EntityProcessor;
+
+import com.nexteducation.NextRewards.annotations.filtering.IgnorableView;
+
+import jersey.repackaged.com.google.common.collect.Sets;
+
+/**
+ * The Class SelectableConfigEntityProcessor.
+ */
+public class SelectableConfigEntityProcessor extends AbstractEntityProcessor {
+
+	/** The register annotation classes. */
+	private static Set<Class> registerAnnotationClasses = new HashSet<Class>();
+
+	/**
+	 * Register.
+	 *
+	 * @param clazz the clazz
+	 */
+	public static void register(Class clazz) {
+		registerAnnotationClasses.add(clazz);
+	}
+
+	/**
+	 * Un register.
+	 *
+	 * @param clazz the clazz
+	 * @return true, if successful
+	 */
+	public static boolean unRegister(Class clazz) {
+		return registerAnnotationClasses.remove(clazz);
+	}
+
+	/** 
+	 * @see org.glassfish.jersey.message.filtering.spi.AbstractEntityProcessor#process(java.lang.String, java.lang.Class, java.lang.annotation.Annotation[], java.lang.annotation.Annotation[], org.glassfish.jersey.message.filtering.spi.EntityGraph)
+	 */
+	@Override
+	protected Result process(final String fieldName, final Class<?> fieldClass, final Annotation[] fieldAnnotations,
+			final Annotation[] annotations, final EntityGraph graph) {
+
+		if (fieldName != null) {
+			final Set<String> scopes = Sets.newHashSet();
+
+			boolean annotationFound = false;
+			for (int i = 0; i < fieldAnnotations.length; i++) {
+				Annotation annotation = fieldAnnotations[i];
+				if (annotation instanceof IgnorableView) {
+					annotationFound = true;
+				}
+				if (registerAnnotationClasses.contains(annotation.annotationType())) {
+					annotationFound = true;
+				}
+			}
+			if (!annotationFound) {
+				// add default selectable scope in case of none requested
+				scopes.add(SelectableScopeResolver.DEFAULT_SCOPE);
+			}
+
+			// add specific scope in case of specific request
+			scopes.add(SelectableScopeResolver.PREFIX + fieldName);
+
+			addFilteringScopes(fieldName, fieldClass, scopes, graph);
+		}
+
+		return EntityProcessor.Result.APPLY;
+	}
+}

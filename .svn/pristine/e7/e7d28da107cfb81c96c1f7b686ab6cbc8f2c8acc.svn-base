@@ -1,0 +1,55 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.Entities;
+import com.nexteducation.NextConfig.module.model.response.Entities.EntityResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class EntityMapperImpl implements EntityMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public EntityResponse EntityToEntityResponse(Entities Entity) {
+        if ( Entity == null ) {
+            return null;
+        }
+
+        EntityResponse entityResponse = new EntityResponse();
+
+        entityResponse.setId( uuidMapper.asString( Entity.getId() ) );
+        entityResponse.setEntityName( Entity.getEntityName() );
+        entityResponse.setStatus( Entity.getStatus() );
+        entityResponse.setCreatedBy( uuidMapper.asString( Entity.getCreatedBy() ) );
+        entityResponse.setModifiedBy( uuidMapper.asString( Entity.getModifiedBy() ) );
+
+        entityResponse.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        entityResponse.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return entityResponse;
+    }
+
+    @Override
+    public List<EntityResponse> EntityListToEntityResponseList(List<Entities> EntityList) {
+        if ( EntityList == null ) {
+            return null;
+        }
+
+        List<EntityResponse> list = new ArrayList<EntityResponse>();
+        for ( Entities entities : EntityList ) {
+            list.add( EntityToEntityResponse( entities ) );
+        }
+
+        return list;
+    }
+}

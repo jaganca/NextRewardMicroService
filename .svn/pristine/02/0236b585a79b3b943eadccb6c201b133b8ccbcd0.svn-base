@@ -1,0 +1,45 @@
+package com.nexteducation.NextConfig.module.model.request.Caste;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+
+public class CasteAddRequest {
+
+	private Long branchId;
+	
+	private Long parentCasteId;
+	
+	@NotEmpty(message="Caste Name should not be empty!")
+	private String name;
+
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+
+	public Long getParentCasteId() {
+		return parentCasteId;
+	}
+
+	public void setParentCasteId(Long parentCasteId) {
+		this.parentCasteId = parentCasteId;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+
+}

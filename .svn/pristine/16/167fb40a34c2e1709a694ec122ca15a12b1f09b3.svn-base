@@ -1,0 +1,36 @@
+package com.nexteducation.NextConfig.module.model.params;
+
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+
+public class SampleContextParams {
+
+	@QueryParam("Long")
+	String Long;
+	
+	@PathParam("pathLong")
+	String pathLong;
+
+	public String getLong() {
+		return Long;
+	}
+
+	public void setLong(String Long) {
+		this.Long = Long;
+	}
+
+	public String getPathLong() {
+		return pathLong;
+	}
+
+	public void setPathLong(String pathLong) {
+		this.pathLong = pathLong;
+	}
+
+	@Override
+	public String toString() {
+		return "SampleContextParams [" + (Long != null ? "Long=" + Long + ", " : "")
+				+ (pathLong != null ? "pathLong=" + pathLong : "") + "]";
+	}
+	
+}

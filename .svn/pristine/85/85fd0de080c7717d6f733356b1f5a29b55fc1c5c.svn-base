@@ -1,0 +1,21 @@
+package com.nexteducation.NextConfig.module.model.params.Category;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.PathParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CategoryDeleteParams {
+
+	@NotNull(message = "Category ID should not be null")
+	@PathParam(NextConfigUrls.CATEGORY_ID)
+	private Long categoryId;
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+}

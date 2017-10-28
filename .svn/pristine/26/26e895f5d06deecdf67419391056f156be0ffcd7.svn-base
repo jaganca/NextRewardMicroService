@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+
+public interface ReligionRepository extends JpaRepository<Religion, Serializable> {
+
+	Religion findByIdAndBranchId(Long id, Long branchId);
+
+	@Query("select r from Religion r where (r.branchId = :branchId or r.branchId is null) and r.id = :id")
+	Religion findByIdAndOrBranchId(@Param("id") Long id, @Param("branchId") Long branchId);
+
+	Religion findById(Long id);
+
+	List<Religion> findByBranchId(Long BranchId);
+
+	@Query("select distinct r from Religion r where (r.branchId = :branchId or r.branchId is null)")
+	List<Religion> fetchMasterAndCustomReligions(@Param("branchId") Long getBranchId);
+
+}

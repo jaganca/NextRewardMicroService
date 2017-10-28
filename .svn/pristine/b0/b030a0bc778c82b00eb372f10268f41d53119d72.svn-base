@@ -1,0 +1,390 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+/**
+ * The Class CustomFormElementDTO.
+ */
+public class CustomFormElementDTO {
+
+	/** The id. */
+	private Long id;
+
+	/** The branch id. */
+	private Long branchId;
+
+	/** The label. */
+	private String label;
+
+	/** The placeholder. */
+	private String placeholder;
+
+	/** The custom field. */
+	private CustomFieldDTO customField;
+
+	/** The custom field id. */
+	private Long customFieldId;
+
+	/** The form. */
+	private FormDTO form;
+
+	/** The form id. */
+	private Long formId;
+
+	/** The entity name. */
+	private String entityName;
+
+	/** The standard field. */
+	private StandardFieldDTO standardField;
+
+	/** The standard field id. */
+	private Long standardFieldId;
+
+	/** The status. */
+	private Status status;
+
+	/** The if mandatory. */
+	private boolean ifMandatory;
+
+	/** The if hide. */
+	private boolean ifHide;
+
+	/** The created by. */
+	private Long createdBy;
+
+	/** The created on. */
+	private Date createdOn;
+
+	/** The modified by. */
+	private Long modifiedBy;
+
+	/** The modified on. */
+	private Date modifiedOn;
+
+	/**
+	 * Gets the custom field id.
+	 *
+	 * @return the custom field id
+	 */
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	/**
+	 * Sets the custom field id.
+	 *
+	 * @param customFieldId the new custom field id
+	 */
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+	/**
+	 * Gets the form id.
+	 *
+	 * @return the form id
+	 */
+	public Long getFormId() {
+		return formId;
+	}
+
+	/**
+	 * Sets the form id.
+	 *
+	 * @param formId the new form id
+	 */
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+
+	/**
+	 * Gets the standard field id.
+	 *
+	 * @return the standard field id
+	 */
+	public Long getStandardFieldId() {
+		return standardFieldId;
+	}
+
+	/**
+	 * Sets the standard field id.
+	 *
+	 * @param standardFieldId the new standard field id
+	 */
+	public void setStandardFieldId(Long standardFieldId) {
+		this.standardFieldId = standardFieldId;
+	}
+
+	/**
+	 * Gets the form.
+	 *
+	 * @return the form
+	 */
+	public FormDTO getForm() {
+		return form;
+	}
+
+	/**
+	 * Sets the form.
+	 *
+	 * @param form the new form
+	 */
+	public void setForm(FormDTO form) {
+		this.form = form;
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Gets the branch id.
+	 *
+	 * @return the branch id
+	 */
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	/**
+	 * Sets the branch id.
+	 *
+	 * @param branchId the new branch id
+	 */
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	/**
+	 * Gets the label.
+	 *
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * Sets the label.
+	 *
+	 * @param label the new label
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * Gets the placeholder.
+	 *
+	 * @return the placeholder
+	 */
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	/**
+	 * Sets the placeholder.
+	 *
+	 * @param placeholder the new placeholder
+	 */
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
+	}
+
+	/**
+	 * Gets the entity name.
+	 *
+	 * @return the entity name
+	 */
+	public String getEntityName() {
+		return entityName;
+	}
+
+	/**
+	 * Sets the entity name.
+	 *
+	 * @param entityName the new entity name
+	 */
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * Checks if is if mandatory.
+	 *
+	 * @return true, if is if mandatory
+	 */
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	/**
+	 * Sets the if mandatory.
+	 *
+	 * @param ifMandatory the new if mandatory
+	 */
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	/**
+	 * Checks if is if hide.
+	 *
+	 * @return true, if is if hide
+	 */
+	public boolean isIfHide() {
+		return ifHide;
+	}
+
+	/**
+	 * Sets the if hide.
+	 *
+	 * @param ifHide the new if hide
+	 */
+	public void setIfHide(boolean ifHide) {
+		this.ifHide = ifHide;
+	}
+
+	/**
+	 * Gets the created by.
+	 *
+	 * @return the created by
+	 */
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * Sets the created by.
+	 *
+	 * @param createdBy the new created by
+	 */
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * Gets the created on.
+	 *
+	 * @return the created on
+	 */
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	/**
+	 * Sets the created on.
+	 *
+	 * @param createdOn the new created on
+	 */
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * Gets the modified by.
+	 *
+	 * @return the modified by
+	 */
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * Sets the modified by.
+	 *
+	 * @param modifiedBy the new modified by
+	 */
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * Gets the modified on.
+	 *
+	 * @return the modified on
+	 */
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	/**
+	 * Sets the modified on.
+	 *
+	 * @param modifiedOn the new modified on
+	 */
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	/**
+	 * Gets the custom field.
+	 *
+	 * @return the custom field
+	 */
+	public CustomFieldDTO getCustomField() {
+		return customField;
+	}
+
+	/**
+	 * Sets the custom field.
+	 *
+	 * @param customField the new custom field
+	 */
+	public void setCustomField(CustomFieldDTO customField) {
+		this.customField = customField;
+	}
+
+	/**
+	 * Gets the standard field.
+	 *
+	 * @return the standard field
+	 */
+	public StandardFieldDTO getStandardField() {
+		return standardField;
+	}
+
+	/**
+	 * Sets the standard field.
+	 *
+	 * @param standardField the new standard field
+	 */
+	public void setStandardField(StandardFieldDTO standardField) {
+		this.standardField = standardField;
+	}
+
+}

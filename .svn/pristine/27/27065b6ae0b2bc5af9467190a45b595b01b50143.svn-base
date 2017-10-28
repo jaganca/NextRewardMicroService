@@ -1,0 +1,93 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.ProductFeature;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class ProductFeatureMapperImpl implements ProductFeatureMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public ProductFeature ProductFeatureAddRequestToProductFeature(ProductFeatureAddRequest productFeatureAddRequest) {
+        if ( productFeatureAddRequest == null ) {
+            return null;
+        }
+
+        ProductFeature productFeature = new ProductFeature();
+
+        productFeature.setFeatureDesc( productFeatureAddRequest.getFeatureDesc() );
+        productFeature.setFeatureValue( productFeatureAddRequest.getFeatureValue() );
+        productFeature.setCreatedBy( uuidMapper.asString( productFeatureAddRequest.getCreatedBy() ) );
+        productFeature.setModifiedBy( uuidMapper.asString( productFeatureAddRequest.getModifiedBy() ) );
+
+        productFeature.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        productFeature.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return productFeature;
+    }
+
+    @Override
+    public ProductFeature ProductFeatureUpdateRequestToProductFeature(ProductFeatureUpdateRequest productFeatureUpdateRequest) {
+        if ( productFeatureUpdateRequest == null ) {
+            return null;
+        }
+
+        ProductFeature productFeature = new ProductFeature();
+
+        productFeature.setFeatureDesc( productFeatureUpdateRequest.getFeatureDesc() );
+        productFeature.setFeatureValue( productFeatureUpdateRequest.getFeatureValue() );
+        productFeature.setModifiedBy( uuidMapper.asString( productFeatureUpdateRequest.getModifiedBy() ) );
+        productFeature.setBranchId( uuidMapper.asString( productFeatureUpdateRequest.getBranchId() ) );
+        productFeature.setId( uuidMapper.asString( productFeatureUpdateRequest.getId() ) );
+
+        return productFeature;
+    }
+
+    @Override
+    public ProductFeatureResponse ProductFeatureToProductFeatureResponse(ProductFeature productFeature) {
+        if ( productFeature == null ) {
+            return null;
+        }
+
+        ProductFeatureResponse productFeatureResponse = new ProductFeatureResponse();
+
+        productFeatureResponse.setBranchId( productFeature.getBranchId() );
+        productFeatureResponse.setFeatureDesc( productFeature.getFeatureDesc() );
+        productFeatureResponse.setFeatureValue( productFeature.getFeatureValue() );
+        productFeatureResponse.setCreatedBy( productFeature.getCreatedBy() );
+        productFeatureResponse.setCreatedOn( productFeature.getCreatedOn() );
+        productFeatureResponse.setModifiedBy( productFeature.getModifiedBy() );
+        productFeatureResponse.setModifiedOn( productFeature.getModifiedOn() );
+        productFeatureResponse.setId( productFeature.getId() );
+
+        return productFeatureResponse;
+    }
+
+    @Override
+    public List<ProductFeatureResponse> ProductFeatureListToProductFeatureResponseList(List<ProductFeature> productFeatureList) {
+        if ( productFeatureList == null ) {
+            return null;
+        }
+
+        List<ProductFeatureResponse> list = new ArrayList<ProductFeatureResponse>();
+        for ( ProductFeature productFeature : productFeatureList ) {
+            list.add( ProductFeatureToProductFeatureResponse( productFeature ) );
+        }
+
+        return list;
+    }
+}

@@ -1,0 +1,83 @@
+package com.nexteducation.NextRewards.module.model.enums;
+
+/**
+ * The Enum ValidationType.
+ */
+public enum ValidationType {
+
+	/** The Step. */
+	Step("step"),
+	/** The Min. */
+	Min("min"),
+	/** The Max. */
+	Max("max"),
+	/** The Pattern. */
+	Pattern("pattern"),
+	/** The Maxlength. */
+	Maxlength("maxlength"),
+	/** The Min length. */
+	MinLength("minLength");
+
+	/** The input type. */
+	private String inputType;
+
+	/**
+	 * Instantiates a new validation type.
+	 *
+	 * @param inputType the input type
+	 */
+	ValidationType(final String inputType) {
+		this.inputType = inputType;
+	}
+
+	/**
+	 * Gets the input type.
+	 *
+	 * @return the input type
+	 */
+	public String getInputType() {
+		return inputType;
+	}
+
+	/**
+	 * Sets the input type.
+	 *
+	 * @param inputType the new input type
+	 */
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
+	}
+
+	/**
+	 * Gets the ordinal.
+	 *
+	 * @return the ordinal
+	 */
+	public int getOrdinal() {
+		return this.ordinal();
+	}
+
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return this.name();
+	}
+
+	/**
+	 * Value of.
+	 *
+	 * @param val the val
+	 * @return the validation type
+	 */
+	public static ValidationType valueOf(final byte val) {
+		for (final ValidationType validationType : values()) {
+			if (validationType.getOrdinal() == val) {
+				return validationType;
+			}
+		}
+		throw new IllegalArgumentException(String.valueOf(val));
+	}
+}

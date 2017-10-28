@@ -1,0 +1,23 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CustomFormElementAddParams {
+
+	@NotNull(message = "form name cannot be null")
+	@QueryParam(NextConfigUrls.FORM_NAME)
+	private String formName;
+
+	public String getFormName() {
+		return formName;
+	}
+
+	public void setFormName(String formName) {
+		this.formName = formName;
+	}
+	
+	
+}

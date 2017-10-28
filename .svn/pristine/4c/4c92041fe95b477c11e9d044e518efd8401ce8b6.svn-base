@@ -1,0 +1,89 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.Religion;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class ReligionMapperImpl implements ReligionMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public Religion ReligionAddRequestToReligion(ReligionAddRequest religionAddRequest) {
+        if ( religionAddRequest == null ) {
+            return null;
+        }
+
+        Religion religion = new Religion();
+
+        religion.setName( religionAddRequest.getName() );
+        religion.setBranchId( uuidMapper.asString( religionAddRequest.getBranchId() ) );
+
+        religion.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        religion.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return religion;
+    }
+
+    @Override
+    public Religion ReligionUpdateRequestToReligion(ReligionUpdateRequest religionUpdateRequest) {
+        if ( religionUpdateRequest == null ) {
+            return null;
+        }
+
+        Religion religion = new Religion();
+
+        religion.setName( religionUpdateRequest.getName() );
+        religion.setId( uuidMapper.asString( religionUpdateRequest.getId() ) );
+        religion.setBranchId( uuidMapper.asString( religionUpdateRequest.getBranchId() ) );
+
+        return religion;
+    }
+
+    @Override
+    public ReligionResponse ReligionToReligionResponse(Religion religion) {
+        if ( religion == null ) {
+            return null;
+        }
+
+        ReligionResponse religionResponse = new ReligionResponse();
+
+        religionResponse.setBranchId( religion.getBranchId() );
+        religionResponse.setName( religion.getName() );
+        religionResponse.setCreatedBy( religion.getCreatedBy() );
+        religionResponse.setCreatedOn( religion.getCreatedOn() );
+        religionResponse.setModifiedBy( religion.getModifiedBy() );
+        religionResponse.setModifiedOn( religion.getModifiedOn() );
+        religionResponse.setId( religion.getId() );
+        religionResponse.setParentReligion( religion.getParentReligion() );
+
+        return religionResponse;
+    }
+
+    @Override
+    public List<ReligionResponse> ReligionListToReligionResponseList(List<Religion> religionList) {
+        if ( religionList == null ) {
+            return null;
+        }
+
+        List<ReligionResponse> list = new ArrayList<ReligionResponse>();
+        for ( Religion religion : religionList ) {
+            list.add( ReligionToReligionResponse( religion ) );
+        }
+
+        return list;
+    }
+}

@@ -1,0 +1,80 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureFetchParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+
+
+/**
+ * The Interface ProductFeatureService.
+ */
+public interface ProductFeatureService {	
+
+    /**
+     * Fetch product features.
+     *
+     * @param productFeatureFetchParams the product feature fetch params
+     * @param sessionParams the session params
+     * @param queryable the queryable
+     * @return the product feature response
+     */
+    ProductFeatureResponse fetchProductFeatures(ProductFeatureFetchParams productFeatureFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+    
+/**
+ * Update product features.
+ *
+ * @param productFeatureUpdateParams the product feature update params
+ * @param sessionParams the session params
+ * @param queryable the queryable
+ * @param productFeatureUpdateRequest the product feature update request
+ * @return the jersey response
+ */
+//
+	JerseyResponse updateProductFeatures(ProductFeatureUpdateParams productFeatureUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, ProductFeatureUpdateRequest productFeatureUpdateRequest);
+
+/**
+ * Delete product features.
+ *
+ * @param productFeatureDeleteParams the product feature delete params
+ * @param sessionParams the session params
+ * @param queryable the queryable
+ * @return the jersey response
+ */
+//
+	JerseyResponse deleteProductFeatures(ProductFeatureDeleteParams productFeatureDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	/**
+	 * Fetch all product features.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	List<ProductFeatureResponse> fetchAllProductFeatures(SessionParams sessionParams,
+			QueryableParams queryable);
+	
+	/**
+	 * Adds the product features.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param productFeatureAddRequest the product feature add request
+	 * @return the jersey response
+	 */
+	JerseyResponse addProductFeatures(SessionParams sessionParams,
+			QueryableParams queryable, ProductFeatureAddRequest productFeatureAddRequest);
+
+
+
+}

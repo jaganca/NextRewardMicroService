@@ -1,0 +1,6 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import com.nexteducation.NextConfig.module.repository.custom.core.SampleRepositoryCustom;
+
+public interface SampleRepository extends SampleRepositoryCustom {
+}

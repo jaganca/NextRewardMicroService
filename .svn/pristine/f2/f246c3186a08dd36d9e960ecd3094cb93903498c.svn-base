@@ -1,0 +1,15 @@
+package com.nexteducation.NextConfig.module.repository.custom.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface StandardFieldRepositoryCustom {
+
+	List<StandardField> findStandarFieldsExceptInCustomFormElements(StandardFieldFetchParams standardFieldElementFetchParams,
+			QueryableParams queryableParams ,SessionParams sessionParams);
+
+}

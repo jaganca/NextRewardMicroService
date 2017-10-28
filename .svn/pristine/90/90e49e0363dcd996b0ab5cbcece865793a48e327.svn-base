@@ -1,0 +1,43 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+
+public interface CasteRepository extends JpaRepository<Caste, Serializable> {
+
+	Caste findByIdAndBranchId(Long casteLong, Long branchId);
+
+	Caste findById(Long Long);
+
+	List<Caste> findByBranchId(Long getBranchId);
+
+	List<Caste> findByBranchIdOrBranchIdIsNull(Long getBranchId);
+
+	List<Caste> findByParentCaste_Id(Long casteLong);
+
+	@EntityGraph(attributePaths = "subCastes")
+	// @Query("select c from Caste c left join fetch c.subCastes cs where
+	// c.parentCaste is null and c.branchId = :branchId and ")
+	List<Caste> findByBranchIdAndParentCaste_Id(Long getBranchId, Long parentLong);
+
+	@Query("select distinct c from Caste c left join fetch c.subCastes cs where c.parentCaste is null and (c.branchId = :branchId or c.branchId is null)")
+	List<Caste> findAllParentCastes(@Param("branchId") Long getBranchId);
+
+	@EntityGraph(attributePaths = "subCastes")
+	List<Caste> findByBranchIdAndParentCaste(Long getBranchId, Caste caste);
+
+	Caste findByIdAndBranchIdIn(Long casteId, List<Long> branchList);
+
+	List<Caste> findByBranchIdIn(List<Long> branchList);
+
+	List<Caste> findByParentCaste(Caste findById);
+
+}

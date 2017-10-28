@@ -1,0 +1,119 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "STANDARD_FORM")
+public class Form {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "STANDARD_FORM_ID", columnDefinition = "BIGINT(20)")
+	private Long id;
+
+	@Column(name = "DEFAULT_LABEL")
+	private String defaultLabel;
+
+	@Column(name = "INPUT_KEY", columnDefinition = "VARCHAR(20)", nullable = false)
+	private String key;
+
+	@Column(name = "DESCRIPTION")
+	private String description;
+
+	@NotNull
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long createdBy;
+
+	@NotNull
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+
+	@NotNull
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long modifiedBy;
+
+	@NotNull
+	@Column(name = "MODIFIED_ON", nullable = false)
+	private Date modifiedOn;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDefaultLabel() {
+		return defaultLabel;
+	}
+
+	public void setDefaultLabel(String defaultLabel) {
+		this.defaultLabel = defaultLabel;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public void setAll(Form standardField) {
+		this.setId(standardField.getId());
+		this.setDefaultLabel(standardField.getDefaultLabel());
+		this.setDefaultLabel(standardField.getDefaultLabel());
+		this.setDescription(standardField.getDescription());
+		this.setKey(standardField.getKey());
+	}
+
+}

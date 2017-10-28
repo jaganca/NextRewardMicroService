@@ -1,0 +1,28 @@
+package com.nexteducation.NextConfig.module.model.request.Religion;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class ReligionUpdateRequest {
+
+	private String parentReligionId;
+
+	@NotEmpty(message = "Religion Name should not be empty!")
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getParentReligionId() {
+		return parentReligionId;
+	}
+
+	public void setParentReligionId(String parentReligionId) {
+		this.parentReligionId = parentReligionId;
+	}
+
+}

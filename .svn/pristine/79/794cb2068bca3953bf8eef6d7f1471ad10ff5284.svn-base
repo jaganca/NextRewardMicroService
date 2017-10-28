@@ -1,0 +1,82 @@
+package com.nexteducation.NextConfig.module.repository.custom.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFieldDataRepositoryCustom;
+import com.nexteducation.NextConfig.util.ERPApp;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+@Repository
+public class CustomFieldDataRepositoryImpl implements CustomFieldDataRepositoryCustom {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<CustomFieldData> findByBOFilters(CustomFieldDataFetchParams customFieldDataFetchParams,
+			QueryableParams queryableParams) {
+		final StringBuilder builder = new StringBuilder(
+				" select distinct cfd from CustomFieldData cfd join fetch cfd.customField cf ");
+		builder.append(" where 1 = 1 ");
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getBranchId())) {
+			builder.append(" and cf.branchId = :branchId ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getFormId())) {
+			builder.append(" and cf.customFormElements.form.id = :formId ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getEntityName())) {
+			builder.append(" and cf.entityName = :entityName ");
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getEntityNames())) {
+			builder.append(" and cf.entityName in (:entityNames) ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getCustomFieldId())) {
+			builder.append(" and cf.id = :customFieldId ");
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getCustomFieldIds())) {
+			builder.append(" and cf.id in (:customFieldIds) ");
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getInstanceId())) {
+			builder.append(" and cfd.entityInstanceId = :entityInstanceId ");
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getEntityInstanceIds())) {
+			builder.append(" and cfd.entityInstanceId in (:entityInstanceIds) ");
+		}
+		final TypedQuery<CustomFieldData> query = entityManager.createQuery(builder.toString(), CustomFieldData.class);
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getBranchId())) {
+			query.setParameter("branchId", customFieldDataFetchParams.getBranchId());
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getFormId())) {
+			query.setParameter("formId", customFieldDataFetchParams.getFormId());
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getEntityName())) {
+			query.setParameter("entityName", customFieldDataFetchParams.getEntityName());
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getEntityNames())) {
+			query.setParameter("entityNames", customFieldDataFetchParams.getEntityNames());
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getCustomFieldId())) {
+			query.setParameter("customFieldId", customFieldDataFetchParams.getCustomFieldId());
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getCustomFieldIds())) {
+			query.setParameter("customFieldIds", customFieldDataFetchParams.getCustomFieldIds());
+		}
+		if (!ERPApp.isEmptyObject(customFieldDataFetchParams.getInstanceId())) {
+			query.setParameter("entityInstanceId", customFieldDataFetchParams.getInstanceId());
+		}
+		if (!ERPApp.isNullOrEmptyList(customFieldDataFetchParams.getEntityInstanceIds())) {
+			query.setParameter("entityInstanceIds", customFieldDataFetchParams.getEntityInstanceIds());
+		}
+		List<CustomFieldData> customFieldDatas = query.getResultList();
+		return customFieldDatas;
+	}
+
+}

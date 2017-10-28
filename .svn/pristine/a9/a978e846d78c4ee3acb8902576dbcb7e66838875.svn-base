@@ -1,0 +1,20 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.Category;
+
+
+public interface CategoryRepository extends JpaRepository<Category, Serializable>{
+
+	Category findByIdAndBranchId(Long id, Long branchId);
+
+	Category findById(Long id);
+
+	List<Category> findByBranchId(Long BranchId);
+	
+}

@@ -1,0 +1,26 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+
+import com.nexteducation.NextConfig.module.model.request.HelloRequest;
+import com.nexteducation.NextConfig.module.service.core.HelloService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class HelloServiceClient implements HelloService {
+
+	
+	@Override
+	public String sayHello(String name) {
+		final String REST_URI = NextConfigUrls.SERVER_URL + NextConfigUrls.HELLO_URL;
+		final RestTemplate restTemplate = new RestTemplate();
+		final HttpEntity<HelloRequest> requestEntity = new HttpEntity<HelloRequest>(new HelloRequest(name));
+		final ResponseEntity<String> responseEntity = restTemplate.exchange(REST_URI, HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<String>() {
+				});
+		return responseEntity.getBody();
+	}
+}

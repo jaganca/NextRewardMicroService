@@ -1,0 +1,18 @@
+package com.nexteducation.NextConfig.module.model.request.Language;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class LanguageUpdateRequest {
+
+	@NotEmpty(message = "Language Name should not be empty!")
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+}

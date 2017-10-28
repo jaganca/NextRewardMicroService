@@ -1,0 +1,38 @@
+package com.nexteducation.NextConfig.module.model.request.Religion;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+public class ReligionAddRequest {
+
+	private Long branchId;
+
+	private Long parentReligionId;
+
+	@NotBlank(message = "Religion Name should not be empty!")
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public Long getParentReligionId() {
+		return parentReligionId;
+	}
+
+	public void setParentReligionId(Long parentReligionId) {
+		this.parentReligionId = parentReligionId;
+	}
+
+}

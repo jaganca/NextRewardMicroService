@@ -1,0 +1,94 @@
+package com.nexteducation.NextConfig.module.model.request.AutoNumbering;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.enums.Type;
+
+public class AutoNumberingUpdateRequest {
+
+	private String branch;
+
+	// @NotBlank(message = "SubType should not be empty")
+	private long subType;
+
+	// @NotBlank(message = "Type should not be empty")
+	private Type type;
+
+	@NotEmpty(message = "Fixed Value should not be empty")
+	private String fixedValue;
+
+	// @NotBlank(message = "Variable Start should not be empty")
+	private long variableStart;
+
+	private Status status;
+
+	private Long id;
+
+	private String lastRunVariable;
+
+	public String getLastRunVariable() {
+		return lastRunVariable;
+	}
+
+	public void setLastRunVariable(String lastRunVariable) {
+		this.lastRunVariable = lastRunVariable;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public long getSubType() {
+		return subType;
+	}
+
+	public void setSubType(long subType) {
+		this.subType = subType;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public String getFixedValue() {
+		return fixedValue;
+	}
+
+	public void setFixedValue(String fixedValue) {
+		this.fixedValue = fixedValue;
+	}
+
+	public long getVariableStart() {
+		return variableStart;
+	}
+
+	public void setVariableStart(long variableStart) {
+		this.variableStart = variableStart;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+}

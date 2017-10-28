@@ -1,0 +1,55 @@
+package com.nexteducation.NextConfig.module.model.params.Caste;
+
+import java.util.List;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CasteComplexFetchParam {
+
+	@QueryParam(NextConfigUrls.BRANCH_ID)
+	private Long branchId;
+
+	@QueryParam(NextConfigUrls.CASTE_IDS)
+	private List<Long> Ids;
+
+	@QueryParam(NextConfigUrls.PARENT_CASTE_IDS)
+	private List<Long> parentCasteIds;
+
+	@QueryParam(NextConfigUrls.FETCH)
+	private List<String> fetch;
+
+	public List<String> getFetch() {
+		return fetch;
+	}
+
+	public void setFetch(List<String> fetch) {
+		this.fetch = fetch;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public List<Long> getIds() {
+		return Ids;
+	}
+
+	public void setIds(List<Long> ids) {
+		Ids = ids;
+	}
+
+	public List<Long> getParentCasteIds() {
+		return parentCasteIds;
+	}
+
+	public void setParentCasteIds(List<Long> parentCasteIds) {
+		this.parentCasteIds = parentCasteIds;
+	}
+
+}

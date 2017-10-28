@@ -1,0 +1,146 @@
+package com.nexteducation.NextRewards.module.filter.queryable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.QueryParam;
+
+/**
+ * The Class QueryableParams.
+ */
+public class QueryableParams {
+
+	/** The sort by. */
+	@QueryParam("sort_by")
+	String sortBy;
+	
+	/** The filter. */
+	@QueryParam("filter")
+	String filter;
+	
+	/** The page. */
+	@QueryParam("page")
+	int page;
+	
+	/** The page size. */
+	@QueryParam("page_size")
+	int pageSize;
+
+	/**
+	 * Gets the sort by.
+	 *
+	 * @return the sort by
+	 */
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	/**
+	 * Sets the sort by.
+	 *
+	 * @param sortBy the new sort by
+	 */
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+
+	/**
+	 * Gets the filter.
+	 *
+	 * @return the filter
+	 */
+	public String getFilter() {
+		return filter;
+	}
+
+	/**
+	 * Sets the filter.
+	 *
+	 * @param filter the new filter
+	 */
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	/**
+	 * Gets the page.
+	 *
+	 * @return the page
+	 */
+	public int getPage() {
+		return page;
+	}
+
+	/**
+	 * Sets the page.
+	 *
+	 * @param page the new page
+	 */
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	/**
+	 * Gets the page size.
+	 *
+	 * @return the page size
+	 */
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	/**
+	 * Sets the page size.
+	 *
+	 * @param pageSize the new page size
+	 */
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	/** 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Queryable [" + (sortBy != null ? "sortBy=" + sortBy + ", " : "")
+				+ (filter != null ? "filter=" + filter + ", " : "") + "page=" + page + ", pageSize=" + pageSize + "]";
+	}
+
+	/**
+	 * Builds the.
+	 *
+	 * @return the queryable
+	 */
+	public Queryable build() {
+		Queryable queryable=new Queryable();
+		if(sortBy!=null && !"".equals(sortBy)){
+			String[] sorts=sortBy.split(",");
+			List<Sortable> sortables=new ArrayList<Sortable>();
+			for (String sort : sorts) {
+				Sortable sortable=new Sortable();
+				if(sort.contains("-")){
+					sortable.setOperator(SortableOperator.Descending);
+				}else{
+					sortable.setOperator(SortableOperator.Ascending);
+				}
+				sortable.setField(sort.replaceFirst("-", ""));
+				sortables.add(sortable);
+			}
+			queryable.setSortables(sortables);
+		}
+		Pageable pageable=new Pageable();
+		if(page<=0){
+			pageable.setPage(1);
+		}else{
+			pageable.setPage(1);			
+		}
+		if(pageSize>0){
+			pageable.setPageSize(pageSize);
+		}
+		queryable.setPageable(pageable);
+		
+		
+		return queryable;
+	}
+}

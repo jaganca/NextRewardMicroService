@@ -1,0 +1,172 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.mapper.CustomFieldListMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldList;
+import com.nexteducation.NextConfig.module.model.params.CustomFieldList.CustomFieldListFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldListRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldListService;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+import com.nexteducation.NextService.util.ERPApp;
+
+@Service("customFieldListService")
+public class CustomFieldListServiceImpl implements CustomFieldListService {
+
+	@Autowired
+	CustomFieldListRepository customFieldListRepository;
+
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	@Autowired
+	CustomFieldListMapper customFieldListMapper;
+
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO) {
+		CustomField customField = customFieldRepository.findById(customFieldId);
+		if (customField == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"No Custom field with the given Identifier found",
+					"No Custom field with the given Identifier found");
+		}
+		CustomFieldList customFieldList = customFieldListMapper.customFieldListDTOToCustomFieldList(customFieldListDTO);
+		customFieldList.setBranchId(sessionParams.getBranchId());
+		customFieldList.setCustomField(customField);
+		customFieldList.setCreatedBy(sessionParams.getUserId());
+		customFieldList.setCreatedOn(DU.now());
+		customFieldList.setModifiedBy(sessionParams.getUserId());
+		customFieldList.setModifiedOn(DU.now());
+		customFieldListRepository.save(customFieldList);
+		return new JerseyResponse().withMsg("Record Added Successfully").withCode("Success")
+				.withId(customFieldList.getId());
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addOrUpdateCustomFieldLists(Long customFieldId, SessionParams sessionParams,
+			List<CustomFieldListDTO> customFieldListDTOs) {
+		if (customFieldListDTOs == null || customFieldListDTOs.isEmpty()) {
+			return new JerseyResponse().withMsg("Record Added Successfully").withCode("Success");
+		}
+		CustomField customField = customFieldRepository.findById(customFieldId);
+		List<CustomFieldList> customFieldLists = customField.getCustomFieldLists();
+		if (customFieldLists != null && !customFieldLists.isEmpty()) {
+			List<Long> customFieldIds = new ArrayList<Long>();
+			for (CustomFieldList customFieldList : customFieldLists) {
+				customFieldIds.add(customFieldList.getId());
+			}
+			List<String> customFieldListIds = beanToPropertyValueTransform(customFieldListDTOs, "id");
+			if (customFieldListIds != null && !customFieldListIds.isEmpty()) {
+				customFieldListIds.removeAll(Collections.singleton(null));
+			}
+			if (customFieldListIds != null && !customFieldListIds.isEmpty()) {
+				customFieldIds.removeAll(customFieldListIds);
+				deleteCustomFieldListsInBatch(customFieldIds, customFieldLists);
+			}
+		}
+		for (CustomFieldListDTO cfl : customFieldListDTOs) {
+			if (cfl.getId() == null)
+				addCustomFieldLists(customFieldId, sessionParams, cfl);
+			else
+				updateCustomFieldLists(cfl.getId(), sessionParams, cfl);
+		}
+		return new JerseyResponse().withMsg("Record Added Successfully").withCode("Success");
+	}
+
+	private void deleteCustomFieldListsInBatch(List<Long> customFieldListsIds, List<CustomFieldList> customFieldLists) {
+		if (customFieldListsIds != null && !customFieldListsIds.isEmpty()) {
+			List<CustomFieldList> customFieldLists2 = new ArrayList<CustomFieldList>();
+			for (CustomFieldList customFieldList : customFieldLists) {
+				if (customFieldListsIds.contains(customFieldList.getId())) {
+					customFieldLists2.add(customFieldList);
+				}
+			}
+			customFieldListRepository.deleteInBatch(customFieldLists2);
+		}
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse updateCustomFieldLists(Long customFieldListId, SessionParams sessionParams,
+			CustomFieldListDTO customFieldListDTO) {
+		CustomFieldList customFieldList = customFieldListRepository.findById(customFieldListId);
+		if (customFieldList == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"No Custom field List with the given Identifier found",
+					"No Custom field List with the given Identifier found");
+		}
+		CustomFieldList customFieldListUpdate = customFieldListMapper
+				.customFieldListDTOToCustomFieldList(customFieldListDTO);
+		customFieldList.setAll(customFieldListUpdate);
+		customFieldList.setModifiedBy(sessionParams.getUserId());
+		customFieldList.setModifiedOn(DU.now());
+		customFieldListRepository.save(customFieldList);
+		return new JerseyResponse().withMsg("Record Updated Successfully").withCode("Success");
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFieldLists(Long customFieldListId, SessionParams sessionParams) {
+		CustomFieldList customFieldListDelete = customFieldListRepository.findById(customFieldListId);
+		if (customFieldListDelete == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"No Custom field List with the given Identifier found",
+					"No Custom field List with the given Identifier found");
+		}
+		customFieldListRepository.delete(customFieldListDelete);
+		return new JerseyResponse().withMsg("Record deleted Successfully").withCode("Success");
+	}
+
+	@Override
+	@Transactional
+	@ReadOnlyConnection
+	public List<CustomFieldListResponse> fetchCustomFieldLists(CustomFieldListFetchParams customFieldListFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		List<CustomFieldList> customFieldLists = customFieldListRepository
+				.findByCustomField_Id(customFieldListFetchParams.getCustomFieldId());
+		return customFieldListMapper.customFieldListToCustomFieldListResponse(customFieldLists);
+
+	}
+
+	@Override
+	public CustomFieldListResponse fetchCustomFieldLists(Long customFieldListId, SessionParams sessionParams) {
+		CustomFieldList customFieldList = customFieldListRepository.findById(customFieldListId);
+		if (customFieldList == null) {
+			throw new NextServiceException("NextConfig", "NotFound", 404,
+					"No Custom field List with the given Identifier found",
+					"No Custom field List with the given Identifier found");
+		}
+		return customFieldListMapper.customFieldListToCustomFieldListResponse(customFieldList);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <S, T> List<T> beanToPropertyValueTransform(final List<S> source, final String value) {
+		if (ERPApp.isEmptyString(value) || ERPApp.isNullOrEmptyList(source)) {
+			return null;
+		}
+		List<T> list = (List<T>) CollectionUtils.collect(source, new BeanToPropertyValueTransformer(value, true));
+		return list;
+	}
+
+}

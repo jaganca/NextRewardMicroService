@@ -1,0 +1,164 @@
+package com.nexteducation.NextConfig.module.dto;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+/**
+ * The Class CustomFieldListDTO.
+ */
+public class CustomFieldListDTO {
+
+	/** The id. */
+	private Long id;
+
+	//private CustomFieldResponse customField;
+
+	/** The value. */
+	@NotNull
+	private String value;
+
+	/** The status. */
+	private Status status;
+
+	/** The created by. */
+	private Long createdBy;
+
+	/** The created on. */
+	private Date createdOn;
+
+	/** The modified by. */
+	private Long modifiedBy;
+
+	/** The modified on. */
+	private Date modifiedOn;
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public Status getStatus() {
+		return status;
+	}
+
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/**
+	 * Gets the created by.
+	 *
+	 * @return the created by
+	 */
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * Sets the created by.
+	 *
+	 * @param createdBy the new created by
+	 */
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * Gets the created on.
+	 *
+	 * @return the created on
+	 */
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	/**
+	 * Sets the created on.
+	 *
+	 * @param createdOn the new created on
+	 */
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * Gets the modified by.
+	 *
+	 * @return the modified by
+	 */
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * Sets the modified by.
+	 *
+	 * @param modifiedBy the new modified by
+	 */
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * Gets the modified on.
+	 *
+	 * @return the modified on
+	 */
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	/**
+	 * Sets the modified on.
+	 *
+	 * @param modifiedOn the new modified on
+	 */
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

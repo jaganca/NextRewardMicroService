@@ -1,0 +1,11 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.RollNumberSetting;
+@Repository
+public interface RollNumberSettingRepository extends JpaRepository<RollNumberSetting, Long> {
+	
+	public RollNumberSetting findByBranchId(Long branchId);
+}

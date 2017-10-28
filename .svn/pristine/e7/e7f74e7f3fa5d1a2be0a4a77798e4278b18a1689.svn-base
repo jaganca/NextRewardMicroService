@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<script type="text/javascript" src="js/NextConfigApi.js"></script>
+<script>
+function run(){
+// var NextAcademicsApi = require('NextAcademicsApi.js');
+
+var apiInstance =new NextConfigApi.DefaultApi();
+
+var lbid = "111";
+var lasid = "acasid";
+var luid = "vasu";// String | 
+
+
+var opts ={
+		"lbid" : "Dinesh",
+		"lasid" : "acasid",
+		"luid": "vasu"	
+}
+var queryParams = {
+        'lbid': opts['lbid'],
+        'lasid': opts['lasid'],
+        'luid': opts['luid']
+}
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+apiInstance.fetchAllProductFeatures(opts, callback);
+}
+	
+</script>
+
+</head>
+<body  onload="run()">
+
+                
+        </body>
+</html>

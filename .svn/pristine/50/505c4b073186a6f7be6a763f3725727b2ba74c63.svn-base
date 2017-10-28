@@ -1,0 +1,13 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.Entities;
+
+public interface EntitiesRepository {
+
+}

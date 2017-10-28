@@ -1,0 +1,17 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import org.mapstruct.Mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.RollNumberSetting;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.RollNumberSettingResponse;
+
+@Mapper(componentModel = "spring",uses={})
+public abstract class RollNumberSettingMapper extends CommonMapper {
+	public abstract RollNumberSettingResponse rollNumberSettingToRollNumberSettingResponse(RollNumberSetting rollNumberSetting);
+	
+	public abstract RollNumberSetting rollNumberSettingAddRequestToRollNumberSetting(RollNumberSettingAddRequest rollNumberSettingAddRequest);
+	
+	public abstract RollNumberSetting rollNumberSettingUpdateRequestToRollNumberSetting(RollNumberSettingUpdateRequest rollNumberSettingUpdateRequest);
+}

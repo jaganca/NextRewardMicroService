@@ -1,0 +1,25 @@
+package com.nexteducation.NextConfig.hibernate.datasourceRouting;
+/**
+ * 
+ * @author krishnakanthv
+ *
+ */
+public class DbContextHolder {
+
+	private static final ThreadLocal<DbType> contextHolder = new ThreadLocal<DbType>();
+
+	public static void setDbType(final DbType dbType) {
+		if (dbType == null) {
+			throw new NullPointerException();
+		}
+		contextHolder.set(dbType);
+	}
+
+	public static DbType getDbType() {
+		return contextHolder.get();
+	}
+
+	public static void clearDbType() {
+		contextHolder.remove();
+	}
+}

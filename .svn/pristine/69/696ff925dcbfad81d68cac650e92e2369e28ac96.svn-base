@@ -1,0 +1,35 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldCountResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface CustomFieldService {
+
+	public CustomFieldDTO fetchCustomFields(Long customFieldId, SessionParams sessionParams);
+
+	public JerseyResponse updateCustomFields(Long customFieldId, SessionParams sessionParams,
+			CustomFieldDTO customFieldDTO);
+
+	public JerseyResponse deleteCustomFields(Long customFieldId, SessionParams sessionParams);
+
+	public JerseyResponse addCustomFields(SessionParams sessionParams, CustomFieldDTO customFieldDTO);
+
+	List<CustomFieldDTO> fetchCustomFields(CustomFieldFetchParams customFieldFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	public List<CustomFieldDTO> fetchCustomFieldsNotInForm(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	public List<CustomFieldDTO> fetchCustomFieldsWithData(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	public CustomFieldCountResponse fetchCustomFieldsCount(CustomFieldFetchParams customFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+}

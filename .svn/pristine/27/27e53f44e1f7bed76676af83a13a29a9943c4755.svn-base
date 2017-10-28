@@ -1,0 +1,68 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.response.CustomField.StandardFieldResponse;
+
+/**
+ * The Interface StandardFieldMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface StandardFieldMapper {
+
+	/** The instance. */
+	StandardFieldMapper INSTANCE = Mappers.getMapper(StandardFieldMapper.class);
+
+	/**
+	 * Standard field DTO to standard field.
+	 *
+	 * @param standardFieldDTO the standard field DTO
+	 * @return the standard field
+	 */
+	StandardField standardFieldDTOToStandardField(StandardFieldDTO standardFieldDTO);
+
+	/**
+	 * Standard field to standard field DTO.
+	 *
+	 * @param standardField the standard field
+	 * @return the standard field DTO
+	 */
+	StandardFieldDTO standardFieldToStandardFieldDTO(StandardField standardField);
+
+	/**
+	 * Standard field to standard field DTO.
+	 *
+	 * @param standardField the standard field
+	 * @return the list
+	 */
+	List<StandardFieldDTO> standardFieldToStandardFieldDTO(List<StandardField> standardField);
+
+	/**
+	 * Standard field to standard field response.
+	 *
+	 * @param standardField the standard field
+	 * @return the standard field response
+	 */
+	@Mappings({
+		@Mapping(target="label", source="defaultLabel")
+		}
+	)
+	StandardFieldResponse standardFieldToStandardFieldResponse(StandardField standardField);
+
+	/**
+	 * Standard field to standard field response.
+	 *
+	 * @param standardField the standard field
+	 * @return the list
+	 */
+	List<StandardFieldResponse> standardFieldToStandardFieldResponse(List<StandardField> standardField);
+
+}

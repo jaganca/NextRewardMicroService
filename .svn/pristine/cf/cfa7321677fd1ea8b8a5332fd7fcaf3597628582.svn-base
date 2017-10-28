@@ -1,0 +1,13 @@
+package com.nexteducation.NextConfig.module.repository.custom.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteComplexFetchParam;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+public interface CasteRepositoryCustom {
+
+	public List<Caste> findByFilters(CasteComplexFetchParam casteComplexFetchParam, QueryableParams queryableParams);
+
+}

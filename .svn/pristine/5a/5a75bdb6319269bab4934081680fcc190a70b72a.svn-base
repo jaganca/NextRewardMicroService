@@ -1,0 +1,80 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Religion.ReligionUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Religion.ReligionUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Religion.ReligionResponse;
+import com.nexteducation.NextConfig.module.service.core.ReligionService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1)
+public class ReligionController {
+
+	@Autowired
+	ReligionService religionService;
+	
+	@POST
+	@Path(NextConfigUrls.RELIGIONS)
+	public AddResponse addReligions(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable, @Valid ReligionAddRequest religionAddRequest) throws NextServiceException  {
+
+		return religionService.addReligions(sessionParams,queryable,religionAddRequest);
+		
+	}
+	
+	@PUT
+	@Path(NextConfigUrls.RELIGION_Long)
+	public JerseyResponse updateReligions(@BeanParam ReligionUpdateParams religionUpdateParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable,
+			@Valid ReligionUpdateRequest religionUpdateRequest) {		
+		return religionService.updateReligions(religionUpdateParams, sessionParams, queryable, religionUpdateRequest);
+	
+	}
+	
+	@DELETE
+	@Path(NextConfigUrls.RELIGION_Long)
+	public JerseyResponse deleteReligions(@BeanParam ReligionDeleteParams religionDeleteParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+	
+		return religionService.deleteReligions(religionDeleteParams, sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.RELIGIONS)
+	public List<ReligionResponse> fetchAllReligions(@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return religionService.fetchAllReligions(sessionParams, queryable);
+	}
+	
+	@GET
+	@Path(NextConfigUrls.RELIGION_Long)
+	public ReligionResponse fetchReligions(@BeanParam ReligionFetchParams religionFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) throws NextServiceException{
+
+		return religionService.fetchReligions(religionFetchParams, sessionParams, queryable);
+		
+	}
+	
+}

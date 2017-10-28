@@ -1,0 +1,87 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldList;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldListRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+
+/**
+ * The Interface CustomFieldListMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CustomFieldListMapper {
+
+	/** The instance. */
+	CustomFieldListMapper INSTANCE = Mappers.getMapper(CustomFieldListMapper.class);
+
+	/**
+	 * Custom field list DTO to custom field list.
+	 *
+	 * @param customFieldListDTO the custom field list DTO
+	 * @return the custom field list
+	 */
+	CustomFieldList customFieldListDTOToCustomFieldList(CustomFieldListDTO customFieldListDTO);
+
+	/**
+	 * Custom field list request to custom field list.
+	 *
+	 * @param customFieldListRequest the custom field list request
+	 * @return the custom field list
+	 */
+	CustomFieldList customFieldListRequestToCustomFieldList(CustomFieldListRequest customFieldListRequest);
+
+	/**
+	 * Custom field list DTO to custom field list.
+	 *
+	 * @param customFieldAddDTO the custom field add DTO
+	 * @return the list
+	 */
+	List<CustomFieldList> customFieldListDTOToCustomFieldList(List<CustomFieldListDTO> customFieldAddDTO);
+
+	/**
+	 * Custom field list request to custom field list.
+	 *
+	 * @param customFieldAddRequest the custom field add request
+	 * @return the list
+	 */
+	List<CustomFieldList> customFieldListRequestToCustomFieldList(List<CustomFieldListRequest> customFieldAddRequest);
+
+	/**
+	 * Custom field list to custom field list DTO.
+	 *
+	 * @param customField the custom field
+	 * @return the custom field list DTO
+	 */
+	CustomFieldListDTO customFieldListToCustomFieldListDTO(CustomFieldList customField);
+
+	/**
+	 * Custom field list to custom field list DTO.
+	 *
+	 * @param customField the custom field
+	 * @return the list
+	 */
+	List<CustomFieldListDTO> customFieldListToCustomFieldListDTO(List<CustomFieldList> customField);
+
+	/**
+	 * Custom field list to custom field list response.
+	 *
+	 * @param customField the custom field
+	 * @return the custom field list response
+	 */
+	CustomFieldListResponse customFieldListToCustomFieldListResponse(CustomFieldList customField);
+
+	/**
+	 * Custom field list to custom field list response.
+	 *
+	 * @param customField the custom field
+	 * @return the list
+	 */
+	List<CustomFieldListResponse> customFieldListToCustomFieldListResponse(List<CustomFieldList> customField);
+
+}

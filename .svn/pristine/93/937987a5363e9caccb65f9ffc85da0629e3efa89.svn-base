@@ -1,0 +1,158 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.CategoryMapper;
+import com.nexteducation.NextConfig.module.model.bo.Category;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import com.nexteducation.NextConfig.module.repository.CategoryRepository;
+import com.nexteducation.NextConfig.module.service.core.CategoryService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextConfig.util.DU;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Class CategoryServiceImpl.
+ */
+@Service("categoryService")
+public class CategoryServiceImpl implements CategoryService {
+
+	/** The category repository. */
+	@Autowired
+	CategoryRepository categoryRepository;
+
+	/** The category mapper. */
+	@Autowired
+	CategoryMapper categoryMapper;
+
+	/**
+	 * Fetches the Category for a given Category Long.
+	 *
+	 * @param categoryFetchParams the category fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return CategoryResponse
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public CategoryResponse fetchCategories(CategoryFetchParams categoryFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		Category category = categoryRepository.findByIdAndBranchIdOrIsNull(categoryFetchParams.getCategoryId(),
+				sessionParams.getBranchId());
+		if (category == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		CategoryResponse categoryResponse = categoryMapper.categoryToCategoryResponse(category);
+		return categoryResponse;
+
+	}
+
+	/**
+	 * Update the Category for a given Category Long.
+	 *
+	 * @param categoryUpdateParams the category update params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param categoryUpdateRequest the category update request
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse updateCategories(CategoryUpdateParams categoryUpdateParams, SessionParams sessionParams,
+			QueryableParams queryable, CategoryUpdateRequest categoryUpdateRequest) {
+		Category categoryUpdate = categoryRepository.findByIdAndBranchId(categoryUpdateRequest.getId(),
+				sessionParams.getBranchId());
+		if (categoryUpdate == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		Category category = categoryMapper.categoryUpdateRequestToCategory(categoryUpdateRequest);
+		categoryUpdate.setModifiedBy(sessionParams.getUserId());
+		categoryUpdate.setModifiedOn(DU.now());
+		categoryUpdate.setAll(category);
+		categoryRepository.save(categoryUpdate);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	/**
+	 * Delete the Category for a given Category Long.
+	 *
+	 * @param categoryDeleteParams the category delete params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return CategoryResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse deleteCategories(CategoryDeleteParams categoryDeleteParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+		Category categoryDelete = categoryRepository.findByIdAndBranchId(categoryDeleteParams.getCategoryId(),
+				sessionParams.getBranchId());
+		if (categoryDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		try {
+			categoryRepository.delete(categoryDelete);
+		} catch (DataIntegrityViolationException e) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_500, 500,
+					"Constraint Violation Exception",
+					"Please unassign all the Students and the Staff associated with this Category and try again!");
+		}
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_DELETED);
+	}
+
+	/**
+	 * Fetches all the categorys corresponding to the Branch and Academic Session ID.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return List<CategoryResponse>
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<CategoryResponse> fetchAllCategories(SessionParams sessionParams, QueryableParams queryable) {
+		List<Category> categoryList = categoryRepository.findByBranchIdOrBranchIdIsNull(sessionParams.getBranchId());
+		return categoryMapper.categoryListToCategoryResponseList(categoryList);
+	}
+
+	/**
+	 * Adds a new Category.
+	 *
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @param categoryAddRequest the category add request
+	 * @return JerseyResponse
+	 */
+	@Override
+	@Transactional
+	public JerseyResponse addCategories(SessionParams sessionParams, QueryableParams queryable,
+			CategoryAddRequest categoryAddRequest) {
+		Category category = categoryMapper.categoryAddRequestToCategory(categoryAddRequest);
+		category.setCreatedBy(sessionParams.getUserId());
+		category.setCreatedOn(DU.now());
+		category.setModifiedOn(DU.now());
+		category.setModifiedBy(sessionParams.getUserId());
+		category.setBranchId(sessionParams.getBranchId());
+		categoryRepository.save(category);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_INSERTED);
+	}
+
+}

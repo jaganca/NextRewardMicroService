@@ -1,0 +1,91 @@
+package com.nexteducation.NextConfig.config;
+
+import javax.annotation.PostConstruct;
+
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.message.filtering.EntityFilteringFeature;
+import org.glassfish.jersey.message.filtering.SelectableScopeResolver;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.RequestContextFilter;
+
+import com.nexteducation.NextService.config.NELogFilter;
+import com.nexteducation.NextService.exception.AppExceptionMapper;
+import com.nexteducation.NextService.exception.ConstraintViolationExceptionMapper;
+import com.nexteducation.NextService.interceptors.RequestParamInterceptor;
+
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
+
+/**
+ * The Class JerseyConfig.
+ */
+//@ApplicationPath("NextConfig")
+@Configuration
+@Component
+public class JerseyConfig extends ResourceConfig {
+
+	/** The swagger config id. */
+	@Value("${swagger.config.id}")
+	private String swaggerConfigId;
+
+	/** The swagger base path. */
+	@Value("${swagger.basepath}")
+	private String swaggerBasePath;
+
+	/** The swagger host. */
+	@Value("${swagger.host}")
+	private String swaggerHost;
+
+	/**
+	 * Inits the.
+	 */
+	@PostConstruct
+	public void init() {
+		this.configureSwagger();
+	}
+
+	/**
+	 * Configure swagger.
+	 */
+	private void configureSwagger() {
+		this.register(ApiListingResource.class);
+		this.register(SwaggerSerializers.class);
+
+		BeanConfig config = new BeanConfig();
+		config.setTitle("NextConfig");
+		config.setVersion("v1.0.0");
+		config.setContact("Sarat Bhaswanth");
+		config.setSchemes(new String[] { "http", "https" });
+		config.setResourcePackage("com.nexteducation.NextConfig.module.controller");
+		config.setPrettyPrint(false);
+		config.setScan(true);
+		config.setConfigId(swaggerConfigId);
+		config.setBasePath(swaggerBasePath);
+		config.setHost(swaggerHost);
+	}
+
+	/**
+	 * Instantiates a new jersey config.
+	 */
+	public JerseyConfig() {
+		register(RequestContextFilter.class);
+		packages("com.nexteducation.NextConfig.module.controller");
+		packages("com.nexteducation.NextConfig.module.model.response");
+		register(LoggingFeature.class); // For Logging purpose
+		register(EntityFilteringFeature.class);
+		register(SelectableConfigEntityProcessor.class);
+		register(SelectableScopeResolver.class);
+		register(AppExceptionMapper.class);
+		property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+		register(CORSResponseFilter.class);
+		register(NELogFilter.class);
+		// Register your custom ExceptionMapper.
+		register(ConstraintViolationExceptionMapper.class);
+		register(RequestParamInterceptor.class);
+	}
+}

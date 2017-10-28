@@ -1,0 +1,190 @@
+package com.nexteducation.NextConfig.module.model.response.CustomField;
+
+import java.util.Date;
+
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+public class CustomFormElementResponse {
+
+	private Long id;
+
+	private Long branchId;
+
+	private String label;
+
+	private String placeholder;
+
+	private CustomFieldResponse customField;
+
+	private FormResponse form;
+
+	private String entityName;
+
+	private StandardFieldResponse standardField;
+
+	private Status status;
+
+	private boolean ifMandatory;
+
+	private boolean ifHide;
+
+	private Long createdBy;
+
+	private Date createdOn;
+
+	private Long modifiedBy;
+
+	private Date modifiedOn;
+
+	private boolean systemMandatory;
+
+	private FieldType fieldType;
+
+	private Long standardFieldId;
+
+	public Long getStandardFieldId() {
+		return standardFieldId;
+	}
+
+	public void setStandardFieldId(Long standardFieldId) {
+		this.standardFieldId = standardFieldId;
+	}
+
+	public FormResponse getForm() {
+		return form;
+	}
+
+	public void setForm(FormResponse form) {
+		this.form = form;
+	}
+
+	public StandardFieldResponse getStandardField() {
+		return standardField;
+	}
+
+	public void setStandardField(StandardFieldResponse standardField) {
+		this.standardField = standardField;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	public boolean isIfHide() {
+		return ifHide;
+	}
+
+	public void setIfHide(boolean ifHide) {
+		this.ifHide = ifHide;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public boolean isSystemMandatory() {
+		return systemMandatory;
+	}
+
+	public void setSystemMandatory(boolean systemMandatory) {
+		this.systemMandatory = systemMandatory;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public CustomFieldResponse getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomFieldResponse customField) {
+		this.customField = customField;
+	}
+
+	public FieldType getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
+	}
+
+}

@@ -1,0 +1,135 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.enums.ValidationType;
+
+@Entity
+@Table(name = "CUSTOM_FIELD_VALIDATIONS")
+public class CustomFieldValidations {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CUSTOM_FIELD_VALIDATIONS_ID")
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CUSTOM_FORM_ELEMENTS_ID", nullable = false)
+	private CustomFormElement customFormElement;
+
+	@Column(name = "TYPE", columnDefinition = "TINYINT(4)", nullable = false)
+	private ValidationType validationType;
+
+	@Column(name = "VALUE", columnDefinition = "VARCHAR(50)")
+	private String value;
+
+	@Column(name = "STATUS", columnDefinition = "TINYINT(4)")
+	private Status status;
+
+	@NotNull
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)")
+	private Long createdBy;
+
+	@NotNull
+	@Column(name = "CREATED_ON")
+	private Date createdOn;
+
+	@NotNull
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)")
+	private Long modifiedBy;
+
+	@NotNull
+	@Column(name = "MODIFIED_ON")
+	private Date modifiedOn;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public CustomFormElement getCustomFormElement() {
+		return customFormElement;
+	}
+
+	public void setCustomFormElement(CustomFormElement customFormElement) {
+		this.customFormElement = customFormElement;
+	}
+
+	public ValidationType getValidationType() {
+		return validationType;
+	}
+
+	public void setValidationType(ValidationType validationType) {
+		this.validationType = validationType;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public CustomFieldValidations setAll(CustomFieldValidations customFieldValidations) {
+		this.setValidationType(customFieldValidations.getValidationType());
+		this.setValue(customFieldValidations.getValue());
+		return this;
+	}
+
+}

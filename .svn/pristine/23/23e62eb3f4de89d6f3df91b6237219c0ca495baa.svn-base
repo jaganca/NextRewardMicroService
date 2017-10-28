@@ -1,0 +1,129 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureFetchParams;
+import com.nexteducation.NextConfig.module.model.params.productFeature.ProductFeatureUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureAddRequest;
+import com.nexteducation.NextConfig.module.model.request.productFeature.ProductFeatureUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.productFeature.ProductFeatureResponse;
+import com.nexteducation.NextConfig.module.service.core.ProductFeatureService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class ProductFeatureServiceClient implements ProductFeatureService{
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+	
+	public ProductFeatureServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	
+	@Override
+	public JerseyResponse addProductFeatures(SessionParams sessionParams, QueryableParams queryable,
+			ProductFeatureAddRequest productFeatureAddRequest) throws NextServiceException{
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(productFeatureAddRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	
+	}
+
+	
+	@Override
+	public JerseyResponse updateProductFeatures(ProductFeatureUpdateParams productFeatureUpdateContextParams,
+			SessionParams sessionParams, QueryableParams queryable,
+			ProductFeatureUpdateRequest productFeatureUpdateRequest)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(productFeatureUpdateRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteProductFeatures(ProductFeatureDeleteParams productFeatureDeleteContextParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI =serverUrl + NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES+"/"+productFeatureDeleteContextParams.getProductFeatureId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE,null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<ProductFeatureResponse> fetchAllProductFeatures(SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<ProductFeatureResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<ProductFeatureResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+
+	@Override
+	public ProductFeatureResponse fetchProductFeatures(ProductFeatureFetchParams productFeatureFetchParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.PRODUCT_FEATURES+"/"+productFeatureFetchParams.getProductFeatureId();;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<ProductFeatureResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<ProductFeatureResponse>() {
+				});
+		return responseEntity.getBody();
+		}
+
+
+
+
+
+
+
+}

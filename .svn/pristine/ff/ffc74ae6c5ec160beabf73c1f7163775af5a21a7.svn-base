@@ -1,0 +1,11 @@
+package com.nexteducation.NextConfig;
+
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+public class NextConfigApplicationTests {
+
+/*	@Test
+	public void contextLoads() {
+	}*/
+
+}

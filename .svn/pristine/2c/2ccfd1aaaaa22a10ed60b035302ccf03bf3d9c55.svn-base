@@ -1,0 +1,27 @@
+package com.nexteducation.NextConfig.module.model.request.AutoNumbering;
+
+import com.nexteducation.NextConfig.module.model.enums.Type;
+
+public class AutoNumberingGenerateRequest {
+	private long subType;
+
+	private Type type;
+
+	public long getSubType() {
+		return subType;
+	}
+
+	public void setSubType(long subType) {
+		this.subType = subType;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
+
+}

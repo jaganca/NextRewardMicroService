@@ -1,0 +1,180 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+
+@Entity
+@Table(name = "CUSTOM_FORM_ELEMENT")
+public class CustomFormElement {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CUSTOM_FORM_ELEMENT_ID")
+	private Long id;
+
+	@Column(name = "BRANCH_ID", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long branchId;
+
+	@Column(name = "LABEL", columnDefinition = "VARCHAR(100)")
+	private String label;
+
+	@Column(name = "PLACEHOLDER", columnDefinition = "VARCHAR(30)")
+	private String placeholder;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CUSTOM_FIELD_ID")
+	private CustomField customField;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "STANDARD_FORM_ID", nullable = false)
+	private Form form;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "STANDARD_FIELD_ID")
+	private StandardField standardField;
+
+	@Column(name = "STATUS", columnDefinition = "INT(1)")
+	private Status status;
+
+	@Column(name = "IS_MANDATORY", columnDefinition = "BIT", length = 1)
+	private boolean ifMandatory;
+
+	@Column(name = "IS_HIDE", columnDefinition = "BIT", length = 1)
+	private boolean ifHide;
+
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long createdBy;
+
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long modifiedBy;
+
+	@Column(name = "MODIFIED_ON", nullable = false)
+	private Date modifiedOn;
+
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
+	}
+
+	public Form getForm() {
+		return form;
+	}
+
+	public void setForm(Form form) {
+		this.form = form;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public CustomField getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomField customField) {
+		this.customField = customField;
+	}
+
+	public StandardField getStandardField() {
+		return standardField;
+	}
+
+	public void setStandardField(StandardField standardField) {
+		this.standardField = standardField;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public boolean isIfMandatory() {
+		return ifMandatory;
+	}
+
+	public void setIfMandatory(boolean ifMandatory) {
+		this.ifMandatory = ifMandatory;
+	}
+
+	public boolean isIfHide() {
+		return ifHide;
+	}
+
+	public void setIfHide(boolean ifHide) {
+		this.ifHide = ifHide;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+}

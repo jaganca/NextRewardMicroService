@@ -1,0 +1,48 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldValidationsDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldValidations;
+
+/**
+ * The Interface CustomFieldValidationsMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CustomFieldValidationsMapper {
+
+	/** The instance. */
+	CustomFieldValidationsMapper INSTANCE = Mappers.getMapper(CustomFieldValidationsMapper.class);
+
+	/**
+	 * Custom field validations DTO to custom field validations.
+	 *
+	 * @param customFieldValidationsDTO the custom field validations DTO
+	 * @return the custom field validations
+	 */
+	CustomFieldValidations CustomFieldValidationsDTOToCustomFieldValidations(
+			CustomFieldValidationsDTO customFieldValidationsDTO);
+
+	/**
+	 * Custom field validations to custom field validations DTO.
+	 *
+	 * @param customFieldValidations the custom field validations
+	 * @return the custom field validations DTO
+	 */
+	CustomFieldValidationsDTO CustomFieldValidationsToCustomFieldValidationsDTO(
+			CustomFieldValidations customFieldValidations);
+
+	/**
+	 * Custom field validations to custom field validations DTO.
+	 *
+	 * @param customFieldValidations the custom field validations
+	 * @return the list
+	 */
+	List<CustomFieldValidationsDTO> CustomFieldValidationsToCustomFieldValidationsDTO(
+			List<CustomFieldValidations> customFieldValidations);
+
+}

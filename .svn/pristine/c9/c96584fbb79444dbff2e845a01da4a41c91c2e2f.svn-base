@@ -1,0 +1,162 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.AddResponse;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import com.nexteducation.NextConfig.module.service.core.CasteService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class CasteServiceClient implements CasteService{
+
+private String serverUrl = NextConfigUrls.SERVER_URL;
+	
+	public CasteServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	@Override
+	public AddResponse addCastes(SessionParams sessionParams, QueryableParams queryable,
+			CasteAddRequest casteAddRequest) throws NextServiceException{
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(casteAddRequest,headers);
+		ResponseEntity<AddResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<AddResponse>() {
+				});
+		return responseEntity.getBody();
+	
+	}
+
+	
+	@Override
+	public JerseyResponse updateCastes(CasteUpdateParams casteUpdateContextParams,
+			SessionParams sessionParams, QueryableParams queryable,
+			CasteUpdateRequest casteUpdateRequest)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(casteUpdateRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteCastes(CasteDeleteParams casteDeleteContextParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI =serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES+"/"+casteDeleteContextParams.getCasteId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE,null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<CasteCustomResponse> fetchAllParentCastes(SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES_PARENT;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<CasteCustomResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<CasteCustomResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+	
+	@Override
+	public List<CasteResponse> fetchAllCastes(SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<CasteResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<CasteResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+
+	@Override
+	public CasteResponse fetchCastes(CasteFetchParams casteFetchParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		
+		final String REST_URI =serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES+"/"+casteFetchParams.getCasteId();;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<CasteResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<CasteResponse>() {
+				});
+		return responseEntity.getBody();
+		}
+
+
+	@Override
+	public List<CasteResponse> fetchSubCastes(CasteFetchParams casteFetchParams, SessionParams sessionParams,
+			QueryableParams queryable) {
+
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CASTES+"/"+casteFetchParams.getCasteId()+"/sub";
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<CasteResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<CasteResponse>>() {
+				});
+		return responseEntity.getBody();
+		
+	}
+
+
+
+}

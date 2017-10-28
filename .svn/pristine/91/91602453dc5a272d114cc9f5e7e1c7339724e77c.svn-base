@@ -1,0 +1,52 @@
+package com.nexteducation.NextConfig.module.model.request.Language;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+ 
+
+public class LanguageUpdateRequest {
+	
+	
+	 
+	@NotNull(message="Language ID should not be empty!")
+	private Long id;
+
+	 
+	private Long branchId;
+	
+	
+
+	@NotEmpty(message="Language Name should not be empty!")
+	private String name;
+
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public  Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+}

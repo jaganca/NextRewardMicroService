@@ -1,0 +1,20 @@
+package com.nexteducation.NextConfig.module.model.params.CustomFieldList;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CustomFieldListFetchParams {
+
+	@QueryParam(NextConfigUrls.CUSTOM_FIELD_ID)
+	private Long customFieldId;
+
+	public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+}

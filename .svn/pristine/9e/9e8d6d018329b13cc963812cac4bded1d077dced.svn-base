@@ -1,0 +1,13 @@
+package com.nexteducation.NextConfig.module.repository.custom.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+public interface CustomFieldDataRepositoryCustom {
+
+	List<CustomFieldData> findByBOFilters(CustomFieldDataFetchParams customFieldDataFetchParams,
+			QueryableParams queryableParams);
+}

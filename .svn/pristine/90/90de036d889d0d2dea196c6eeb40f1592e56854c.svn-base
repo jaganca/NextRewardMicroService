@@ -1,0 +1,27 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.model.bo.Category;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CategoryMapper {
+
+	CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
+
+	Category categoryAddRequestToCategory(CategoryAddRequest categoryAddRequest);
+
+	Category categoryUpdateRequestToCategory(CategoryUpdateRequest categoryUpdateRequest);
+
+	CategoryResponse categoryToCategoryResponse(Category category);
+
+	List<CategoryResponse> categoryListToCategoryResponseList(List<Category> categoryList);
+
+}

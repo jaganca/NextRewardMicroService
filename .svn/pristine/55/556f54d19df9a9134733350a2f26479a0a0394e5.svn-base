@@ -1,0 +1,16 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.Form;
+
+
+public interface StandardFormRepository  extends JpaRepository<Form, Serializable> {
+	
+	public Form findByKey(String key);
+	
+	public Form findById(Long id);
+
+}

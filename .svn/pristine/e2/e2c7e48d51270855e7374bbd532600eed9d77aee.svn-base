@@ -1,0 +1,5 @@
+package com.nexteducation.NextConfig.module.filter.queryable;
+
+enum FilterableOperator {
+	eq, ne, gt, ge, lt, le, or, and, not;
+}

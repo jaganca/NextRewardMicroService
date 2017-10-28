@@ -1,0 +1,22 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+  
+
+import javax.ws.rs.PathParam;
+
+public class CustomFieldDeleteParams {
+	
+	@PathParam("customFieldId")
+	Long customFieldId;
+
+	
+	  public Long getCustomFieldId() {
+		return customFieldId;
+	}
+
+	public void setCustomFieldId(Long customFieldId) {
+		this.customFieldId = customFieldId;
+	}
+
+
+}

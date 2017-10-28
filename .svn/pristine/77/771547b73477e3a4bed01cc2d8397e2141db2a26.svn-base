@@ -1,0 +1,88 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.Category;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CategoryMapperImpl implements CategoryMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public Category CategoryAddRequestToCategory(CategoryAddRequest categoryAddRequest) {
+        if ( categoryAddRequest == null ) {
+            return null;
+        }
+
+        Category category = new Category();
+
+        category.setName( categoryAddRequest.getName() );
+        category.setBranchId( uuidMapper.asString( categoryAddRequest.getBranchId() ) );
+
+        category.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        category.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return category;
+    }
+
+    @Override
+    public Category CategoryUpdateRequestToCategory(CategoryUpdateRequest categoryUpdateRequest) {
+        if ( categoryUpdateRequest == null ) {
+            return null;
+        }
+
+        Category category = new Category();
+
+        category.setName( categoryUpdateRequest.getName() );
+        category.setId( uuidMapper.asString( categoryUpdateRequest.getId() ) );
+        category.setBranchId( uuidMapper.asString( categoryUpdateRequest.getBranchId() ) );
+
+        return category;
+    }
+
+    @Override
+    public CategoryResponse CategoryToCategoryResponse(Category category) {
+        if ( category == null ) {
+            return null;
+        }
+
+        CategoryResponse categoryResponse = new CategoryResponse();
+
+        categoryResponse.setBranchId( category.getBranchId() );
+        categoryResponse.setName( category.getName() );
+        categoryResponse.setCreatedBy( category.getCreatedBy() );
+        categoryResponse.setCreatedOn( category.getCreatedOn() );
+        categoryResponse.setModifiedBy( category.getModifiedBy() );
+        categoryResponse.setModifiedOn( category.getModifiedOn() );
+        categoryResponse.setId( category.getId() );
+
+        return categoryResponse;
+    }
+
+    @Override
+    public List<CategoryResponse> CategoryListToCategoryResponseList(List<Category> categoryList) {
+        if ( categoryList == null ) {
+            return null;
+        }
+
+        List<CategoryResponse> list = new ArrayList<CategoryResponse>();
+        for ( Category category : categoryList ) {
+            list.add( CategoryToCategoryResponse( category ) );
+        }
+
+        return list;
+    }
+}

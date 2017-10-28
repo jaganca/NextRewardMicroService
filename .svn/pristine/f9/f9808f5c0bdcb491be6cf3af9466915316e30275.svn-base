@@ -1,0 +1,123 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import com.nexteducation.NextConfig.module.service.core.CategoryService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class CategoryServiceClient implements CategoryService{
+
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+	
+	public CategoryServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+	@Override
+	public JerseyResponse addCategorys(SessionParams sessionParams, QueryableParams queryable,
+			CategoryAddRequest categoryAddRequest) throws NextServiceException{
+		final String REST_URI =serverUrl + NextConfigUrls.V1 + NextConfigUrls.CATEGORIES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(categoryAddRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	
+	}
+
+	
+	@Override
+	public JerseyResponse updateCategorys(CategoryUpdateParams categoryUpdateContextParams,
+			SessionParams sessionParams, QueryableParams queryable,
+			CategoryUpdateRequest categoryUpdateRequest)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CATEGORIES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(categoryUpdateRequest,headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteCategorys(CategoryDeleteParams categoryDeleteContextParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CATEGORIES+"/"+categoryDeleteContextParams.getCategoryId();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE,null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<CategoryResponse> fetchAllCategorys(SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CATEGORIES;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<List<CategoryResponse>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<List<CategoryResponse>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+
+	@Override
+	public CategoryResponse fetchCategorys(CategoryFetchParams categoryFetchParams,
+			SessionParams sessionParams, QueryableParams queryable)throws NextServiceException {
+		
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CATEGORIES+"/"+categoryFetchParams.getCategoryId();;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<CategoryResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET,null,
+				new ParameterizedTypeReference<CategoryResponse>() {
+				});
+		return responseEntity.getBody();
+		}
+
+}

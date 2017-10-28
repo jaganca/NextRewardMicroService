@@ -1,0 +1,20 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class StandardFieldFetchParams {
+
+	@QueryParam(NextConfigUrls.ENTITY_NAME)
+	private String entityName;
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+}

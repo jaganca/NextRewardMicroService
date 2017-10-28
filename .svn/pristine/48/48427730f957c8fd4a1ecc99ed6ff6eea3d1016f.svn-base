@@ -1,0 +1,29 @@
+package com.nexteducation.NextConfig.module.model.request.Language;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class LanguageAddRequest {
+
+	@NotEmpty(message = "Language Name should not be empty!")
+	private String name;
+
+	@NotEmpty(message = "Language Iso Code should not be empty!")
+	private String isoCode;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIsoCode() {
+		return isoCode;
+	}
+
+	public void setIsoCode(String isoCode) {
+		this.isoCode = isoCode;
+	}
+
+}

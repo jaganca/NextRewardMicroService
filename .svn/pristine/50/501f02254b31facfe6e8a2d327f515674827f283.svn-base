@@ -1,0 +1,77 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteCustomResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import com.nexteducation.NextConfig.module.model.response.Caste.ParentCasteResponse;
+
+/**
+ * The Class CasteMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public abstract class CasteMapper extends CommonMapper {
+
+	/**
+	 * Caste add request to caste.
+	 *
+	 * @param casteAddRequest the caste add request
+	 * @return the caste
+	 */
+	public abstract Caste casteAddRequestToCaste(CasteAddRequest casteAddRequest);
+
+	/**
+	 * Caste update request to caste.
+	 *
+	 * @param casteUpdateRequest the caste update request
+	 * @return the caste
+	 */
+	public abstract Caste casteUpdateRequestToCaste(CasteUpdateRequest casteUpdateRequest);
+
+	/**
+	 * Caste to caste response.
+	 *
+	 * @param caste the caste
+	 * @return the caste response
+	 */
+	public abstract CasteResponse casteToCasteResponse(Caste caste);
+
+	/**
+	 * Caste to parent caste response.
+	 *
+	 * @param caste the caste
+	 * @return the parent caste response
+	 */
+	public abstract ParentCasteResponse casteToParentCasteResponse(Caste caste);
+
+	/**
+	 * Caste to caste custom response.
+	 *
+	 * @param caste the caste
+	 * @return the caste custom response
+	 */
+	public abstract CasteCustomResponse casteToCasteCustomResponse(Caste caste);
+
+	/**
+	 * Caste list to caste custom response list.
+	 *
+	 * @param casteList the caste list
+	 * @return the list
+	 */
+	public abstract List<CasteCustomResponse> casteListToCasteCustomResponseList(List<Caste> casteList);
+
+	/**
+	 * Caste list to caste response list.
+	 *
+	 * @param casteList the caste list
+	 * @return the list
+	 */
+	public abstract List<CasteResponse> casteListToCasteResponseList(List<Caste> casteList);
+
+}

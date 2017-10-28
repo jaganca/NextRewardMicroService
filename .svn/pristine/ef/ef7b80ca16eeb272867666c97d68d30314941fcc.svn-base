@@ -1,0 +1,198 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.enums.Type;
+@Entity
+@Table(name="AUTO_NUMBERING",uniqueConstraints={@UniqueConstraint(columnNames={"BRANCH_ID","ACADEMIC_SESSION_ID","FIXED_VALUE"})
+		,@UniqueConstraint(columnNames={"BRANCH_ID","ACADEMIC_SESSION_ID","TYPE","SUB_TYPE"})})
+public class AutoNumbering {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "AUTO_NUMBERING_ID")
+	private Long id;
+
+		@Column(name = "BRANCH_ID")
+		private Long branchId;
+
+		@Column(name="SUB_TYPE")
+		private long subType = 0;
+
+		@Column(name="TYPE",columnDefinition = "TINYINT(4)")
+		private Type type;
+
+		@Column(name="FIXED_VALUE")
+		private String fixedValue;
+
+		@Column(name="VARIABLE_START")
+		private long variableStart;
+
+		@Column(name="LAST_RUN_VARIABLE")
+		private String lastRunVariable;
+
+		@Column(name="STATUS",columnDefinition = "TINYINT(4)")
+		private Status status;
+
+	    @NotNull
+		@Column(name="CREATED_BY" )
+		private Long createdBy;
+	    
+	    @Column(name="ITEM_CATEGORY_ID")
+	    private String itemGroup;
+
+	    @NotNull
+		@Column(name="CREATED_ON")
+		private Date createdOn;
+
+	    
+	    @NotNull
+		@Column(name="MODIFIED_BY" )
+		private Long modifiedBy;
+
+	    @NotNull
+		@Column(name="MODIFIED_ON")
+		private Date modifiedOn;
+
+		@Column(name="ACADEMIC_SESSION_ID" )
+		private Long academicSessionId;
+
+//		@JoinColumn(name="PARENT_AUTO_NUMBERING_ID")
+//		private AutoNumbering parentAutoNumberingId;
+		
+
+
+		public long getSubType() {
+			return subType;
+		}
+
+		public void setSubType(long subType) {
+			this.subType = subType;
+		}
+
+		public Type getType() {
+			return type;
+		}
+
+		public void setType(Type type) {
+			this.type = type;
+		}
+
+		public String getFixedValue() {
+			return fixedValue;
+		}
+
+		public void setFixedValue(String fixedValue) {
+			this.fixedValue = fixedValue;
+		}
+
+		public long getVariableStart() {
+			return variableStart;
+		}
+
+		public void setVariableStart(long variableStart) {
+			this.variableStart = variableStart;
+		}
+
+		public String getLastRunVariable() {
+			return lastRunVariable;
+		}
+
+		public void setLastRunVariable(String lastRunVariable) {
+			this.lastRunVariable = lastRunVariable;
+		}
+
+		public Status getStatus() {
+			return status;
+		}
+
+		public void setStatus(Status status) {
+			this.status = status;
+		}
+
+
+
+		public String getItemGroup() {
+			return itemGroup;
+		}
+
+		public void setItemGroup(String itemGroup) {
+			this.itemGroup = itemGroup;
+		}
+
+		public Date getCreatedOn() {
+			return createdOn;
+		}
+
+		public void setCreatedOn(Date createdOn) {
+			this.createdOn = createdOn;
+		}
+
+		public Date getModifiedOn() {
+			return modifiedOn;
+		}
+
+		public void setModifiedOn(Date modifiedOn) {
+			this.modifiedOn = modifiedOn;
+		}
+
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public Long getBranchId() {
+			return branchId;
+		}
+
+		public void setBranchId(Long branchId) {
+			this.branchId = branchId;
+		}
+
+		public Long getCreatedBy() {
+			return createdBy;
+		}
+
+		public void setCreatedBy(Long createdBy) {
+			this.createdBy = createdBy;
+		}
+
+		public Long getModifiedBy() {
+			return modifiedBy;
+		}
+
+		public void setModifiedBy(Long modifiedBy) {
+			this.modifiedBy = modifiedBy;
+		}
+
+		public Long getAcademicSessionId() {
+			return academicSessionId;
+		}
+
+		public void setAcademicSessionId(Long academicSessionId) {
+			this.academicSessionId = academicSessionId;
+		}
+
+//		public AutoNumbering getParentAutoNumberingId() {
+//			return parentAutoNumberingId;
+//		}
+//
+//		public void setParentAutoNumberingId(AutoNumbering parentAutoNumberingId) {
+//			this.parentAutoNumberingId = parentAutoNumberingId;
+//		}
+		
+}

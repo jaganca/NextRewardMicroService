@@ -1,0 +1,45 @@
+package com.nexteducation.NextConfig.module.model.params;
+
+import javax.ws.rs.QueryParam;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class SessionParams1 {
+	@NotEmpty(message="Session Parameters: Branch is invalid!")
+	@QueryParam("lbid")
+	String branch;
+	
+
+	@NotEmpty(message="Session Parameters: Academic Session is invalid!")
+	@QueryParam("lasid")
+	String academicSession;
+	
+	@NotEmpty(message="Session Parameters: User is invalid!")
+	@QueryParam("luid")
+	String user;
+
+	public String getBranch() {
+		return branch;
+	}
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+	public String getAcademicSession() {
+		return academicSession;
+	}
+	public void setAcademicSession(String academicSession) {
+		this.academicSession = academicSession;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	@Override
+	public String toString() {
+		return "SessionParams [" + (branch != null ? "branch=" + branch + ", " : "")
+				+ (academicSession != null ? "academicSession=" + academicSession + ", " : "")
+				+ (user != null ? "user=" + user : "") + "]";
+	}
+}

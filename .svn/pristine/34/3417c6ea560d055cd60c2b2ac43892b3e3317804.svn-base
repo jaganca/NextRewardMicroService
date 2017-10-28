@@ -1,0 +1,73 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryDeleteParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryFetchParams;
+import com.nexteducation.NextConfig.module.model.params.Category.CategoryUpdateParams;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Category.CategoryUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.Category.CategoryResponse;
+import com.nexteducation.NextConfig.module.service.core.CategoryService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.CATEGORIES)
+public class CategoryController {
+
+	@Autowired
+	CategoryService categoryService;
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse addCategories(@Valid @BeanParam SessionParams sessionParams,
+			@BeanParam QueryableParams queryable, @Valid CategoryAddRequest categoryAddRequest) {
+		return categoryService.addCategories(sessionParams, queryable, categoryAddRequest);
+	}
+
+	@PUT
+	@Path(NextConfigUrls.CATEGORY_PATH_ID)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JerseyResponse updateCategories(@BeanParam CategoryUpdateParams categoryUpdateParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable,
+			@Valid CategoryUpdateRequest categoryUpdateRequest) {
+		return categoryService.updateCategories(categoryUpdateParams, sessionParams, queryable, categoryUpdateRequest);
+	}
+
+	@DELETE
+	@Path(NextConfigUrls.CATEGORY_PATH_ID)
+	public JerseyResponse deleteCategories(@BeanParam CategoryDeleteParams categoryDeleteParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return categoryService.deleteCategories(categoryDeleteParams, sessionParams, queryable);
+	}
+
+	@GET
+	public List<CategoryResponse> fetchAllCategories(@Valid @BeanParam SessionParams sessionParams,
+			@BeanParam QueryableParams queryable) {
+		return categoryService.fetchAllCategories(sessionParams, queryable);
+	}
+
+	@GET
+	@Path(NextConfigUrls.CATEGORY_PATH_ID)
+	public CategoryResponse fetchCategories(@BeanParam CategoryFetchParams categoryFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return categoryService.fetchCategories(categoryFetchParams, sessionParams, queryable);
+	}
+
+}

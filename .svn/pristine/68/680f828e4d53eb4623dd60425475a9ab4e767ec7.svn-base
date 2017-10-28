@@ -1,0 +1,187 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.mapper.CustomFieldDataMapper;
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.enums.FieldType;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.repository.CustomFieldDataRepository;
+import com.nexteducation.NextConfig.module.repository.CustomFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldDataService;
+import com.nexteducation.NextConfig.util.Constants;
+import com.nexteducation.NextService.exception.NextServiceException;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.util.DU;
+
+@Service("customFieldDataService")
+public class CustomFieldDataServiceImpl implements CustomFieldDataService {
+
+	@Autowired
+	CustomFieldDataRepository customFieldDataRepository;
+
+	@Autowired
+	CustomFieldDataMapper customFieldDataMapper;
+
+	@Autowired
+	CustomFieldRepository customFieldRepository;
+
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	@Override
+	public CustomFieldDataDTO fetchCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		CustomFieldData customFieldData = customFieldDataRepository.findById(customFieldDataId);
+		if (customFieldData == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		return customFieldDataMapper.customFieldDataToCustomFieldDataDTO(customFieldData);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse updateCustomFieldData(Long customFieldDataId, SessionParams sessionParams,
+			CustomFieldDataDTO customFieldDataDTO) {
+		CustomFieldData customFieldDataUpdate = customFieldDataRepository.findById((customFieldDataDTO.getId()));
+		if (customFieldDataUpdate == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		CustomFieldData customFieldData = customFieldDataMapper.customFieldDataDTOToCustomFieldData(customFieldDataDTO);
+		customFieldDataUpdate.setAll(customFieldData);
+		customFieldDataUpdate.setModifiedOn(DU.now());
+		customFieldDataUpdate.setModifiedBy(sessionParams.getUserId());
+		customFieldDataRepository.save(customFieldDataUpdate);
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addOrupdateCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) throws ParseException {
+		for (CustomFieldDataDTO customFieldDataDTO : customFieldDataDTOs) {
+			if (customFieldDataDTO.getId() != null) {
+				updateCustomFieldData(customFieldDataDTO.getId(), sessionParams, customFieldDataDTO);
+			} else {
+				addCustomFieldData(sessionParams, customFieldDataDTO);
+			}
+		}
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse saveCustomFieldDataForExcel(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) throws ParseException {
+		if (customFieldDataDTOs == null || customFieldDataDTOs.isEmpty())
+			return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+		List<Long> customFieldIds = new ArrayList<>();
+		List<Long> entityIds = new ArrayList<>();
+		for (CustomFieldDataDTO customFieldDataDTO : customFieldDataDTOs) {
+			customFieldIds.add(customFieldDataDTO.getCustomFieldId());
+			entityIds.add(customFieldDataDTO.getEntityInstanceId());
+		}
+		customFieldDataRepository.deleteByCustomFieldIds(customFieldIds, entityIds);
+		for (CustomFieldDataDTO customFieldDataDTO : customFieldDataDTOs) {
+			addCustomFieldData(sessionParams, customFieldDataDTO);
+		}
+		return new JerseyResponse().withCode(Constants.SUCCESS).withMsg(Constants.RECORDS_UPDATED);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse deleteCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		CustomFieldData customFieldDataDelete = customFieldDataRepository.findById(customFieldDataId);
+		if (customFieldDataDelete == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404, Constants.RECORD_NOT_FOUND,
+					Constants.RECORD_NOT_FOUND);
+		}
+		customFieldDataRepository.delete(customFieldDataDelete);
+		return new JerseyResponse().withMsg(Constants.RECORDS_DELETED).withCode(Constants.SUCCESS);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, CustomFieldDataDTO customFieldDataDTO)
+			throws ParseException {
+		CustomField customField = customFieldRepository.findById((customFieldDataDTO.getCustomFieldId()));
+		if (customField == null) {
+			throw new NextServiceException(Constants.MODULE_NAME, Constants.ERROR_404, 404,
+					"Custom Field not found in the repository", "Custom Field not found in the repository");
+		}
+		if (customFieldDataDTO.getValue() == null || customFieldDataDTO.getValue().isEmpty()) {
+			return new JerseyResponse().withMsg(Constants.RECORDS_NOT_INSERTED).withCode(Constants.FAILURE);
+		}
+
+		CustomFieldData customFieldData = customFieldDataMapper.customFieldDataDTOToCustomFieldData(customFieldDataDTO);
+		customFieldData.setBranchId(sessionParams.getBranchId());
+		customFieldData.setCustomField(customField);
+		customFieldData.setCreatedBy(sessionParams.getUserId());
+		customFieldData.setCreatedOn(DU.now());
+		customFieldData.setModifiedOn(DU.now());
+		customFieldData.setModifiedBy(sessionParams.getUserId());
+		if (customField.getFieldType() == FieldType.Date) {
+			SimpleDateFormat parseFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+			Date date = null;
+			try {
+				date = parseFormat.parse(customFieldDataDTO.getValue());
+			} catch (Exception e) {
+				Date date1 = new Date(customFieldDataDTO.getValue());
+				DateFormat inputFormat = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss 'GMT'+0530 (z)", Locale.ENGLISH);
+				String outputDate = inputFormat.format(date1);
+				customFieldData.setValue(outputDate);
+				customFieldDataRepository.save(customFieldData);
+				return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS)
+						.withId(customFieldData.getId());
+
+			}
+			SimpleDateFormat format = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss 'GMT'+0530 (z)", Locale.ENGLISH);
+			String result = format.format(date);
+			System.out.println(date.toString());
+			customFieldData.setValue(result);
+		}
+		customFieldDataRepository.save(customFieldData);
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS)
+				.withId(customFieldData.getId());
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, List<CustomFieldDataDTO> customFieldDataDTOs)
+			throws ParseException {
+		List<JerseyResponse> jerseyResponses = new ArrayList<JerseyResponse>();
+		for (CustomFieldDataDTO customFieldDataDTO : customFieldDataDTOs) {
+			jerseyResponses.add(addCustomFieldData(sessionParams, customFieldDataDTO));
+		}
+		return new JerseyResponse().withMsg(Constants.RECORDS_INSERTED).withCode(Constants.SUCCESS);
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<CustomFieldDataDTO> fetchCustomFieldData(CustomFieldDataFetchParams customFieldDataFetchParams,
+			SessionParams sessionParams, QueryableParams queryableParams) {
+		customFieldDataFetchParams.setBranchId(sessionParams.getBranchId());
+		List<CustomFieldData> customFieldDatas = customFieldDataRepository.findByBOFilters(customFieldDataFetchParams,
+				queryableParams);
+		return customFieldDataMapper.customFieldDataToCustomFieldDataDTO(customFieldDatas);
+	}
+
+}

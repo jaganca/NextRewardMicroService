@@ -1,0 +1,48 @@
+package com.nexteducation.NextConfig.module.model.request;
+
+import com.nexteducation.NextConfig.module.model.enums.Gender;
+import com.nexteducation.NextConfig.module.model.enums.RollNOGenrationOrder;
+
+public class RollNumberSettingAddRequest {
+
+	private RollNOGenrationOrder rollNOGenrationOrder;
+
+	private boolean assignNewRollNo;
+
+	private boolean retireRollNo;
+
+	private Gender genderPrference;
+
+	public RollNOGenrationOrder getRollNOGenrationOrder() {
+		return rollNOGenrationOrder;
+	}
+
+	public void setRollNOGenrationOrder(RollNOGenrationOrder rollNOGenrationOrder) {
+		this.rollNOGenrationOrder = rollNOGenrationOrder;
+	}
+
+	public boolean isAssignNewRollNo() {
+		return assignNewRollNo;
+	}
+
+	public void setAssignNewRollNo(boolean assignNewRollNo) {
+		this.assignNewRollNo = assignNewRollNo;
+	}
+
+	public boolean isRetireRollNo() {
+		return retireRollNo;
+	}
+
+	public void setRetireRollNo(boolean retireRollNo) {
+		this.retireRollNo = retireRollNo;
+	}
+
+	public Gender getGenderPrference() {
+		return genderPrference;
+	}
+
+	public void setGenderPrference(Gender genderPrference) {
+		this.genderPrference = genderPrference;
+	}
+
+}

@@ -1,0 +1,57 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.MasterTemplate;
+import com.nexteducation.NextConfig.module.model.response.MasterTemplate.MasterTemplateResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class MasterTemplateMapperImpl implements MasterTemplateMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public MasterTemplateResponse MasterTemplateToMasterTemplateResponse(MasterTemplate masterTemplate) {
+        if ( masterTemplate == null ) {
+            return null;
+        }
+
+        MasterTemplateResponse masterTemplateResponse = new MasterTemplateResponse();
+
+        masterTemplateResponse.setMasterTemplateName( masterTemplate.getMasterTemplateName() );
+        masterTemplateResponse.setStatus( masterTemplate.getStatus() );
+        masterTemplateResponse.setCreatedBy( uuidMapper.asString( masterTemplate.getCreatedBy() ) );
+        masterTemplateResponse.setModifiedBy( uuidMapper.asString( masterTemplate.getModifiedBy() ) );
+        masterTemplateResponse.setId( uuidMapper.asString( masterTemplate.getId() ) );
+        masterTemplateResponse.setErpUrlId( uuidMapper.asString( masterTemplate.getErpUrlId() ) );
+        masterTemplateResponse.setEntityId( masterTemplate.getEntityId() );
+
+        masterTemplateResponse.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        masterTemplateResponse.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return masterTemplateResponse;
+    }
+
+    @Override
+    public List<MasterTemplateResponse> MasterTemplateListToMasterTemplateResponseList(List<MasterTemplate> masterTemplateList) {
+        if ( masterTemplateList == null ) {
+            return null;
+        }
+
+        List<MasterTemplateResponse> list = new ArrayList<MasterTemplateResponse>();
+        for ( MasterTemplate masterTemplate : masterTemplateList ) {
+            list.add( MasterTemplateToMasterTemplateResponse( masterTemplate ) );
+        }
+
+        return list;
+    }
+}

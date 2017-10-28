@@ -1,0 +1,157 @@
+package com.nexteducation.NextConfig.module.service.client;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFieldDataService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.exception.NextServiceExceptionHandler;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextService.module.service.client.RestTemplate;
+import com.nexteducation.NextService.util.QueryParamBuilder;
+
+public class CustomFieldDataServiceClient implements CustomFieldDataService {
+
+	private String serverUrl = NextConfigUrls.SERVER_URL;
+
+	public CustomFieldDataServiceClient(final String serverUrl) {
+		this.serverUrl = serverUrl;
+	}
+
+	@Override
+	public CustomFieldDataDTO fetchCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + "/"
+				+ customFieldDataId;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<CustomFieldDataDTO> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<CustomFieldDataDTO>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse updateCustomFieldData(Long customFieldDataId, SessionParams sessionParams,
+			CustomFieldDataDTO customFieldDataDTO) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + "/"
+				+ customFieldDataId;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldDataDTO, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse deleteCustomFieldData(Long customFieldDataId, SessionParams sessionParams) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + "/"
+				+ customFieldDataId;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.DELETE, null,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, CustomFieldDataDTO customFieldDataDTO) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldDataDTO, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public List<CustomFieldDataDTO> fetchCustomFieldData(CustomFieldDataFetchParams customFieldDataFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA;
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		List<Object> objects = Arrays.asList(customFieldDataFetchParams, sessionParams, queryable);
+		ResponseEntity<List<CustomFieldDataDTO>> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(objects, REST_URI), HttpMethod.GET, null,
+				new ParameterizedTypeReference<List<CustomFieldDataDTO>>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + NextConfigUrls.BULK;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldDataDTOs, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.POST, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse addOrupdateCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + NextConfigUrls.BULK;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldDataDTOs, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+	@Override
+	public JerseyResponse saveCustomFieldDataForExcel(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs) {
+		final String REST_URI = serverUrl + NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FIELD_DATA + NextConfigUrls.EXCEL;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new NextServiceExceptionHandler());
+		final HttpEntity<Object> requestEntity = new HttpEntity<Object>(customFieldDataDTOs, headers);
+		ResponseEntity<JerseyResponse> responseEntity = restTemplate.exchange(
+				new QueryParamBuilder().build(sessionParams, REST_URI), HttpMethod.PUT, requestEntity,
+				new ParameterizedTypeReference<JerseyResponse>() {
+				});
+		return responseEntity.getBody();
+	}
+
+}

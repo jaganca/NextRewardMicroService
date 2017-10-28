@@ -1,0 +1,81 @@
+package com.nexteducation.NextConfig.exception;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class NextConfigClientExceptionMapperImpl implements NextConfigClientExceptionMapper {
+
+    @Override
+    public ErrorResponse exceptionToResponse(NextConfigClientException exception) {
+        if ( exception == null ) {
+            return null;
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setDomain( exception.getDomain() );
+        errorResponse.setCode( exception.getCode() );
+        errorResponse.setStatus( exception.getStatus() );
+        errorResponse.setDebugMessage( exception.getDebugMessage() );
+        errorResponse.setClientMessage( exception.getClientMessage() );
+        errorResponse.setMoreInfoLink( exception.getMoreInfoLink() );
+        errorResponse.setErrors( exceptionToResponse( exception.getErrors() ) );
+
+        return errorResponse;
+    }
+
+    @Override
+    public List<ErrorResponse> exceptionToResponse(List<NextConfigClientException> exception) {
+        if ( exception == null ) {
+            return null;
+        }
+
+        List<ErrorResponse> list_ = new ArrayList<ErrorResponse>();
+        for ( NextConfigClientException nextConfigClientException : exception ) {
+            list_.add( exceptionToResponse( nextConfigClientException ) );
+        }
+
+        return list_;
+    }
+
+    @Override
+    public NextConfigClientException responseToException(ErrorResponse exception) {
+        if ( exception == null ) {
+            return null;
+        }
+
+        NextConfigClientException nextConfigClientException = new NextConfigClientException();
+
+        nextConfigClientException.setDomain( exception.getDomain() );
+        nextConfigClientException.setCode( exception.getCode() );
+        nextConfigClientException.setStatus( exception.getStatus() );
+        nextConfigClientException.setDebugMessage( exception.getDebugMessage() );
+        nextConfigClientException.setClientMessage( exception.getClientMessage() );
+        nextConfigClientException.setMoreInfoLink( exception.getMoreInfoLink() );
+        nextConfigClientException.setErrors( responseToException( exception.getErrors() ) );
+
+        return nextConfigClientException;
+    }
+
+    @Override
+    public List<NextConfigClientException> responseToException(List<ErrorResponse> exception) {
+        if ( exception == null ) {
+            return null;
+        }
+
+        List<NextConfigClientException> list_ = new ArrayList<NextConfigClientException>();
+        for ( ErrorResponse errorResponse : exception ) {
+            list_.add( responseToException( errorResponse ) );
+        }
+
+        return list_;
+    }
+}

@@ -1,0 +1,35 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldListDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldList;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldListRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldListResponse;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface CustomFieldListMapper {
+
+	CustomFieldListMapper INSTANCE = Mappers.getMapper(CustomFieldListMapper.class);
+
+	CustomFieldList customFieldListDTOToCustomFieldList(CustomFieldListDTO customFieldListDTO);
+
+	CustomFieldList customFieldListRequestToCustomFieldList(CustomFieldListRequest customFieldListRequest);
+
+	List<CustomFieldList> customFieldListDTOToCustomFieldList(List<CustomFieldListDTO> customFieldAddDTO);
+
+	List<CustomFieldList> customFieldListRequestToCustomFieldList(List<CustomFieldListRequest> customFieldAddRequest);
+
+	CustomFieldListDTO customFieldListToCustomFieldListDTO(CustomFieldList customField);
+
+	List<CustomFieldListDTO> customFieldListToCustomFieldListDTO(List<CustomFieldList> customField);
+
+	CustomFieldListResponse customFieldListToCustomFieldListResponse(CustomFieldList customField);
+
+	List<CustomFieldListResponse> customFieldListToCustomFieldListResponse(List<CustomFieldList> customField);
+
+}

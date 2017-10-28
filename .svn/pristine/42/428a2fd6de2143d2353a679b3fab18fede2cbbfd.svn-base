@@ -1,0 +1,16 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+  
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nexteducation.NextConfig.module.model.bo.ProductFeature;
+
+
+public interface ProductFeatureRepository extends JpaRepository<ProductFeature, Serializable>{
+	
+	public List<ProductFeature> findByBranchId(Long branch);
+	public ProductFeature findById(Long id);
+}

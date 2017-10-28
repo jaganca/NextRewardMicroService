@@ -1,0 +1,84 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import org.springframework.transaction.annotation.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.QueryParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.mapper.RollNumberSettingMapper;
+import com.nexteducation.NextConfig.module.model.bo.RollNumberSetting;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingAddRequest;
+import com.nexteducation.NextConfig.module.model.request.RollNumberSettingUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.RollNumberSettingResponse;
+import com.nexteducation.NextConfig.module.model.response.StatusResponse;
+import com.nexteducation.NextConfig.module.repository.RollNumberSettingRepository;
+import com.nexteducation.NextConfig.module.service.core.RollNumberSettingService;
+
+@Service("rollNumberSettingService")
+public class RollNumberSettingServiceImpl implements RollNumberSettingService {
+
+	@Autowired
+	RollNumberSettingRepository rollNumberSettingRepository;
+
+	@Autowired
+	RollNumberSettingMapper rollNumberSettingMapper;
+
+	@Override
+	@Transactional
+	public StatusResponse addRollNumberSetting(@Valid @NotNull @QueryParam("lbid") Long branchId,
+			final RollNumberSettingAddRequest rollNumberSettingAddRequest) {
+
+		final RollNumberSetting rollNumberSetting = rollNumberSettingMapper
+				.rollNumberSettingAddRequestToRollNumberSetting(rollNumberSettingAddRequest);
+		rollNumberSetting.setBranchId(branchId);
+		rollNumberSettingRepository.save(rollNumberSetting);
+
+		final StatusResponse statusResponse = new StatusResponse();
+		statusResponse.setCode("200");
+		statusResponse.setMessage("Successfully added");
+		return statusResponse;
+	}
+
+	@Override
+	@Transactional
+	public StatusResponse updateRollNumberSetting(final SessionParams sessionParams,
+			final RollNumberSettingUpdateRequest rollNumberSettingUpdateRequest) {
+
+		RollNumberSetting rollNumberSetting = rollNumberSettingRepository.findByBranchId(sessionParams.getBranchId());
+		RollNumberSetting rollNumberSetting2 = rollNumberSettingMapper
+				.rollNumberSettingUpdateRequestToRollNumberSetting(rollNumberSettingUpdateRequest);
+
+		if (rollNumberSetting != null) {
+			rollNumberSetting2.setId(rollNumberSetting.getId());
+		}
+		rollNumberSetting2.setBranchId(sessionParams.getBranchId());
+		rollNumberSettingRepository.save(rollNumberSetting2);
+
+		final StatusResponse statusResponse = new StatusResponse();
+		statusResponse.setCode("200");
+		statusResponse.setMessage("Successfully updated");
+		return statusResponse;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public RollNumberSettingResponse fetchRollNumberSetting(SessionParams sessionParams) {
+		// TODO Auto-generated method stub
+
+		RollNumberSetting rollNumberSetting = rollNumberSettingRepository.findByBranchId(sessionParams.getBranchId());
+		if (rollNumberSetting == null) {
+			rollNumberSetting = rollNumberSettingRepository.findByBranchId(Long.valueOf(1));
+		}
+		RollNumberSettingResponse rollNumberSettingResponse = rollNumberSettingMapper
+				.rollNumberSettingToRollNumberSettingResponse(rollNumberSetting);
+
+		return rollNumberSettingResponse;
+	}
+
+}

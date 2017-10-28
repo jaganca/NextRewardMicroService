@@ -1,0 +1,65 @@
+package com.nexteducation.NextConfig.module.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextConfig.module.service.core.CustomFormElementService;
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path(NextConfigUrls.V1 + NextConfigUrls.CUSTOM_FORM_ELEMENTS)
+public class CustomFormElementController {
+
+	@Autowired
+	CustomFormElementService customFormElementService;
+
+	@DELETE
+	@Path(NextConfigUrls.CUSTOM_FORM_ELEMENTS_PATH_ID)
+	public JerseyResponse deleteCustomFormElements(
+			@NotNull @PathParam(NextConfigUrls.CUSTOM_FORM_ELEMENT_ID) Long customFormElementId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFormElementService.deleteCustomFormElements(customFormElementId, sessionParams);
+	}
+
+	@POST
+	public JerseyResponse addCustomFormElements(@Valid @BeanParam SessionParams sessionParams,
+			@Valid CustomFormElementRequest customFormElementRequest) {
+		return customFormElementService.addCustomFormElements(sessionParams, customFormElementRequest);
+	}
+
+	@GET
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			@BeanParam CustomFormElementFetchParams customFormElementFetchParams,
+			@Valid @BeanParam SessionParams sessionParams, @BeanParam QueryableParams queryable) {
+		return customFormElementService.fetchCustomFormElements(customFormElementFetchParams, sessionParams, queryable);
+	}
+
+	@GET
+	@Path(NextConfigUrls.CUSTOM_FORM_ELEMENTS_PATH_ID)
+	public CustomFormElementResponse fetchCustomFormElements(
+			@NotNull @PathParam(NextConfigUrls.CUSTOM_FORM_ELEMENT_ID) Long customFormElementId,
+			@Valid @BeanParam SessionParams sessionParams) {
+		return customFormElementService.fetchCustomFormElements(customFormElementId, sessionParams);
+	}
+
+}

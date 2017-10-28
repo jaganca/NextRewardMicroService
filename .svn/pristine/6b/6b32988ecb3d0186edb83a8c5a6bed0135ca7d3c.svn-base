@@ -1,0 +1,90 @@
+package com.nexteducation.NextConfig.module.model.params;
+
+import javax.ws.rs.QueryParam;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+/**
+ * The Class SessionParams1.
+ */
+public class SessionParams1 {
+
+	/** The branch. */
+	@NotEmpty(message = "Session Parameters: Branch is invalid!")
+	@QueryParam("lbid")
+	String branch;
+
+	/** The academic session. */
+	@NotEmpty(message = "Session Parameters: Academic Session is invalid!")
+	@QueryParam("lasid")
+	String academicSession;
+
+	/** The user. */
+	@NotEmpty(message = "Session Parameters: User is invalid!")
+	@QueryParam("luid")
+	String user;
+
+	/**
+	 * Gets the branch.
+	 *
+	 * @return the branch
+	 */
+	public String getBranch() {
+		return branch;
+	}
+
+	/**
+	 * Sets the branch.
+	 *
+	 * @param branch the new branch
+	 */
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	/**
+	 * Gets the academic session.
+	 *
+	 * @return the academic session
+	 */
+	public String getAcademicSession() {
+		return academicSession;
+	}
+
+	/**
+	 * Sets the academic session.
+	 *
+	 * @param academicSession the new academic session
+	 */
+	public void setAcademicSession(String academicSession) {
+		this.academicSession = academicSession;
+	}
+
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
+	public String getUser() {
+		return user;
+	}
+
+	/**
+	 * Sets the user.
+	 *
+	 * @param user the new user
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	/** 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "SessionParams [" + (branch != null ? "branch=" + branch + ", " : "")
+				+ (academicSession != null ? "academicSession=" + academicSession + ", " : "")
+				+ (user != null ? "user=" + user : "") + "]";
+	}
+}

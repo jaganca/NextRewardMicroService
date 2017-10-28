@@ -1,0 +1,128 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementAddParams;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFormElementRequest;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFormElementResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+/**
+ * The Interface CustomFormElementService.
+ */
+public interface CustomFormElementService {
+
+	/**
+	 * Adds the custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequest the custom form element request
+	 * @return the jersey response
+	 */
+	public JerseyResponse addCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, CustomFormElementRequest customFormElementRequest);
+
+	/**
+	 * Adds the custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	public JerseyResponse addCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, List<CustomFormElementRequest> customFormElementRequests);
+
+	/**
+	 * Delete custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse deleteCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+
+	/**
+	 * Toggle custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse toggleCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+
+	/**
+	 * Fetch custom form elements.
+	 *
+	 * @param customFormElementFetchParams the custom form element fetch params
+	 * @param sessionParams the session params
+	 * @param queryable the queryable
+	 * @return the list
+	 */
+	public List<CustomFormElementResponse> fetchCustomFormElements(
+			CustomFormElementFetchParams customFormElementFetchParams, SessionParams sessionParams,
+			QueryableParams queryable);
+
+	/**
+	 * Fetch custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the custom form element response
+	 */
+	public CustomFormElementResponse fetchCustomFormElements(Long customFormElementId, SessionParams sessionParams);
+
+	/**
+	 * Adds the or update custom form elements.
+	 *
+	 * @param customFormElementAddParams the custom form element add params
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	public JerseyResponse addOrUpdateCustomFormElements(CustomFormElementAddParams customFormElementAddParams,
+			SessionParams sessionParams, List<CustomFormElementRequest> customFormElementRequests);
+
+	/**
+	 * Update hide status.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse updateHideStatus(Long customFormElementId, SessionParams sessionParams);
+
+	/**
+	 * Update mandatory status.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	public JerseyResponse updateMandatoryStatus(Long customFormElementId, SessionParams sessionParams);
+
+	/**
+	 * Update custom form elements.
+	 *
+	 * @param customFormElementId the custom form element id
+	 * @param key the key
+	 * @param sessionParams the session params
+	 * @param customFormElementRequests the custom form element requests
+	 * @return the jersey response
+	 */
+	public JerseyResponse updateCustomFormElements(Long customFormElementId, String key, SessionParams sessionParams,
+			CustomFormElementRequest customFormElementRequests);
+
+	/**
+	 * Adds the custom field in all forms.
+	 *
+	 * @param customFieldId the custom field id
+	 * @param sessionParams the session params
+	 * @return the jersey response
+	 */
+	JerseyResponse addCustomFieldInAllForms(Long customFieldId, SessionParams sessionParams);
+}

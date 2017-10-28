@@ -1,0 +1,62 @@
+package com.nexteducation.NextConfig.module.repository.custom.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.params.Caste.CasteComplexFetchParam;
+import com.nexteducation.NextConfig.module.repository.custom.core.CasteRepositoryCustom;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.util.ERPApp;
+
+@Repository
+public class CasteRepositoryImpl implements CasteRepositoryCustom {
+
+	@PersistenceContext
+	EntityManager entityManager;
+
+	@Override
+	public List<Caste> findByFilters(CasteComplexFetchParam casteComplexFetchParam, QueryableParams queryableParams) {
+		final StringBuilder builder = new StringBuilder("select c from Caste c ");
+		List<String> fetch = casteComplexFetchParam.getFetch();
+		if (!ERPApp.isNullOrEmptyList(fetch)) {
+			if (fetch.contains("sub_castes")) {
+				builder.append(" left join fetch c.subCastes ssc ");
+			}
+			if (fetch.contains("parent_caste")) {
+				builder.append(" left join fetch c.parentCaste cpc ");
+			}
+		} else {
+			if (!ERPApp.isNullOrEmptyList(casteComplexFetchParam.getParentCasteIds())) {
+				builder.append(" left join c.parentCaste cpc ");
+			}
+		}
+		builder.append(" where 1=1 ");
+		if (!ERPApp.isNullOrEmptyList(casteComplexFetchParam.getIds())) {
+			builder.append(" and c.id in (:ids) ");
+		}
+		if (!ERPApp.isNullOrEmptyList(casteComplexFetchParam.getParentCasteIds())) {
+			builder.append(" and cpc.id in (:parentIds) ");
+		}
+		if (casteComplexFetchParam.getBranchId() != null) {
+			builder.append(" and (c.branchId = :branchId or c.branchId is null) ");
+		}
+		final TypedQuery<Caste> query = entityManager.createQuery(builder.toString(), Caste.class);
+		if (!ERPApp.isNullOrEmptyList(casteComplexFetchParam.getIds())) {
+			query.setParameter("ids", casteComplexFetchParam.getIds());
+		}
+		if (!ERPApp.isNullOrEmptyList(casteComplexFetchParam.getParentCasteIds())) {
+			query.setParameter("parentIds", casteComplexFetchParam.getParentCasteIds());
+		}
+		if (casteComplexFetchParam.getBranchId() != null) {
+			query.setParameter("branchId", casteComplexFetchParam.getBranchId());
+		}
+		return query.getResultList();
+	}
+
+}

@@ -1,0 +1,50 @@
+package com.nexteducation.NextConfig.module.repository;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.repository.custom.core.CustomFormElementRepositoryCustom;
+
+public interface CustomFormElementRepository
+		extends JpaRepository<CustomFormElement, Serializable>, CustomFormElementRepositoryCustom {
+
+	@EntityGraph(attributePaths = { "customField" })
+	public CustomFormElement findById(Long id);
+	
+	@EntityGraph(attributePaths = { "customField" })
+	public CustomFormElement findByIdAndBranchId(Long id, Long branchId);
+
+	public List<CustomFormElement> findByCustomField(CustomField customField);
+
+	public List<CustomFormElement> findByCustomField_Id(Long customFieldId);
+
+	@EntityGraph(attributePaths = "form")
+	public List<CustomFormElement> findByCustomField_IdAndForm_IdIn(Long customFieldId, List<Long> formId);
+
+	@EntityGraph(attributePaths = "form")
+	public List<CustomFormElement> findByBranchIdAndCustomField_Id(Long branchId, Long customFieldId);
+
+	public List<CustomFormElement> findByStandardField(StandardField standardField);
+
+	@Query(value = " select cfe.id from  CustomFormElement cfe  where cfe.customField.id in :deleteIds and cfe.branchId =:branchId ")
+	public List<Long> findByIds(@Param("deleteIds") List<Long> deleteIds, @Param("branchId") Long branchId);
+
+	@Modifying
+	@Query(value = " delete from  CustomFormElement cfe  where cfe.id in :deleteIds and cfe.branchId =:branchId ")
+	public int deleteByIds(@Param("deleteIds") List<Long> deleteIds, @Param("branchId") Long branchId);
+
+	@Modifying
+	@Query(value = "update CustomFormElement cfe set cfe.ifMandatory = :mandatory where cfe.branchId = :branchId and cfe.id in (:ids) ")
+	public void updateCustomFormMandatory(@Param("mandatory") boolean mandatory, @Param("branchId") Long branchId,
+			@Param("ids") List<Long> ids);
+
+}

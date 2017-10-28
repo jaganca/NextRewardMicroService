@@ -1,0 +1,58 @@
+package com.nexteducation.NextConfig.module.model.request.CustomField;
+
+import com.nexteducation.NextConfig.module.model.enums.Status;
+import com.nexteducation.NextConfig.module.model.enums.ValidationType;
+
+public class CustomFieldValidationsRequest {
+
+	private Long id;
+
+	private Long customFormElementId;
+
+	private ValidationType validationType;
+
+	private String value;
+
+	private Status status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getCustomFormElementId() {
+		return customFormElementId;
+	}
+
+	public void setCustomFormElementId(Long customFormElementId) {
+		this.customFormElementId = customFormElementId;
+	}
+
+	public ValidationType getValidationType() {
+		return validationType;
+	}
+
+	public void setValidationType(ValidationType validationType) {
+		this.validationType = validationType;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+}

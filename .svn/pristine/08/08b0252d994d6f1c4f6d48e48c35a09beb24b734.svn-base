@@ -1,0 +1,89 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.Caste;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteAddRequest;
+import com.nexteducation.NextConfig.module.model.request.Caste.CasteUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.Caste.CasteResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CasteMapperImpl implements CasteMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public Caste CasteAddRequestToCaste(CasteAddRequest casteAddRequest) {
+        if ( casteAddRequest == null ) {
+            return null;
+        }
+
+        Caste caste = new Caste();
+
+        caste.setName( casteAddRequest.getName() );
+        caste.setBranchId( uuidMapper.asString( casteAddRequest.getBranchId() ) );
+
+        caste.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        caste.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return caste;
+    }
+
+    @Override
+    public Caste CasteUpdateRequestToCaste(CasteUpdateRequest casteUpdateRequest) {
+        if ( casteUpdateRequest == null ) {
+            return null;
+        }
+
+        Caste caste = new Caste();
+
+        caste.setName( casteUpdateRequest.getName() );
+        caste.setId( uuidMapper.asString( casteUpdateRequest.getId() ) );
+        caste.setBranchId( uuidMapper.asString( casteUpdateRequest.getBranchId() ) );
+
+        return caste;
+    }
+
+    @Override
+    public CasteResponse CasteToCasteResponse(Caste caste) {
+        if ( caste == null ) {
+            return null;
+        }
+
+        CasteResponse casteResponse = new CasteResponse();
+
+        casteResponse.setBranchId( caste.getBranchId() );
+        casteResponse.setName( caste.getName() );
+        casteResponse.setCreatedBy( caste.getCreatedBy() );
+        casteResponse.setCreatedOn( caste.getCreatedOn() );
+        casteResponse.setModifiedBy( caste.getModifiedBy() );
+        casteResponse.setModifiedOn( caste.getModifiedOn() );
+        casteResponse.setId( caste.getId() );
+        casteResponse.setParentCaste( caste.getParentCaste() );
+
+        return casteResponse;
+    }
+
+    @Override
+    public List<CasteResponse> CasteListToCasteResponseList(List<Caste> casteList) {
+        if ( casteList == null ) {
+            return null;
+        }
+
+        List<CasteResponse> list = new ArrayList<CasteResponse>();
+        for ( Caste caste : casteList ) {
+            list.add( CasteToCasteResponse( caste ) );
+        }
+
+        return list;
+    }
+}

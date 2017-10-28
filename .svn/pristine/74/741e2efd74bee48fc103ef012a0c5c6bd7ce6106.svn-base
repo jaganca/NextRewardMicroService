@@ -1,0 +1,66 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import java.util.List;
+
+import javax.ws.rs.QueryParam;
+
+import com.nexteducation.NextConfig.util.NextConfigUrls;
+
+public class CustomFieldFetchParams {
+
+	@QueryParam(NextConfigUrls.ENTITY_NAME)
+	private List<String> entityNames;
+
+	@QueryParam(NextConfigUrls.BRANCH_ID)
+	private Long branchId;
+
+	@QueryParam(NextConfigUrls.SEARCH)
+	private String searchString;
+
+	@QueryParam(NextConfigUrls.FETCH)
+	private List<String> fetch;
+
+	@QueryParam(NextConfigUrls.FORM_NAME)
+	private String formName;
+
+	public String getSearchString() {
+		return searchString;
+	}
+
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
+
+	public List<String> getFetch() {
+		return fetch;
+	}
+
+	public void setFetch(List<String> fetch) {
+		this.fetch = fetch;
+	}
+
+	public List<String> getEntityNames() {
+		return entityNames;
+	}
+
+	public void setEntityNames(List<String> entityNames) {
+		this.entityNames = entityNames;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getFormName() {
+		return formName;
+	}
+
+	public void setFormName(String formName) {
+		this.formName = formName;
+	}
+
+}

@@ -1,0 +1,51 @@
+package com.nexteducation.NextConfig.module.repository.custom.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.repository.custom.core.StandardFieldRepositoryCustom;
+import com.nexteducation.NextConfig.util.ERPApp;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+@Repository
+public class StandardFieldRepositoryImpl implements StandardFieldRepositoryCustom {
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public List<StandardField> findStandarFieldsExceptInCustomFormElements(
+			StandardFieldFetchParams standardFieldElementFetchParams, QueryableParams queryableParams,SessionParams sessionParams) {
+		final StringBuilder builder = new StringBuilder(
+				" select distinct sf from StandardField sf  ");
+		builder.append(" where 1 = 1 ");
+		if (!ERPApp.isEmptyObject(standardFieldElementFetchParams.getFormId())) {
+			builder.append(" and sf.id not in (select cfe.standardField.id from CustomFormElement cfe where cfe.form.id =:formId and cfe.branchId =:branchId and cfe.standardField.id is not null ) ");
+		}
+		if (!ERPApp.isEmptyObject(standardFieldElementFetchParams.getEntityName())) {
+			builder.append(" and sf.entityName =:entityName  ");
+		}
+		final TypedQuery<StandardField> query = entityManager.createQuery(builder.toString(), StandardField.class);
+		if (!ERPApp.isEmptyObject(standardFieldElementFetchParams.getFormId())) {
+			query.setParameter("formId",standardFieldElementFetchParams.getFormId() );
+		}
+		if (!ERPApp.isEmptyObject(sessionParams.getBranchId())) {
+			query.setParameter("branchId",sessionParams.getBranchId());
+		}
+		if (!ERPApp.isEmptyObject(standardFieldElementFetchParams.getEntityName())) {
+			query.setParameter("entityName",standardFieldElementFetchParams.getEntityName() );
+		}
+		List<StandardField> StandardFields = query.getResultList();
+		return StandardFields;
+	}
+
+}

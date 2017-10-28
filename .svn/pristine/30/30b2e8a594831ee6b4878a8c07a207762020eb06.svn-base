@@ -1,0 +1,62 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.FormDTO;
+import com.nexteducation.NextConfig.module.model.bo.Form;
+import com.nexteducation.NextConfig.module.model.response.CustomField.FormResponse;
+
+/**
+ * The Interface FormMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface FormMapper {
+
+	/** The instance. */
+	FormMapper INSTANCE = Mappers.getMapper(FormMapper.class);
+
+	/**
+	 * Form DTO to form.
+	 *
+	 * @param formDTO the form DTO
+	 * @return the form
+	 */
+	Form FormDTOToForm(FormDTO formDTO);
+
+	/**
+	 * Form to form DTO.
+	 *
+	 * @param form the form
+	 * @return the form DTO
+	 */
+	FormDTO FormToFormDTO(Form form);
+
+	/**
+	 * Form to form DTO.
+	 *
+	 * @param form the form
+	 * @return the list
+	 */
+	List<FormDTO> FormToFormDTO(List<Form> form);
+
+	/**
+	 * Form to form response.
+	 *
+	 * @param form the form
+	 * @return the form response
+	 */
+	FormResponse FormToFormResponse(Form form);
+
+	/**
+	 * Form to form response.
+	 *
+	 * @param form the form
+	 * @return the list
+	 */
+	List<FormResponse> FormToFormResponse(List<Form> form);
+
+}

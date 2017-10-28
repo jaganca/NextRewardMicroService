@@ -1,0 +1,100 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomField;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldAddRequest;
+import com.nexteducation.NextConfig.module.model.request.CustomField.CustomFieldUpdateRequest;
+import com.nexteducation.NextConfig.module.model.response.CustomField.CustomFieldResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = "org.mapstruct.ap.MappingProcessor",
+    date = "2016-12-26T12:16:57+0530",
+    comments = "version: 1.0.0.Final, compiler: javac, environment: Java 1.8.0_111 (Oracle Corporation)"
+)
+@Component
+public class CustomFieldMapperImpl implements CustomFieldMapper {
+
+    @Autowired
+    private UuidMapper uuidMapper;
+
+    @Override
+    public CustomField CustomFieldAddRequestToCustomField(CustomFieldAddRequest customFieldAddRequest) {
+        if ( customFieldAddRequest == null ) {
+            return null;
+        }
+
+        CustomField customField = new CustomField();
+
+        customField.setFieldName( customFieldAddRequest.getFieldName() );
+        customField.setFieldTypeId( customFieldAddRequest.getFieldTypeId() );
+        customField.setDataTypeId( customFieldAddRequest.getDataTypeId() );
+        customField.setIfMandatory( customFieldAddRequest.isIfMandatory() );
+        customField.setStatus( customFieldAddRequest.getStatus() );
+        customField.setBranchId( uuidMapper.asString( customFieldAddRequest.getBranchId() ) );
+        customField.setCreatedBy( uuidMapper.asString( customFieldAddRequest.getCreatedBy() ) );
+        customField.setModifiedBy( uuidMapper.asString( customFieldAddRequest.getModifiedBy() ) );
+
+        customField.setCreatedOn( com.nexteducation.NextConfig.util.DU.now() );
+        customField.setModifiedOn( com.nexteducation.NextConfig.util.DU.now() );
+
+        return customField;
+    }
+
+    @Override
+    public CustomField CustomFieldUpdateRequestToCustomField(CustomFieldUpdateRequest customFieldAddRequest) {
+        if ( customFieldAddRequest == null ) {
+            return null;
+        }
+
+        CustomField customField = new CustomField();
+
+        customField.setFieldName( customFieldAddRequest.getFieldName() );
+        customField.setIfMandatory( customFieldAddRequest.isIfMandatory() );
+        customField.setStatus( customFieldAddRequest.getStatus() );
+        customField.setId( uuidMapper.asString( customFieldAddRequest.getId() ) );
+        customField.setModifiedBy( uuidMapper.asString( customFieldAddRequest.getModifiedBy() ) );
+
+        return customField;
+    }
+
+    @Override
+    public CustomFieldResponse CustomFieldToCustomFieldResponse(CustomField customField) {
+        if ( customField == null ) {
+            return null;
+        }
+
+        CustomFieldResponse customFieldResponse = new CustomFieldResponse();
+
+        customFieldResponse.setBranchId( uuidMapper.asString( customField.getBranchId() ) );
+        customFieldResponse.setId( uuidMapper.asString( customField.getId() ) );
+        customFieldResponse.setFieldName( customField.getFieldName() );
+        customFieldResponse.setFieldTypeId( customField.getFieldTypeId() );
+        customFieldResponse.setDataTypeId( customField.getDataTypeId() );
+        customFieldResponse.setIfMandatory( customField.isIfMandatory() );
+        customFieldResponse.setStatus( customField.getStatus() );
+        customFieldResponse.setCreatedBy( uuidMapper.asString( customField.getCreatedBy() ) );
+        customFieldResponse.setCreatedOn( customField.getCreatedOn() );
+        customFieldResponse.setModifiedBy( uuidMapper.asString( customField.getModifiedBy() ) );
+        customFieldResponse.setModifiedOn( customField.getModifiedOn() );
+
+        return customFieldResponse;
+    }
+
+    @Override
+    public List<CustomFieldResponse> CustomFieldListToCustomFieldResponseList(List<CustomField> customFieldList) {
+        if ( customFieldList == null ) {
+            return null;
+        }
+
+        List<CustomFieldResponse> list = new ArrayList<CustomFieldResponse>();
+        for ( CustomField customField : customFieldList ) {
+            list.add( CustomFieldToCustomFieldResponse( customField ) );
+        }
+
+        return list;
+    }
+}

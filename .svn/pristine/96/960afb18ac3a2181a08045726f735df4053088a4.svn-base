@@ -1,0 +1,115 @@
+package com.nexteducation.NextConfig.module.model.bo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "CUSTOM_FIELD_LIST")
+public class CustomFieldList {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CUSTOM_FIELD_LIST_ID", columnDefinition = "BIGINT(20)")
+	private Long id;
+
+	@Column(name = "BRANCH_ID", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long branchId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CUSTOM_FIELD_ID", nullable = false)
+	private CustomField customField;
+
+	@Column(name = "VALUE", nullable = false)
+	private String value;
+
+	@Column(name = "CREATED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long createdBy;
+
+	@Column(name = "CREATED_ON", nullable = false)
+	private Date createdOn;
+
+	@Column(name = "MODIFIED_BY", columnDefinition = "BIGINT(20)", nullable = false)
+	private Long modifiedBy;
+
+	@Column(name = "MODIFIED_ON", nullable = false)
+	private Date modifiedOn;
+
+	public CustomFieldList setAll(CustomFieldList customFieldList) {
+		this.setValue(customFieldList.getValue());
+		return this;
+	}
+
+	public Long getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Long branchId) {
+		this.branchId = branchId;
+	}
+
+	public CustomField getCustomField() {
+		return customField;
+	}
+
+	public void setCustomField(CustomField customField) {
+		this.customField = customField;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+}

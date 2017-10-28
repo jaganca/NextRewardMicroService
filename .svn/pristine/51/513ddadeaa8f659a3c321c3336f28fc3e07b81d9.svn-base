@@ -1,0 +1,24 @@
+package com.nexteducation.NextConfig.module.model.params.CustomField;
+
+import javax.ws.rs.PathParam;
+
+public class CustomFieldUpdateParams {
+	
+	@PathParam("pathLong")
+	String pathLong;
+
+	public String getPathLong() {
+		return pathLong;
+	}
+
+	public void setPathLong(String pathLong) {
+		this.pathLong = pathLong;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomFieldUpdateParams [" + (pathLong != null ? "pathLong=" + pathLong : "") + "]";
+	}
+	
+
+}

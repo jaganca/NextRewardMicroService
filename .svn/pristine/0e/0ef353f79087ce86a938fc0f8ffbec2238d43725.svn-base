@@ -1,0 +1,25 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextConfig.module.mapper.EntityMapper;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+import com.nexteducation.NextConfig.module.model.response.Entities.EntityResponse;
+import com.nexteducation.NextConfig.module.repository.EntitiesRepository;
+import com.nexteducation.NextConfig.module.service.core.EntitiesService;
+
+public class EntitiesServiceImpl implements EntitiesService{
+
+	@Override
+	public List<EntityResponse> fetchAllEntities(SessionParams sessionParams, QueryableParams queryable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

@@ -1,0 +1,33 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFieldDataFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface CustomFieldDataService {
+
+	public CustomFieldDataDTO fetchCustomFieldData(Long customFieldDataId, SessionParams sessionParams);
+
+	public JerseyResponse updateCustomFieldData(Long customFieldDataId, SessionParams sessionParams,
+			CustomFieldDataDTO customFieldDataDTO);
+
+	public JerseyResponse deleteCustomFieldData(Long customFieldDataId, SessionParams sessionParams);
+
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, CustomFieldDataDTO customFieldDataDTO);
+
+	public JerseyResponse addCustomFieldData(SessionParams sessionParams, List<CustomFieldDataDTO> customFieldDataDTOs);
+
+	public List<CustomFieldDataDTO> fetchCustomFieldData(CustomFieldDataFetchParams customFieldDataFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	JerseyResponse addOrupdateCustomFieldData(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs);
+
+	JerseyResponse saveCustomFieldDataForExcel(SessionParams sessionParams,
+			List<CustomFieldDataDTO> customFieldDataDTOs);
+
+}

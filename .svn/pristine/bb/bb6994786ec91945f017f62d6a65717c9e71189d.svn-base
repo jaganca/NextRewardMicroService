@@ -1,0 +1,86 @@
+package com.nexteducation.NextConfig.module.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
+
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataDTO;
+import com.nexteducation.NextConfig.module.dto.CustomFieldDataShortDTO;
+import com.nexteducation.NextConfig.module.model.bo.CustomFieldData;
+
+/**
+ * The Interface CustomFieldDataMapper.
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { CustomFieldMapper.class })
+public interface CustomFieldDataMapper {
+
+	/** The instance. */
+	CustomFieldDataMapper INSTANCE = Mappers.getMapper(CustomFieldDataMapper.class);
+
+	/**
+	 * Custom field data DTO to custom field data.
+	 *
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the custom field data
+	 */
+	CustomFieldData customFieldDataDTOToCustomFieldData(CustomFieldDataDTO customFieldDataDTO);
+
+	/**
+	 * Custom field data short DTO to custom field data.
+	 *
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the custom field data
+	 */
+	CustomFieldData customFieldDataShortDTOToCustomFieldData(CustomFieldDataShortDTO customFieldDataDTO);
+
+	/**
+	 * Custom field data DTO to custom field data.
+	 *
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the list
+	 */
+	List<CustomFieldData> customFieldDataDTOToCustomFieldData(List<CustomFieldDataDTO> customFieldDataDTO);
+
+	/**
+	 * Custom field data short DTO to custom field data.
+	 *
+	 * @param customFieldDataDTO the custom field data DTO
+	 * @return the list
+	 */
+	List<CustomFieldData> customFieldDataShortDTOToCustomFieldData(List<CustomFieldDataShortDTO> customFieldDataDTO);
+
+	/**
+	 * Custom field data to custom field data DTO.
+	 *
+	 * @param customFieldData the custom field data
+	 * @return the custom field data DTO
+	 */
+	CustomFieldDataDTO customFieldDataToCustomFieldDataDTO(CustomFieldData customFieldData);
+
+	/**
+	 * Custom field data to custom field data short DTO.
+	 *
+	 * @param customFieldData the custom field data
+	 * @return the custom field data short DTO
+	 */
+	CustomFieldDataShortDTO customFieldDataToCustomFieldDataShortDTO(CustomFieldData customFieldData);
+
+	/**
+	 * Custom field data to custom field data DTO.
+	 *
+	 * @param customFieldData the custom field data
+	 * @return the list
+	 */
+	List<CustomFieldDataDTO> customFieldDataToCustomFieldDataDTO(List<CustomFieldData> customFieldData);
+
+	/**
+	 * Custom field data to custom field data short DTO.
+	 *
+	 * @param customFieldData the custom field data
+	 * @return the list
+	 */
+	List<CustomFieldDataShortDTO> customFieldDataToCustomFieldDataShortDTO(List<CustomFieldData> customFieldData);
+
+}

@@ -1,0 +1,19 @@
+package com.nexteducation.NextConfig.module.service.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public interface StandardFieldService {
+
+	public List<StandardFieldDTO> fetchStandardFields(StandardFieldFetchParams StandardFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable);
+
+	public JerseyResponse updateStandardFields(Long standardFieldsId, SessionParams sessionParams,
+			StandardFieldDTO standardFieldDTO);
+
+}

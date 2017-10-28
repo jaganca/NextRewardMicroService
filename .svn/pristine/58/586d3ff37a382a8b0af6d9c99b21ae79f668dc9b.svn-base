@@ -1,0 +1,13 @@
+package com.nexteducation.NextConfig.module.repository.custom.core;
+
+import java.util.List;
+
+import com.nexteducation.NextConfig.module.model.bo.CustomFormElement;
+import com.nexteducation.NextConfig.module.model.params.CustomField.CustomFormElementFetchParams;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+
+public interface CustomFormElementRepositoryCustom {
+
+	List<CustomFormElement> findByBOFilters(CustomFormElementFetchParams customFormElementFetchParams,
+			QueryableParams queryableParams);
+}

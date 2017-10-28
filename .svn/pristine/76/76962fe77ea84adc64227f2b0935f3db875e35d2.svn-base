@@ -1,0 +1,45 @@
+package com.nexteducation.NextConfig.module.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nexteducation.NextConfig.hibernate.datasourceRouting.ReadOnlyConnection;
+import com.nexteducation.NextConfig.module.dto.StandardFieldDTO;
+import com.nexteducation.NextConfig.module.mapper.StandardFieldMapper;
+import com.nexteducation.NextConfig.module.model.bo.StandardField;
+import com.nexteducation.NextConfig.module.model.params.CustomField.StandardFieldFetchParams;
+import com.nexteducation.NextConfig.module.model.response.JerseyResponse;
+import com.nexteducation.NextConfig.module.repository.StandardFieldRepository;
+import com.nexteducation.NextConfig.module.service.core.StandardFieldService;
+import com.nexteducation.NextService.module.filter.queryable.QueryableParams;
+import com.nexteducation.NextService.module.model.params.SessionParams;
+
+public class StandardFieldServiceImpl implements StandardFieldService {
+
+	@Autowired
+	StandardFieldRepository standardFieldRepository;
+
+	@Autowired
+	StandardFieldMapper standardFieldMapper;
+
+	@Override
+	@Transactional(readOnly = true)
+	@ReadOnlyConnection
+	public List<StandardFieldDTO> fetchStandardFields(StandardFieldFetchParams StandardFieldFetchParams,
+			SessionParams sessionParams, QueryableParams queryable) {
+		List<StandardField> standardFieldList = standardFieldRepository
+				.findByEntityName(StandardFieldFetchParams.getEntityName());
+		return standardFieldMapper.standardFieldToStandardFieldDTO(standardFieldList);
+	}
+
+	@Override
+	@Transactional
+	public JerseyResponse updateStandardFields(Long standardFieldsId, SessionParams sessionParams,
+			StandardFieldDTO standardFieldDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
